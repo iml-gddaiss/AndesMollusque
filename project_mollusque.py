@@ -27,7 +27,7 @@ class ProjetMollusque:
         self.cur = self.con.cursor()
         self.pk = None
 
-        self.reference_data = OracleDB(access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb")
+        self.reference_data = OracleHelper(access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb")
 
         self._datetime_format = '%Y-%m-%d %H:%M:%S'
 
@@ -52,7 +52,7 @@ class ProjetMollusque:
         df = pd.DataFrame(result)
         print(df)
         # (df[0] ==df)
-
+        
 
     def validate(self):
 
@@ -90,7 +90,7 @@ class ProjetMollusque:
 
         self.pk = result[0][0]
 
-    def init_input(self, zone:str=None, no_releve:int=None, no_notif:str=None) -> int:
+    def init_input(self, zone:str=None, no_releve:int=None, no_notif:str=None):
         '''
         zone (str): 16E, 16F ou 20
 
@@ -143,7 +143,11 @@ class ProjetMollusque:
 
         # typecast val
         to_return = int(to_return)
-        return to_return
+
+        if self.reference_data.validate_exist('Source_Info', 'COD_SOURCE_INFO', 'DESC_SOURCE_INFO_F', description)
+            return to_return
+        else:
+            raise ValueError
         
     @log_results    
     def get_no_releve(self) -> int:
@@ -154,9 +158,9 @@ class ProjetMollusque:
         '''
         # this has to be supplied as input using self.init_input
         return int(self.no_releve)
-    
+
     @log_results    
-    def get_cod_nbpc(self) -> str:
+    def get_cod_nbpc(self, validate=True) -> str:
         '''
         COD_NBPC VARCHAR(6) NOT NULL,
 
@@ -178,6 +182,10 @@ class ProjetMollusque:
 
         # typecast val
         to_return = str(to_return)
+
+        if self.reference_data.validate_exist('Source_Info', 'COD_SOURCE_INFO', 'DESC_SOURCE_INFO_F', description):
+            return to_return
+
         return to_return
 
     @log_results    
