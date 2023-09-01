@@ -1,6 +1,7 @@
 import os
-import oracledb
 import pyodbc
+import logging
+import oracledb
 
 from dotenv import load_dotenv
 
@@ -8,7 +9,13 @@ load_dotenv()
 
 
 class OracleHelper:
+
     def __init__(self, access_file=None):
+        self.logger = logging.getLogger(__name__)
+        # datime format on MS access DB
+        self.datetime_strfmt='%Y-%m-%d %H:%M:%S'
+
+
         if access_file:
             self.con = pyodbc.connect(
                 f"Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={access_file};"
@@ -30,6 +37,19 @@ class OracleHelper:
 
         self.cur = self.con.cursor()
 
+    def _format_sql_string(self, input:str)->str:
+        """ use two single-quotes to properly generate the SQL statement
+
+
+        :param input: input string to fix
+        :type input: str
+        :return: inptstirng with doubled single quotes
+        :rtype: str
+        """
+
+
+        return input.replace("'","''")
+
     def get_ref_key(
         self,
         table: str = "tablename",
@@ -50,8 +70,10 @@ class OracleHelper:
         :return: The value found in the pkey column for the entry with the value
         :rtype: _type_
         """
-
+        # sanitize string (double escape single quotes)
+        val = self._format_sql_string(val)
         query = f"SELECT {pkey_col} FROM {table} WHERE {col}='{val}'"
+
         self.cur.execute(query)
         res = self.cur.fetchall()
         if len(res) == 1:
@@ -63,15 +85,12 @@ class OracleHelper:
     def validate_exists(
         self,
         table: str = "tablename",
-        pkey_col: str = "columnofprimarykey",
         col: str = "columnname",
-        val="entryvalue",
+        val:int|str="entryvalue",
     ) -> bool:
         """
         Validate that a value exists (and there is only one) in the Oracle DB
 
-        :param table: The name of the Oracle table, defaults to "tablename"
-        :type table: str, optional
         :param pkey_col: The column name that holds the key, defaults to "columnofprimarykey"
         :type pkey_col: str, optional
         :param col: The column that holds the value to match, defaults to "columnname"
@@ -81,12 +100,25 @@ class OracleHelper:
         :return: True if the value exists in the Oracle DB, False otherwise
         :rtype: bool
         """
-        try:
-            self.get_ref_key(table, pkey_col, col, val)
-        except ValueError:
-            return False
+        if isinstance(val, str):
+            # sanitize string (double escape single quotes)
+            val = self._format_sql_string(val)
+            query = f"SELECT {col} FROM {table} WHERE {col}='{val}'"
+        elif isinstance(val, int):
+            query = f"SELECT {col} FROM {table} WHERE {col}={val}"
         else:
+            print("type error yo?")
+            raise TypeError
+        self.cur.execute(query)
+        res = self.cur.fetchall()
+
+        if len(res) == 1:
             return True
+        else:
+            self.logger.error("Andes DB indicates a %s=%s but is not present in Oracle table: %s", col, val, table)
+
+            return False
+
 
 
 if __name__ == "__main__":
