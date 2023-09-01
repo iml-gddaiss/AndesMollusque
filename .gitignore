@@ -1,3 +1,8 @@
+
+wenv/*
+*.sqlite3
+*.mdb
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
