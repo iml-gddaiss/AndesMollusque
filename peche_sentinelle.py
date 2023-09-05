@@ -28,6 +28,15 @@ class PecheSentinelle:
         raise Exception
         # (df[0] ==df)
 
+    def _hard_coded_result(self, result):
+        self.logger.warning("Returning hard-coded result: %s", result)
+        return result
+
+    def _seq_result(self, result=-1):
+        self.logger.warning("Returning a purposfully invalid SEQ-type result: %s", result)
+        return result
+
+
     def convert_nm_2_km(self, val:float) -> float:
         """ convert nautical miles to kilometers
 
@@ -48,6 +57,3 @@ class PecheSentinelle:
         """
         return self.convert_nm_2_km(val)
 
-    def _hard_coded_result(self, result):
-        self.logger.warning("Returning hard-coded result: %s", result)
-        return result

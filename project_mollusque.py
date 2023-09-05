@@ -8,13 +8,24 @@ from oracle_helper import OracleHelper
 from peche_sentinelle import PecheSentinelle
 
 def log_results(f):
-    def wrapper(*args):
-        res = f(*args)
+    def wrapper(*args, **kwargs):
+        res = f(*args, **kwargs)
         args[0].logger.info("%s -> %s", f.__name__, res)
-        # print(f"{f.__name__} -> {res}")
         return res
-
     return wrapper
+
+def validate_string_len(max_len=0):
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            res = f(*args, **kwargs)
+            if max_len and len(res) <= max_len:
+                args[0].logger.info("string variable is within the allowed length of VARCHAR(%s) ",  max_len)
+            else:
+                args[0].logger.error("string variable is NOT within the allowed length of VARCHAR(%s) ",  max_len)
+                raise ValueError
+            return res
+        return wrapper
+    return decorator
 
 
 logging.basicConfig(level=logging.INFO)
@@ -172,8 +183,9 @@ class ProjetMollusque(PecheSentinelle):
         # this has to be supplied as input using self.init_input
         return int(self.no_releve)
 
+    @validate_string_len(max_len=6)
     @log_results
-    def get_cod_nbpc(self, max_len=6) -> str:
+    def get_cod_nbpc(self) -> str:
         """
         COD_NBPC VARCHAR(6) NOT NULL,
 
@@ -196,7 +208,6 @@ class ProjetMollusque(PecheSentinelle):
 
         # typecast val
         to_return = str(to_return)
-        assert len(to_return) <= max_len
 
         if self.reference_data.validate_exists(
             table="Navire", col="COD_NBPC", val=to_return
@@ -327,8 +338,9 @@ class ProjetMollusque(PecheSentinelle):
         to_return = datetime.datetime.strftime(dt, self.reference_data.datetime_strfmt)
         return to_return
 
+    @validate_string_len(max_len=12)
     @log_results
-    def get_no_notif_iml(self, max_len=12) -> str:
+    def get_no_notif_iml(self) -> str:
         """
         NO_NOTIF_IML VARCHAR(12),
 
@@ -339,11 +351,11 @@ class ProjetMollusque(PecheSentinelle):
         result = res.fetchall()
         self._assert_one(result)
         to_return = result[0][0]
-        assert len(to_return) <= max_len
         return to_return
 
+    @validate_string_len(max_len=50)
     @log_results
-    def get_chef_mission(self, max_len=50) -> str:
+    def get_chef_mission(self) -> str:
         """
         CHEF_MISSION VARCHAR(50),
 
@@ -354,7 +366,6 @@ class ProjetMollusque(PecheSentinelle):
         result = res.fetchall()
         self._assert_one(result)
         to_return = result[0][0]
-        assert len(to_return) <= max_len
         return to_return
 
     @log_results
@@ -362,14 +373,15 @@ class ProjetMollusque(PecheSentinelle):
         """
         SEQ_PECHEUR INTEGER,
 
-        """
-        self.logger.warn("Ce champ est un champ SEQ")
-        query = f"SELECT shared_models_set.bridge \
-                  FROM shared_models_set \
-                  WHERE shared_models_set.cruise_id={self.pk};"
-        res = self.cur.execute(query)
+        Champ de type SEQ 
 
-        result = res.fetchall()
+        """
+        # query = f"SELECT shared_models_set.bridge \
+        #           FROM shared_models_set \
+        #           WHERE shared_models_set.cruise_id={self.pk};"
+        # res = self.cur.execute(query)
+
+        # result = res.fetchall()
         # make sure bridge is the same for all sets,
         # this is a bit silly since there can be crew changes, but it's how the ProjetMollusque table is designed
         # thus to satisfy this, use the generic "Capitain Leim" bridge name.
@@ -379,8 +391,7 @@ class ProjetMollusque(PecheSentinelle):
         # if result[0][2] == "Leim":
         #     # seq_pecher for "capitain Leim"
         #     to_return = 151
-        self.logger.warn("Ce champ est un champ SEQ, une valeur invalide serat utilisé")
-        to_return = -1
+        to_return = self._seq_result()
         return to_return
 
     @log_results
@@ -494,9 +505,46 @@ class ProjetMollusque(PecheSentinelle):
         to_return = float(to_return) 
         return to_return
 
-    # RAPPORT_FUNE_VISEE DOUBLE,
-    # RAPPORT_FUNE_VISEE_P DOUBLE,
-    # NOM_EQUIPE_NAVIRE VARCHAR(250),
+
+    @log_results
+    def get_rapport_fune_visee(self) -> float:
+        """
+        RAPPORT_FUNE_VISEE DOUBLE,
+        """
+
+        # hard-code this
+        to_return = self._hard_coded_result(2.0)
+        to_return = float(to_return) 
+        return to_return
+
+
+    @log_results
+    def get_rapport_fune_visee_p(self) -> float:
+        """
+        RAPPORT_FUNE_VISEE_P DOUBLE
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(0.1)
+        to_return = float(to_return) 
+        return to_return
+
+
+    @validate_string_len(max_len=250)
+    @log_results
+    def get_non_equip_navire(self) -> str:
+        """
+        NOM_EQUIPE_NAVIRE VARCHAR(250)
+
+        """
+        res = self.cur.execute(
+            f"SELECT mission_number FROM shared_models_cruise where id = {self.pk}"
+        )
+        result = res.fetchall()
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
     # NOM_SCIENCE_NAVIRE VARCHAR(250),
     # REM_PROJET_MOLL VARCHAR(255),
     # NO_CHARGEMENT INTEGER,
