@@ -5,7 +5,7 @@ from time import strftime
 import pandas as pd
 
 from oracle_helper import OracleHelper
-
+from peche_sentinelle import PecheSentinelle
 
 def log_results(f):
     def wrapper(*args):
@@ -20,7 +20,7 @@ def log_results(f):
 logging.basicConfig(level=logging.INFO)
 
 
-class ProjetMollusque:
+class ProjetMollusque(PecheSentinelle):
     # CREATE TABLE PROJET_MOLLUSQUE (
 
     def __init__(self, con):
@@ -37,27 +37,6 @@ class ProjetMollusque:
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
-    def _assert_one(self, result):
-        if len(result) == 0:
-            raise ValueError("recieved no result.")
-
-        elif len(result) > 1:
-            raise ValueError("recieved more than one result.")
-
-        elif not len(result) == 1:
-            raise ValueError("Expected only one result.")
-
-    def _assert_all_equal(self, result):
-        print("checking")
-        if len(result) == 0:
-            raise ValueError("recieved no result.")
-
-        # case single
-        # elif (len(result)==1):
-        #     return
-        df = pd.DataFrame(result)
-        print(df)
-        # (df[0] ==df)
 
     def validate(self):
         # use zones are compatible with code_source_info
@@ -120,7 +99,9 @@ class ProjetMollusque:
         """
 
         if espece not in ["pétoncle", "buccin", "Mactre de Stimpson"]:
-            raise ValueError("espece doit etre un de pétoncle, buccin ou Mactre de Stimpson")
+            raise ValueError(
+                "espece doit etre un de pétoncle, buccin ou Mactre de Stimpson"
+            )
         self.espece = espece
 
         if zone not in ["16E", "16F", "20"]:
@@ -135,7 +116,7 @@ class ProjetMollusque:
             raise ValueError("Le num. notif (Ex. IML-2000-023) doit etre fourni")
         self.no_notification = no_notif
         self.init_mission_pk(no_notif)
-        
+
     @log_results
     def get_cod_source_info(self) -> int:
         """
@@ -192,7 +173,7 @@ class ProjetMollusque:
         return int(self.no_releve)
 
     @log_results
-    def get_cod_nbpc(self) -> str:
+    def get_cod_nbpc(self, max_len=6) -> str:
         """
         COD_NBPC VARCHAR(6) NOT NULL,
 
@@ -215,7 +196,7 @@ class ProjetMollusque:
 
         # typecast val
         to_return = str(to_return)
-
+        assert len(to_return) <= max_len
 
         if self.reference_data.validate_exists(
             table="Navire", col="COD_NBPC", val=to_return
@@ -250,7 +231,7 @@ class ProjetMollusque:
         16 -> Indice d'abondance zone 16F - pétoncle
         18 -> Indice d'abondance zone 20 - pétoncle
 
-        Valid description should be one of 
+        Valid description should be one of
             Indice d'abondance zone 16E - pétoncle
             Indice d'abondance zone 16F - pétoncle
             Indice d'abondance zone 20 - pétoncle
@@ -258,24 +239,12 @@ class ProjetMollusque:
             Indice d'abondance Mactre de Stimpson
             Indice d'abondance homard Îles-de-la-Madeleine
         """
-
-        if self.espece=="pétoncle":
+        # TODO: use COD_SERIE_HIST as datainput
+        if self.espece == "pétoncle":
             desc = f"Indice d'abondance zone {self.zone} - {self.espece}"
         else:
             desc = f"Indice d'abondance {self.espece}"
-    
-        # if self.zone == "16E":
-        #     to_return = 15
-        # elif self.zone == "16F":
-        #     to_return = 16
-        # elif self.zone == "20":
-        #     to_return = 18
-        # else:
-        #     raise ValueError(
-        #         "Impossible de determine le COD_SERIE_HIST, vérifier la zone"
-        #     )
 
-        # NEW, do not hard code the key lookup, but fetch it form the drescription.
         key = self.reference_data.get_ref_key(
             table="Indice_Suivi_Etat_Stock",
             pkey_col="COD_SERIE_HIST",
@@ -325,7 +294,7 @@ class ProjetMollusque:
             raise ValueError
 
     @log_results
-    def get_date_deb_project(self) ->str:
+    def get_date_deb_project(self) -> str:
         """
         DATE_DEB_PROJET TIMESTAMP,
         """
@@ -359,7 +328,7 @@ class ProjetMollusque:
         return to_return
 
     @log_results
-    def get_no_notif_iml(self):
+    def get_no_notif_iml(self, max_len=12) -> str:
         """
         NO_NOTIF_IML VARCHAR(12),
 
@@ -370,10 +339,11 @@ class ProjetMollusque:
         result = res.fetchall()
         self._assert_one(result)
         to_return = result[0][0]
+        assert len(to_return) <= max_len
         return to_return
 
     @log_results
-    def get_chef_mission(self):
+    def get_chef_mission(self, max_len=50) -> str:
         """
         CHEF_MISSION VARCHAR(50),
 
@@ -384,14 +354,16 @@ class ProjetMollusque:
         result = res.fetchall()
         self._assert_one(result)
         to_return = result[0][0]
+        assert len(to_return) <= max_len
         return to_return
 
     @log_results
-    def get_seq_pecheur(self):
+    def get_seq_pecheur(self) -> int:
         """
         SEQ_PECHEUR INTEGER,
 
         """
+        self.logger.warn("Ce champ est un champ SEQ")
         query = f"SELECT shared_models_set.bridge \
                   FROM shared_models_set \
                   WHERE shared_models_set.cruise_id={self.pk};"
@@ -402,21 +374,126 @@ class ProjetMollusque:
         # this is a bit silly since there can be crew changes, but it's how the ProjetMollusque table is designed
         # thus to satisfy this, use the generic "Capitain Leim" bridge name.
         # It's a good idea to set it as the default value for set.bridge in Andes.
-        self._assert_all_equal(result)
-        result = res.fetchall()
+        # self._assert_all_equal(result)
 
         # if result[0][2] == "Leim":
         #     # seq_pecher for "capitain Leim"
         #     to_return = 151
-        to_return = 151
+        self.logger.warn("Ce champ est un champ SEQ, une valeur invalide serat utilisé")
+        to_return = -1
         return to_return
 
-    # DUREE_TRAIT_VISEE DOUBLE,
-    # DUREE_TRAIT_VISEE_P DOUBLE,
-    # VIT_TOUAGE_VISEE DOUBLE,
-    # VIT_TOUAGE_VISEE_P DOUBLE,
-    # DIST_CHALUTE_VISEE DOUBLE,
-    # DIST_CHALUTE_VISEE_P DOUBLE,
+    @log_results
+    def get_duree_trait_visee(self) -> float:
+        """
+        DUREE_TRAIT_VISEE DOUBLE,
+
+        descript: targeted set duration
+        units: minutes
+
+        """
+
+        query = f"SELECT shared_models_cruise.targeted_trawl_duration \
+                  FROM shared_models_cruise \
+                  WHERE shared_models_cruise.id={self.pk};"
+        res = self.cur.execute(query)
+
+        result = res.fetchall()
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        to_return = float(to_return)
+        return to_return
+
+
+    @log_results
+    def get_duree_trait_visee_p(self) -> float:
+        """
+        DUREE_TRAIT_VISEE_P DOUBLE,
+
+        description: precision on DUREE_TRAIT_VISEE
+        units: minutes
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(0.1)
+        to_return = float(to_return)
+        return to_return
+
+
+    @log_results
+    def get_vit_touage_visee(self) -> float:
+        """
+        VIT_TOUAGE_VISEE DOUBLE,
+
+        description: target trawl speed
+        units: knots
+
+        """
+
+        query = f"SELECT shared_models_cruise.targeted_trawl_speed \
+                  FROM shared_models_cruise \
+                  WHERE shared_models_cruise.id={self.pk};"
+        res = self.cur.execute(query)
+
+        result = res.fetchall()
+        self._assert_one(result)
+        to_return = result[0][0]
+        to_return = float(to_return)
+        return to_return
+
+
+    @log_results
+    def get_vit_touage_visee_p(self) -> float:
+        """
+        VIT_TOUAGE_VISEE_P DOUBLE
+        
+        description: precision on VIT_TOUAGE_VISEE
+        units: knots
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(0.1)
+        to_return = float(to_return)    
+        return to_return
+
+
+    @log_results
+    def get_dist_chalute_visee(self) -> float:
+        """
+        DIST_CHALUTE_VISEE DOUBLE
+
+        description: trawl distance 
+        units: meters
+        
+        Andes does not save this in the DB, as it depends on the value for speed and time.
+        """
+
+        speed_kph = self.convert_knots_to_kph(self.get_vit_touage_visee())
+        time_h = self.get_duree_trait_visee()/60.
+        dist_m = speed_kph*time_h*1000
+
+        # round to given precision
+        precision = self.get_dist_chalute_visee_p()
+        # TO-DO only implemented for one precision value
+        # add implementation as needed.
+        if (precision == 1.0):
+            dist_m = round(dist_m, 0)
+        else:
+            raise NotImplementedError("Please implement rounding rule")
+        to_return = float(dist_m)
+        return to_return
+
+    @log_results
+    def get_dist_chalute_visee_p(self) -> float:
+        """
+        DIST_CHALUTE_VISEE_P DOUBLE,
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(1.0)
+        to_return = float(to_return) 
+        return to_return
+
     # RAPPORT_FUNE_VISEE DOUBLE,
     # RAPPORT_FUNE_VISEE_P DOUBLE,
     # NOM_EQUIPE_NAVIRE VARCHAR(250),
@@ -441,5 +518,12 @@ if __name__ == "__main__":
     proj.get_date_fin_project()
     proj.get_no_notif_iml()
     proj.get_chef_mission()
-    # proj.get_seq_pecheur()
+    proj.get_seq_pecheur()
+    proj.get_duree_trait_visee()
+    proj.get_duree_trait_visee_p()
+    proj.get_vit_touage_visee()
+    proj.get_vit_touage_visee_p()
+    proj.get_dist_chalute_visee()
+    proj.get_dist_chalute_visee_p()
+
     # proj.validate()
