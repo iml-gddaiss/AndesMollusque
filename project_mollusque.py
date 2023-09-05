@@ -1,50 +1,23 @@
 import logging
 import sqlite3
 import datetime
-from time import strftime
-import pandas as pd
 
-from oracle_helper import OracleHelper
-from peche_sentinelle import PecheSentinelle
-
-def log_results(f):
-    def wrapper(*args, **kwargs):
-        res = f(*args, **kwargs)
-        args[0].logger.info("%s -> %s", f.__name__, res)
-        return res
-    return wrapper
-
-def validate_string_len(max_len=0):
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            res = f(*args, **kwargs)
-            if max_len and len(res) <= max_len:
-                args[0].logger.info("string variable is within the allowed length of VARCHAR(%s) ",  max_len)
-            else:
-                args[0].logger.error("string variable is NOT within the allowed length of VARCHAR(%s) ",  max_len)
-                raise ValueError
-            return res
-        return wrapper
-    return decorator
-
+from peche_sentinelle import TablePecheSentinelle
+from decorators import log_results, validate_string
 
 logging.basicConfig(level=logging.INFO)
 
-
-class ProjetMollusque(PecheSentinelle):
+class ProjetMollusque(TablePecheSentinelle):
     # CREATE TABLE PROJET_MOLLUSQUE (
 
     def __init__(self, con):
-        self.logger = logging.getLogger(__name__)
-
+        super().__init__()
         self.con = con
         self.cur = self.con.cursor()
         self.pk = None
         self.espece = None
+        self.data = {}
 
-        self.reference_data = OracleHelper(
-            access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
-        )
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
@@ -128,6 +101,30 @@ class ProjetMollusque(PecheSentinelle):
         self.no_notification = no_notif
         self.init_mission_pk(no_notif)
 
+    def populate_data(self):
+        self.data['COD_SOURCE_INFO']=self.get_cod_source_info()
+        self.data['NO_RELEVE'] = self.no_releve
+        self.data['COD_NBPC'] = self.get_cod_nbpc()
+        self.data['ANNEE'] = self.get_annee()
+        self.data['COD_SERIE_HIST'] = self.get_cod_serie_hist()
+        self.data['COD_TYP_STRATIF'] = self.get_cod_type_stratif()
+        self.data['DATE_DEB_PROJET'] = self.get_date_deb_project()
+        self.data['DATE_FIN_PROJET'] = self.get_date_fin_project()
+        self.data['NO_NOTIF_IML'] = self.get_no_notif_iml()
+        self.data['CHEF_MISSION'] = self.get_chef_mission()
+        self.data['SEQ_PECHEUR'] = self.get_seq_pecheur()
+        self.data['DUREE_TRAIT_VISEE'] = self.get_duree_trait_visee()
+        self.data['DUREE_TRAIT_VISEE_P'] = self.get_duree_trait_visee_p()
+        self.data['VIT_TOUAGE_VISEE'] = self.get_vit_touage_visee()
+        self.data['VIT_TOUAGE_VISEE_P'] = self.get_vit_touage_visee_p()
+        self.data['DIST_CHALUTE_VISEE'] = self.get_dist_chalute_visee()
+        self.data['DIST_CHALUTE_VISEE_P'] = self.get_dist_chalute_visee_p()
+        self.data['NOM_EQUIPE_NAVIRE'] = self.get_nom_equip_navire()
+        self.data['NOM_SCIENCE_NAVIRE'] = self.get_nom_science_navire()
+        self.data['REM_PROJ_MOLL'] = self.get_rem_projet_moll()
+        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+
+
     @log_results
     def get_cod_source_info(self) -> int:
         """
@@ -183,7 +180,7 @@ class ProjetMollusque(PecheSentinelle):
         # this has to be supplied as input using self.init_input
         return int(self.no_releve)
 
-    @validate_string_len(max_len=6)
+    @validate_string(max_len=6)
     @log_results
     def get_cod_nbpc(self) -> str:
         """
@@ -338,7 +335,7 @@ class ProjetMollusque(PecheSentinelle):
         to_return = datetime.datetime.strftime(dt, self.reference_data.datetime_strfmt)
         return to_return
 
-    @validate_string_len(max_len=12)
+    @validate_string(max_len=12)
     @log_results
     def get_no_notif_iml(self) -> str:
         """
@@ -353,7 +350,7 @@ class ProjetMollusque(PecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @validate_string_len(max_len=50)
+    @validate_string(max_len=50)
     @log_results
     def get_chef_mission(self) -> str:
         """
@@ -530,24 +527,62 @@ class ProjetMollusque(PecheSentinelle):
         return to_return
 
 
-    @validate_string_len(max_len=250)
+    @validate_string(max_len=250)
     @log_results
-    def get_non_equip_navire(self) -> str:
+    def get_nom_equip_navire(self) -> str:
         """
         NOM_EQUIPE_NAVIRE VARCHAR(250)
 
         """
-        res = self.cur.execute(
-            f"SELECT mission_number FROM shared_models_cruise where id = {self.pk}"
-        )
+        raise NotImplementedError
+
+    @validate_string(max_len=250)
+    @log_results
+    def get_nom_science_navire(self) -> str:
+        """
+        NOM_SCIENCE_NAVIRE VARCHAR(250)
+
+        """
+        query = f"SELECT shared_models_cruise.samplers \
+                  FROM shared_models_cruise \
+                  WHERE shared_models_cruise.id={self.pk};"
+        res = self.cur.execute(query)
+
         result = res.fetchall()
         self._assert_one(result)
         to_return = result[0][0]
+
+        to_return = str(to_return)
         return to_return
 
-    # NOM_SCIENCE_NAVIRE VARCHAR(250),
-    # REM_PROJET_MOLL VARCHAR(255),
-    # NO_CHARGEMENT INTEGER,
+
+    @validate_string(max_len=255)
+    @log_results
+    def get_rem_projet_moll(self) -> str:
+        """
+        REM_PROJET_MOLL VARCHAR(255)
+
+        Remarques
+        """
+        query = f"SELECT shared_models_cruise.notes \
+                  FROM shared_models_cruise \
+                  WHERE shared_models_cruise.id={self.pk};"
+        res = self.cur.execute(query)
+
+        result = res.fetchall()
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        to_return = str(to_return)
+        return to_return
+
+    @log_results
+    def get_no_chargement(self) -> int:
+        """
+        NO_CHARGEMENT INTEGER
+        """
+
+        raise NotImplementedError
 
 
 if __name__ == "__main__":
@@ -573,5 +608,8 @@ if __name__ == "__main__":
     proj.get_vit_touage_visee_p()
     proj.get_dist_chalute_visee()
     proj.get_dist_chalute_visee_p()
-
-    # proj.validate()
+    # proj.get_nom_equip_navire()
+    proj.get_nom_science_navire()
+    proj.get_rem_projet_moll()
+    # proj.get_no_chargement()
+    proj.validate()

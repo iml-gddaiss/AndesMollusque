@@ -1,9 +1,14 @@
 import logging
 
-class PecheSentinelle:
-    
+from oracle_helper import OracleHelper
+
+
+class TablePecheSentinelle:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self.reference_data = OracleHelper(
+            access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
+        )
 
     def _assert_one(self, result):
         if len(result) == 0:
@@ -33,22 +38,23 @@ class PecheSentinelle:
         return result
 
     def _seq_result(self, result=-1):
-        self.logger.warning("Returning a purposfully invalid SEQ-type result: %s", result)
+        self.logger.warning(
+            "Returning a purposfully invalid SEQ-type result: %s", result
+        )
         return result
 
+    def convert_nm_2_km(self, val: float) -> float:
+        """convert nautical miles to kilometers
 
-    def convert_nm_2_km(self, val:float) -> float:
-        """ convert nautical miles to kilometers
-
-        :param val: value (in nautical miles) to convert 
+        :param val: value (in nautical miles) to convert
         :type val: float
         :return: converted value (in kilometers)
         :rtype: float
         """
-        return val*1.852
-     
-    def convert_knots_to_kph(self, val:float) -> float:
-        """ convert knots to kilometers per hour
+        return val * 1.852
+
+    def convert_knots_to_kph(self, val: float) -> float:
+        """convert knots to kilometers per hour
 
         :param val: value (in knots) to convert
         :type val: float
@@ -57,3 +63,8 @@ class PecheSentinelle:
         """
         return self.convert_nm_2_km(val)
 
+    def validate(self):
+        """
+        Need to override by child class
+        """
+        raise NotImplementedError
