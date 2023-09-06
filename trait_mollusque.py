@@ -1,11 +1,10 @@
 import logging
 import sqlite3
 import datetime
-from typing import Any
 
 from project_mollusque import ProjetMollusque
 from peche_sentinelle import TablePecheSentinelle
-from decorators import log_results, validate_string
+from decorators import log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,46 +16,78 @@ class TraitMollusque(TablePecheSentinelle):
         self.proj:ProjetMollusque = proj
         self.con = con
         self.cur = self.con.cursor()
-        self.pk = None
-        self.espece = None
+        self.proj_pk = proj.pk
         self.data = {}
 
+        self.list_set_pk = []
+        self.set_pk_idx:int|None = None
+        self.set_pk:int|None = None
+
+        self._init_set_list()
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
+    def _init_set_list(self):
+        """ init a list of sets (just pKeys) from Andes
+        """
+        query = f"SELECT shared_models_set.id \
+            FROM shared_models_set \
+            WHERE shared_models_set.cruise_id={self.proj_pk} \
+            ORDER BY shared_models_set.id ASC;"
+        res = self.cur.execute(query)
+
+        result = res.fetchall()
+        self._assert_not_empty(result)
+
+        self.list_set_pk = result
+        self.set_pk_idx = 0
+        self.set_pk = self.list_set_pk[self.set_pk_idx][0]
+
     def get_cod_source_info(self) ->int:
         """
-        COD_SOURCE_INFO INT
+        COD_SOURCE_INFO INTEGER
         """
         return self.proj.get_cod_source_info()
 
     def get_no_releve(self) ->int:
         """
-        NO_RELEVE
+        NO_RELEVE INTEGER
         """
         return self.proj.get_no_releve()
 
     def get_code_nbpc(self)->str:
         """
-         COD_NBPC
+         COD_NBPC VARCHAR(6)
         """
         return self.proj.get_cod_nbpc()
 
+    @log_results
     def get_ident_no_trait(self) ->int:
         """
-        IDENT_NO_TRAIT
+        IDENT_NO_TRAIT INTEGER INT
         """
-        query = f"SELECT shared_models_cruise.notes \
-            FROM shared_models_cruise \
-            WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
+        if self.set_pk:
+            return self.set_pk
+        else:
+            raise ValueError
 
-        result = res.fetchall()
-        self._assert_one(result)
-        to_return = result[0][0]
 
-        to_return = int(to_return)
-        return to_return
+    @validate_int()
+    @log_results
+    def get_cod_zone_gest_moll(self) -> int:
+        """
+        COD_ZONE_GEST_MOLL INTEGER
+        """
+        zone = self.proj.zone
+
+        key = self.reference_data.get_ref_key(
+            table="ZONE_GEST_MOLL",
+            pkey_col="COD_ZONE_GEST_MOLL",
+            col="ZONE_GEST_MOLL",
+            val=zone,
+        )
+        return key
+        
 
 
 if __name__ == "__main__":
@@ -71,11 +102,11 @@ if __name__ == "__main__":
     trait.get_cod_source_info()
     trait.get_no_releve()
     trait.get_code_nbpc()
-    trait.get_
+    trait.get_ident_no_trait()
+    trait.get_cod_zone_gest_moll()
 
     # trait.validate()
 
-    # COD_ZONE_GEST_MOLL
     # COD_SECTEUR_RELEVE
     # COD_STRATE
     # NO_STATION

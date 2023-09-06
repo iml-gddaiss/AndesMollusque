@@ -3,9 +3,10 @@ import sqlite3
 import datetime
 
 from peche_sentinelle import TablePecheSentinelle
-from decorators import log_results, validate_string
+from decorators import log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
+
 
 class ProjetMollusque(TablePecheSentinelle):
     # CREATE TABLE PROJET_MOLLUSQUE (
@@ -20,7 +21,6 @@ class ProjetMollusque(TablePecheSentinelle):
 
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
-
 
     def validate(self):
         # use zones are compatible with code_source_info
@@ -102,29 +102,29 @@ class ProjetMollusque(TablePecheSentinelle):
         self.init_mission_pk(no_notif)
 
     def populate_data(self):
-        self.data['COD_SOURCE_INFO']=self.get_cod_source_info()
-        self.data['NO_RELEVE'] = self.no_releve
-        self.data['COD_NBPC'] = self.get_cod_nbpc()
-        self.data['ANNEE'] = self.get_annee()
-        self.data['COD_SERIE_HIST'] = self.get_cod_serie_hist()
-        self.data['COD_TYP_STRATIF'] = self.get_cod_type_stratif()
-        self.data['DATE_DEB_PROJET'] = self.get_date_deb_project()
-        self.data['DATE_FIN_PROJET'] = self.get_date_fin_project()
-        self.data['NO_NOTIF_IML'] = self.get_no_notif_iml()
-        self.data['CHEF_MISSION'] = self.get_chef_mission()
-        self.data['SEQ_PECHEUR'] = self.get_seq_pecheur()
-        self.data['DUREE_TRAIT_VISEE'] = self.get_duree_trait_visee()
-        self.data['DUREE_TRAIT_VISEE_P'] = self.get_duree_trait_visee_p()
-        self.data['VIT_TOUAGE_VISEE'] = self.get_vit_touage_visee()
-        self.data['VIT_TOUAGE_VISEE_P'] = self.get_vit_touage_visee_p()
-        self.data['DIST_CHALUTE_VISEE'] = self.get_dist_chalute_visee()
-        self.data['DIST_CHALUTE_VISEE_P'] = self.get_dist_chalute_visee_p()
-        self.data['NOM_EQUIPE_NAVIRE'] = self.get_nom_equip_navire()
-        self.data['NOM_SCIENCE_NAVIRE'] = self.get_nom_science_navire()
-        self.data['REM_PROJ_MOLL'] = self.get_rem_projet_moll()
-        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+        self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
+        self.data["NO_RELEVE"] = self.no_releve
+        self.data["COD_NBPC"] = self.get_cod_nbpc()
+        self.data["ANNEE"] = self.get_annee()
+        self.data["COD_SERIE_HIST"] = self.get_cod_serie_hist()
+        self.data["COD_TYP_STRATIF"] = self.get_cod_type_stratif()
+        self.data["DATE_DEB_PROJET"] = self.get_date_deb_project()
+        self.data["DATE_FIN_PROJET"] = self.get_date_fin_project()
+        self.data["NO_NOTIF_IML"] = self.get_no_notif_iml()
+        self.data["CHEF_MISSION"] = self.get_chef_mission()
+        self.data["SEQ_PECHEUR"] = self.get_seq_pecheur()
+        self.data["DUREE_TRAIT_VISEE"] = self.get_duree_trait_visee()
+        self.data["DUREE_TRAIT_VISEE_P"] = self.get_duree_trait_visee_p()
+        self.data["VIT_TOUAGE_VISEE"] = self.get_vit_touage_visee()
+        self.data["VIT_TOUAGE_VISEE_P"] = self.get_vit_touage_visee_p()
+        self.data["DIST_CHALUTE_VISEE"] = self.get_dist_chalute_visee()
+        self.data["DIST_CHALUTE_VISEE_P"] = self.get_dist_chalute_visee_p()
+        self.data["NOM_EQUIPE_NAVIRE"] = self.get_nom_equip_navire()
+        self.data["NOM_SCIENCE_NAVIRE"] = self.get_nom_science_navire()
+        self.data["REM_PROJ_MOLL"] = self.get_rem_projet_moll()
+        self.data["NO_CHARGEMENT"] = self.get_no_chargement()
 
-
+    @validate_int()
     @log_results
     def get_cod_source_info(self) -> int:
         """
@@ -161,8 +161,6 @@ class ProjetMollusque(TablePecheSentinelle):
         # else:
         #     raise ValueError("Source Info, Le champ de la mission Andes'Région échantillonnée' n'est pas reconnu: %s", area_of_operation)
 
-        # typecast val
-        to_return = int(to_return)
         if self.reference_data.validate_exists(
             table="Source_Info", col="COD_SOURCE_INFO", val=to_return
         ):
@@ -170,6 +168,7 @@ class ProjetMollusque(TablePecheSentinelle):
         else:
             raise ValueError
 
+    @validate_int()
     @log_results
     def get_no_releve(self) -> int:
         """
@@ -213,6 +212,7 @@ class ProjetMollusque(TablePecheSentinelle):
         else:
             raise ValueError
 
+    @validate_int(min_val=1970, max_val=2100)
     @log_results
     def get_annee(self) -> int:
         """
@@ -230,6 +230,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = int(to_return)
         return to_return
 
+    @validate_int()
     @log_results
     def get_cod_serie_hist(self) -> int:
         """
@@ -269,6 +270,7 @@ class ProjetMollusque(TablePecheSentinelle):
         else:
             raise ValueError
 
+    @validate_int()
     @log_results
     def get_cod_type_stratif(self) -> int:
         """
@@ -282,18 +284,17 @@ class ProjetMollusque(TablePecheSentinelle):
 
         res = self.cur.execute(
             f"SELECT \
-                                    shared_models_stratificationtype.code, \
-                                    shared_models_stratificationtype.description_fra \
-                                FROM shared_models_cruise \
-                                LEFT JOIN shared_models_stratificationtype ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id \
-                                WHERE shared_models_cruise.id={self.pk};"
+            shared_models_stratificationtype.code, \
+            shared_models_stratificationtype.description_fra \
+            FROM shared_models_cruise \
+            LEFT JOIN shared_models_stratificationtype ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id \
+            WHERE shared_models_cruise.id={self.pk};"
         )
         result = res.fetchall()
         self._assert_one(result)
 
         self.logger.info("%s est %s", result[0][0], result[0][1])
         to_return = result[0][0]
-        to_return = int(to_return)
         if self.reference_data.validate_exists(
             table="Type_Stratification", col="COD_TYP_STRATIF", val=to_return
         ):
@@ -319,7 +320,7 @@ class ProjetMollusque(TablePecheSentinelle):
         return to_return
 
     @log_results
-    def get_date_fin_project(self):
+    def get_date_fin_project(self) ->str:
         """
         DATE_FIN_PROJET TIMESTAMP,
         """
@@ -365,12 +366,13 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @validate_int()
     @log_results
     def get_seq_pecheur(self) -> int:
         """
         SEQ_PECHEUR INTEGER,
 
-        Champ de type SEQ 
+        Champ de type SEQ
 
         """
         # query = f"SELECT shared_models_set.bridge \
@@ -413,7 +415,6 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = float(to_return)
         return to_return
 
-
     @log_results
     def get_duree_trait_visee_p(self) -> float:
         """
@@ -426,7 +427,6 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(0.1)
         to_return = float(to_return)
         return to_return
-
 
     @log_results
     def get_vit_touage_visee(self) -> float:
@@ -449,42 +449,40 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = float(to_return)
         return to_return
 
-
     @log_results
     def get_vit_touage_visee_p(self) -> float:
         """
         VIT_TOUAGE_VISEE_P DOUBLE
-        
+
         description: precision on VIT_TOUAGE_VISEE
         units: knots
 
         """
         # hard-code this
         to_return = self._hard_coded_result(0.1)
-        to_return = float(to_return)    
+        to_return = float(to_return)
         return to_return
-
 
     @log_results
     def get_dist_chalute_visee(self) -> float:
         """
         DIST_CHALUTE_VISEE DOUBLE
 
-        description: trawl distance 
+        description: trawl distance
         units: meters
-        
+
         Andes does not save this in the DB, as it depends on the value for speed and time.
         """
 
         speed_kph = self.convert_knots_to_kph(self.get_vit_touage_visee())
-        time_h = self.get_duree_trait_visee()/60.
-        dist_m = speed_kph*time_h*1000
+        time_h = self.get_duree_trait_visee() / 60.0
+        dist_m = speed_kph * time_h * 1000
 
         # round to given precision
         precision = self.get_dist_chalute_visee_p()
         # TO-DO only implemented for one precision value
         # add implementation as needed.
-        if (precision == 1.0):
+        if precision == 1.0:
             dist_m = round(dist_m, 0)
         else:
             raise NotImplementedError("Please implement rounding rule")
@@ -499,9 +497,8 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(1.0)
-        to_return = float(to_return) 
+        to_return = float(to_return)
         return to_return
-
 
     @log_results
     def get_rapport_fune_visee(self) -> float:
@@ -511,9 +508,8 @@ class ProjetMollusque(TablePecheSentinelle):
 
         # hard-code this
         to_return = self._hard_coded_result(2.0)
-        to_return = float(to_return) 
+        to_return = float(to_return)
         return to_return
-
 
     @log_results
     def get_rapport_fune_visee_p(self) -> float:
@@ -523,9 +519,8 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(0.1)
-        to_return = float(to_return) 
+        to_return = float(to_return)
         return to_return
-
 
     @validate_string(max_len=250)
     @log_results
@@ -555,7 +550,6 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = str(to_return)
         return to_return
 
-
     @validate_string(max_len=255)
     @log_results
     def get_rem_projet_moll(self) -> str:
@@ -576,6 +570,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = str(to_return)
         return to_return
 
+    @validate_int()
     @log_results
     def get_no_chargement(self) -> int:
         """

@@ -20,6 +20,10 @@ class TablePecheSentinelle:
         elif not len(result) == 1:
             raise ValueError("Expected only one result.")
 
+    def _assert_not_empty(self, result):
+        if len(result) == 0:
+            raise ValueError("recieved no result.")
+
     def _assert_all_equal(self, result):
         print("checking")
         if len(result) == 0:
