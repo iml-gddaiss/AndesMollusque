@@ -2,7 +2,7 @@
 
 ## distance de trait visée par la mission
 
-[<img src="shared_models.cruise.targeted_vessel_speed.png" width="100px">](static/shared_models.cruise.targeted_vessel_speed.png)
+[<img src="shared_models.cruise.targeted_vessel_speed.png">](static/shared_models.cruise.targeted_vessel_speed.png)
 
 Dans l'ancien outil de saisie, il faut saisir des métadonnées de mission tel que i) la vitesse visée ($v$), ii) la durée visée ($t$) et ii) la distance visée ($d$) comme trois variables indépendantes. Étant donnée la relation $v=d t$, il ne peut q'avoir deux variables indépendents.
 
@@ -16,7 +16,7 @@ N.B. Ces distances sont utilisé comme métadonnées de mission. Il est possible
 
 ## Déscription de mission
 
-[<img src="shared_models_cruise.description." width="100px">](static/shared_models_cruise.description..png)
+[<img src="shared_models_cruise.description.png">](static/shared_models_cruise.description.png)
 
 Doit corréspondre à une entrée de la table `PROJET_MOLLUSQUE` ayant une valeur éxistante pour la colonne `DESC_SOURCE_INFO_F`
 
@@ -27,7 +27,7 @@ Pour les mission pétoncle, un de ces choix:
 
 ## secteur du relevé
 
-[<img src="shared_models_cruise.area_of_operation.png" width="100px">](static/shared_models_cruise.area_of_operation.png)
+[<img src="shared_models_cruise.area_of_operation.png">](static/shared_models_cruise.area_of_operation.png)
 
 Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur éxistante pour la colonne `DESC_SECTEUR_RELEVE_F`
 
@@ -35,7 +35,7 @@ Pour les mission pétoncle, un de ces choix:
  - `Îles de la Madeleine`
  - `Côte-Nord`
 
-## Résumeé de contraintes
+## Résumeé de contraintes où les valeurs doivent correspondre
 Évaluation de stocks IML - Pétoncle I de M
 |Andes   |PSentinelle   |valeur   |
 |---|---|---|
