@@ -55,10 +55,14 @@ Un approche plus robuste est de faire le lien en utilisant la valeur `SECTEUR_RE
 Par contre, elle est toute de même extrait de la premier lettre (apres un nettoyage d'accents et mont en majuscules) du champ Andes `Région échantilonnée`.
 Donc dans les faits, seul le premier charatere compte est utilisé.
 
+
+## Région échantilonnée -> Secteur du relevé
+
+
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
 Évaluation de stocks IML - Pétoncle I de M
-|Andes   |PSentinelle   |valeur   |
-|---|---|---|
-|`shared_models_cruise.description`  |`PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F`   |`Évaluation de stocks IML - Pétoncle I de M` ou `Évaluation de stocks IML - Pétoncle Minganie`  |
-|`shared_models_cruise.area_of_operation`  | `TRAIT_MOLLUSQUE.DESC_SECTEUR_RELEVE_F`  |`Îles de la Madeleine` ou `Côte-Nord`   |
-|   |   |   |
+|Andes   | PSentinelle   | exemple   | notes |
+|--------|---------------|----------|-------|
+|`shared_models_cruise.description`  |`PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F`   |`Évaluation de stocks IML - Pétoncle I de M` | texte verbatim|
+|`shared_models_cruise.area_of_operation`  | `TRAIT_MOLLUSQUE.SECTEUR` | `Côte-Nord` | Permiere lettre seulement (devient `C`)
+| `shared_models_new_station.name`  | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |

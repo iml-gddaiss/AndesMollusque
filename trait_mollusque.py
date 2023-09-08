@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class TraitMollusque(TablePecheSentinelle):
-    def __init__(self, andes_db:AndesHelper, proj: ProjetMollusque):
+    def __init__(self, andes_db: AndesHelper, proj: ProjetMollusque):
         super().__init__()
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
@@ -30,14 +30,14 @@ class TraitMollusque(TablePecheSentinelle):
     def _init_set_list(self):
         """init a list of sets (just pKeys) from Andes"""
         query = f"SELECT shared_models_set.id \
-            FROM shared_models_set \
-            WHERE shared_models_set.cruise_id={self.proj_pk} \
-            ORDER BY shared_models_set.id ASC;"
+                FROM shared_models_set \
+                WHERE shared_models_set.cruise_id={self.proj_pk} \
+                ORDER BY shared_models_set.id ASC;"
 
         result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
 
-        self.list_set_pk = result
+        self.list_set_pk:list = result
         self.set_pk_idx = 0
         self.set_pk = self.list_set_pk[self.set_pk_idx][0]
 
@@ -91,26 +91,27 @@ class TraitMollusque(TablePecheSentinelle):
     def get_cod_secteur_releve(self) -> int:
         """
         COD_SECTEUR_RELEVE INTEGER
-        
+
         Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
-        
+
         CONTRAINTE
 
-        La valeur du champ shared_models_cruise.area_of_operation (FR: Région échantillonée) 
+        La valeur du champ shared_models_cruise.area_of_operation (FR: Région échantillonée)
         doit absolument correspondres avec la description présente dans la table SECTEUR_RELEVE_MOLL:
 
         1 -> Côte-Nord
         4 -> Îles de la Madeleine
         """
 
-        query = f"SELECT shared_models_cruise.area_of_operation FROM shared_models_cruise where shared_models_cruise.id={self.proj.pk};"
+        query = f"SELECT shared_models_cruise.area_of_operation \
+                FROM shared_models_cruise \
+                WHERE shared_models_cruise.id={self.proj.pk};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        secteur = result[0][0]
+        secteur:str = result[0][0]
 
         # first char is stripped of accents in uppercase
         secteur = unidecode(secteur[0].upper())
-
 
         key = self.reference_data.get_ref_key(
             table="SECTEUR_RELEVE_MOLL",
@@ -120,6 +121,27 @@ class TraitMollusque(TablePecheSentinelle):
         )
         return key
 
+    @validate_int()
+    @log_results
+    def get_no_station(self) -> int:
+        """
+        NO_STATION
+        Numéro de la station en fonction du protocole d'échantillonnage
+
+        ANDES: shared_models_newstation.name
+        """
+        query = f"SELECT shared_models_newstation.name \
+                FROM shared_models_set \
+                LEFT JOIN shared_models_newstation \
+                    ON shared_models_set.new_station_id = shared_models_newstation.id \
+                WHERE shared_models_set.id={self.set_pk};"
+
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        # extract all non-numerical chacters
+        to_return = ''.join(c for c in to_return if c.isnumeric())
+        return to_return
 
 
 if __name__ == "__main__":
@@ -138,10 +160,10 @@ if __name__ == "__main__":
     trait.get_ident_no_trait()
     trait.get_cod_zone_gest_moll()
     trait.get_cod_secteur_releve()
+    trait.get_no_station()
 
     # trait.validate()
 
-    # NO_STATION
     # COD_TYP_TRAIT
     # COD_RESULT_OPER
     # DATE_DEB_TRAIT
