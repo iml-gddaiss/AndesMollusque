@@ -1,6 +1,8 @@
 import logging
 import sqlite3
 import datetime
+from andes_helper import AndesHelper
+from oracle_helper import OracleHelper
 
 from peche_sentinelle import TablePecheSentinelle
 from decorators import log_results, validate_string, validate_int
@@ -11,10 +13,11 @@ logging.basicConfig(level=logging.INFO)
 class ProjetMollusque(TablePecheSentinelle):
     # CREATE TABLE PROJET_MOLLUSQUE (
 
-    def __init__(self, con):
+    def __init__(self, andes_db):
         super().__init__()
-        self.con = con
-        self.cur = self.con.cursor()
+
+        self.andes_db = andes_db
+
         self.pk = None
         self.espece = None
         self.data = {}
@@ -64,8 +67,8 @@ class ProjetMollusque(TablePecheSentinelle):
         mission_number (str)
         """
         query = f"SELECT id  FROM shared_models_cruise where mission_number='{mission_number}'"
-        res = self.cur.execute(query)
-        result = res.fetchall()
+
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         self.pk = result[0][0]
@@ -140,8 +143,7 @@ class ProjetMollusque(TablePecheSentinelle):
         19 -> Évaluation de stocks IML - Pétoncle I de M
         """
         query = f"SELECT description FROM shared_models_cruise where id = {self.pk}"
-        res = self.cur.execute(query)
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         description = result[0][0]
@@ -198,8 +200,7 @@ class ProjetMollusque(TablePecheSentinelle):
                                  LEFT JOIN shared_models_vessel \
                                  ON shared_models_cruise.vessel_id=shared_models_vessel.id \
                                  WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         to_return = result[0][0]
@@ -224,8 +225,7 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
         query = f"SELECT season FROM shared_models_cruise where shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         to_return = result[0][0]
@@ -286,15 +286,13 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # res = self.cur.execute(f"SELECT shared_models_stratificationtype.code FROM shared_models_stratificationtype ;")
 
-        res = self.cur.execute(
-            f"SELECT \
-            shared_models_stratificationtype.code, \
-            shared_models_stratificationtype.description_fra \
-            FROM shared_models_cruise \
-            LEFT JOIN shared_models_stratificationtype ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id \
-            WHERE shared_models_cruise.id={self.pk};"
-        )
-        result = res.fetchall()
+        query = f"SELECT \
+                    shared_models_stratificationtype.code, \
+                    shared_models_stratificationtype.description_fra \
+                FROM shared_models_cruise \
+                LEFT JOIN shared_models_stratificationtype ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id \
+                WHERE shared_models_cruise.id={self.pk};"
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         self.logger.info("%s est %s", result[0][0], result[0][1])
@@ -312,31 +310,27 @@ class ProjetMollusque(TablePecheSentinelle):
         DATE_DEB_PROJET TIMESTAMP,
         """
 
-        res = self.cur.execute(
-            f"SELECT start_date FROM shared_models_cruise where id = {self.pk}"
-        )
-        result = res.fetchall()
+        query= f"SELECT start_date FROM shared_models_cruise where id = {self.pk}"
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         to_return = result[0][0]
-        dt = datetime.datetime.strptime(to_return, self.andes_datetime_format)
+        dt = datetime.datetime.strptime(str(to_return), self.andes_datetime_format)
         to_return = datetime.datetime.strftime(dt, self.reference_data.datetime_strfmt)
         return to_return
 
     @log_results
-    def get_date_fin_project(self) ->str:
+    def get_date_fin_project(self) -> str:
         """
         DATE_FIN_PROJET TIMESTAMP,
         """
 
-        res = self.cur.execute(
-            f"SELECT end_date FROM shared_models_cruise where id = {self.pk}"
-        )
-        result = res.fetchall()
+        query = f"SELECT end_date FROM shared_models_cruise where id = {self.pk}"
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         to_return = result[0][0]
-        dt = datetime.datetime.strptime(to_return, self.andes_datetime_format)
+        dt = datetime.datetime.strptime(str(to_return), self.andes_datetime_format)
         to_return = datetime.datetime.strftime(dt, self.reference_data.datetime_strfmt)
         return to_return
 
@@ -347,10 +341,8 @@ class ProjetMollusque(TablePecheSentinelle):
         NO_NOTIF_IML VARCHAR(12),
 
         """
-        res = self.cur.execute(
-            f"SELECT mission_number FROM shared_models_cruise where id = {self.pk}"
-        )
-        result = res.fetchall()
+        query = f"SELECT mission_number FROM shared_models_cruise where id = {self.pk}"
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         return to_return
@@ -362,10 +354,8 @@ class ProjetMollusque(TablePecheSentinelle):
         CHEF_MISSION VARCHAR(50),
 
         """
-        res = self.cur.execute(
-            f"SELECT chief_scientist FROM shared_models_cruise where id = {self.pk}"
-        )
-        result = res.fetchall()
+        query = f"SELECT chief_scientist FROM shared_models_cruise where id = {self.pk}"
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         return to_return
@@ -410,9 +400,7 @@ class ProjetMollusque(TablePecheSentinelle):
         query = f"SELECT shared_models_cruise.targeted_trawl_duration \
                   FROM shared_models_cruise \
                   WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
 
@@ -445,9 +433,7 @@ class ProjetMollusque(TablePecheSentinelle):
         query = f"SELECT shared_models_cruise.targeted_trawl_speed \
                   FROM shared_models_cruise \
                   WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         to_return = float(to_return)
@@ -545,9 +531,7 @@ class ProjetMollusque(TablePecheSentinelle):
         query = f"SELECT shared_models_cruise.samplers \
                   FROM shared_models_cruise \
                   WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
 
@@ -565,9 +549,7 @@ class ProjetMollusque(TablePecheSentinelle):
         query = f"SELECT shared_models_cruise.notes \
                   FROM shared_models_cruise \
                   WHERE shared_models_cruise.id={self.pk};"
-        res = self.cur.execute(query)
-
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
 
@@ -585,8 +567,9 @@ class ProjetMollusque(TablePecheSentinelle):
 
 
 if __name__ == "__main__":
+    andes_db = AndesHelper()
 
-    proj = ProjetMollusque(con)
+    proj = ProjetMollusque(andes_db)
     proj.init_mission_pk("IML-2023-011")
     proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
 
@@ -599,7 +582,7 @@ if __name__ == "__main__":
     proj.get_date_fin_project()
     proj.get_no_notif_iml()
     proj.get_chef_mission()
-    proj.get_seq_pecheur()
+    # proj.get_seq_pecheur()
     proj.get_duree_trait_visee()
     proj.get_duree_trait_visee_p()
     proj.get_vit_touage_visee()
@@ -610,4 +593,4 @@ if __name__ == "__main__":
     proj.get_nom_science_navire()
     proj.get_rem_projet_moll()
     # proj.get_no_chargement()
-    proj.validate()
+    # proj.validate()

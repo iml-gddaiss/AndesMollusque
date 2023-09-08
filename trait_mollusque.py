@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 import datetime
+from unidecode import unidecode
 
 from project_mollusque import ProjetMollusque
 from peche_sentinelle import TablePecheSentinelle
@@ -11,11 +12,10 @@ logging.basicConfig(level=logging.INFO)
 
 
 class TraitMollusque(TablePecheSentinelle):
-    def __init__(self, con, proj: ProjetMollusque):
+    def __init__(self, andes_db:AndesHelper, proj: ProjetMollusque):
         super().__init__()
+        self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
-        self.con = con
-        self.cur = self.con.cursor()
         self.proj_pk = proj.pk
         self.data = {}
 
@@ -33,9 +33,8 @@ class TraitMollusque(TablePecheSentinelle):
             FROM shared_models_set \
             WHERE shared_models_set.cruise_id={self.proj_pk} \
             ORDER BY shared_models_set.id ASC;"
-        res = self.cur.execute(query)
 
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
 
         self.list_set_pk = result
@@ -105,31 +104,33 @@ class TraitMollusque(TablePecheSentinelle):
         """
 
         query = f"SELECT shared_models_cruise.area_of_operation FROM shared_models_cruise where shared_models_cruise.id={self.proj.pk};"
-        res = self.cur.execute(query)
-        result = res.fetchall()
+        result = self.andes_db.execute_query(query)
         self._assert_one(result)
         secteur = result[0][0]
+
+        # first char is stripped of accents in uppercase
+        secteur = unidecode(secteur[0].upper())
+
 
         key = self.reference_data.get_ref_key(
             table="SECTEUR_RELEVE_MOLL",
             pkey_col="COD_SECTEUR_RELEVE",
-            col="DESC_SECTEUR_RELEVE_F",
+            col="SECTEUR_RELEVE",
             val=secteur,
         )
         return key
+
 
 
 if __name__ == "__main__":
     # andes_db = AndesHelper("db.sqlite3")
     andes_db = AndesHelper()
 
-    con = andes_db.con
-
-    proj = ProjetMollusque(con)
+    proj = ProjetMollusque(andes_db)
     proj.init_mission_pk("IML-2023-011")
     proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
 
-    trait = TraitMollusque(con, proj)
+    trait = TraitMollusque(andes_db, proj)
 
     trait.get_cod_source_info()
     trait.get_no_releve()
@@ -140,8 +141,6 @@ if __name__ == "__main__":
 
     # trait.validate()
 
-    #
-    # COD_STRATE
     # NO_STATION
     # COD_TYP_TRAIT
     # COD_RESULT_OPER

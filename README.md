@@ -8,3 +8,8 @@ python -m pip install - requirements.txt
 ```
 
 copy the `.env_sample` to `.env` and fill in required values.
+
+# DFO Windows oracleDb instant client
+From centre logiciel, install `Oracle 12 (Instant Client) x64` which should create the client libraries under "C:\Oracle\12.2.0_Instant_x64".
+This path is needed by the python client to use thick-mode `oracledb.init_oracle_client(lib_dir=r"C:\Oracle\12.2.0_Instant_x64")`
+

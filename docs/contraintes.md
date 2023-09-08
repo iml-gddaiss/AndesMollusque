@@ -32,8 +32,28 @@ Pour les mission pétoncle, un de ces choix:
 Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur éxistante pour la colonne `DESC_SECTEUR_RELEVE_F`
 
 Pour les mission pétoncle, un de ces choix:
- - `Îles de la Madeleine`
+ - `Îles-de-la-Madeleine`
  - `Côte-Nord`
+
+### ATTENTION!
+La table de reference de MS Access `SECTEUR_RELEVE_MOLL` et  la table de reference Peche_Sentinelle `SECTEUR_RELEVE_MOLL` n'ont pas les memes valeurs de descriptions
+(`Îles de la Madeleine` versus `Îles-de-la-Madeleine`), en cas de doubte Peche_Sentinelle devrait etre considéreé comme étant la bonne.
+
+| COD_SECTEUR_RELEVE | DESC_SECTEUR_RELEVE_F | SECTEUR_RELEVE |
+|--------------------|-----------------------|----------------|
+| 1                  | Côte-Nord             | C              |
+| 2                  | Estuaire              | E              |
+| 3                  | Gaspésie              | G              |
+| 4                  | Îles-de-la-Madeleine  | I              |
+| 5                  | Québec                | Q              |
+| 6                  | Basse Côte-Nord       | B              |
+| 7                  | Haute Côte-Nord       | H              |
+| 8                  | Moyenne Côte-Nord     | M              |
+| 9                  | Anticosti             | A              |
+
+Un approche plus robuste est de faire le lien en utilisant la valeur `SECTEUR_RELEVE`, ce qui est fait par le code.
+Par contre, elle est toute de même extrait de la premier lettre (apres un nettoyage d'accents et mont en majuscules) du champ Andes `Région échantilonnée`.
+Donc dans les faits, seul le premier charatere compte est utilisé.
 
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
 Évaluation de stocks IML - Pétoncle I de M
