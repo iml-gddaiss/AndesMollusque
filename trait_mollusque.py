@@ -10,26 +10,24 @@ logging.basicConfig(level=logging.INFO)
 
 
 class TraitMollusque(TablePecheSentinelle):
-
-    def __init__(self, con, proj:ProjetMollusque):
+    def __init__(self, con, proj: ProjetMollusque):
         super().__init__()
-        self.proj:ProjetMollusque = proj
+        self.proj: ProjetMollusque = proj
         self.con = con
         self.cur = self.con.cursor()
         self.proj_pk = proj.pk
         self.data = {}
 
         self.list_set_pk = []
-        self.set_pk_idx:int|None = None
-        self.set_pk:int|None = None
+        self.set_pk_idx: int | None = None
+        self.set_pk: int | None = None
 
         self._init_set_list()
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_set_list(self):
-        """ init a list of sets (just pKeys) from Andes
-        """
+        """init a list of sets (just pKeys) from Andes"""
         query = f"SELECT shared_models_set.id \
             FROM shared_models_set \
             WHERE shared_models_set.cruise_id={self.proj_pk} \
@@ -43,26 +41,26 @@ class TraitMollusque(TablePecheSentinelle):
         self.set_pk_idx = 0
         self.set_pk = self.list_set_pk[self.set_pk_idx][0]
 
-    def get_cod_source_info(self) ->int:
+    def get_cod_source_info(self) -> int:
         """
         COD_SOURCE_INFO INTEGER
         """
         return self.proj.get_cod_source_info()
 
-    def get_no_releve(self) ->int:
+    def get_no_releve(self) -> int:
         """
         NO_RELEVE INTEGER
         """
         return self.proj.get_no_releve()
 
-    def get_code_nbpc(self)->str:
+    def get_code_nbpc(self) -> str:
         """
-         COD_NBPC VARCHAR(6)
+        COD_NBPC VARCHAR(6)
         """
         return self.proj.get_cod_nbpc()
 
     @log_results
-    def get_ident_no_trait(self) ->int:
+    def get_ident_no_trait(self) -> int:
         """
         IDENT_NO_TRAIT INTEGER INT
         """
@@ -71,12 +69,12 @@ class TraitMollusque(TablePecheSentinelle):
         else:
             raise ValueError
 
-
     @validate_int()
     @log_results
     def get_cod_zone_gest_moll(self) -> int:
         """
-        COD_ZONE_GEST_MOLL INTEGER
+        Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL
+        COD_ZONE_GEST_MOLL INTEGER(32)
         """
         zone = self.proj.zone
 
@@ -87,7 +85,33 @@ class TraitMollusque(TablePecheSentinelle):
             val=zone,
         )
         return key
-        
+
+    @validate_int()
+    @log_results
+    def get_cod_secteur_releve(self) -> int:
+        """
+        Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
+
+        COD_SECTEUR_RELEVE INTEGER
+        1 -> Côte-Nord
+        4 -> Îles de la Madeleine
+        """
+
+        query = f"SELECT shared_models_cruise.area_of_operation FROM shared_models_cruise where shared_models_cruise.id={self.proj.pk};"
+        res = self.cur.execute(query)
+        result = res.fetchall()
+        self._assert_one(result)
+        secteur = result[0][0]
+        # HACK hard-code for dev, remove to test
+        secteur = "Îles de la Madeleine"
+
+        key = self.reference_data.get_ref_key(
+            table="SECTEUR_RELEVE_MOLL",
+            pkey_col="COD_SECTEUR_RELEVE",
+            col="DESC_SECTEUR_RELEVE_F",
+            val=secteur,
+        )
+        return key
 
 
 if __name__ == "__main__":
@@ -104,10 +128,11 @@ if __name__ == "__main__":
     trait.get_code_nbpc()
     trait.get_ident_no_trait()
     trait.get_cod_zone_gest_moll()
+    trait.get_cod_secteur_releve()
 
     # trait.validate()
 
-    # COD_SECTEUR_RELEVE
+    #
     # COD_STRATE
     # NO_STATION
     # COD_TYP_TRAIT
