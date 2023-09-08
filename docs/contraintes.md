@@ -1,6 +1,6 @@
-# Pétoncle
+# Équipe Pétoncle
 
-## distance de trait visée par la mission
+## Distance de trait visée par la mission
 
 [<img src="shared_models.cruise.targeted_vessel_speed.png">](static/shared_models.cruise.targeted_vessel_speed.png)
 
@@ -25,7 +25,7 @@ Pour les mission pétoncle, un de ces choix:
  - `Évaluation de stocks IML - Pétoncle Minganie`
 
 
-## secteur du relevé
+## Région échantilonnée -> Secteur du relevé
 
 [<img src="shared_models_cruise.area_of_operation.png">](static/shared_models_cruise.area_of_operation.png)
 
@@ -35,7 +35,7 @@ Pour les mission pétoncle, un de ces choix:
  - `Îles de la Madeleine`
  - `Côte-Nord`
 
-## Résumeé de contraintes où les valeurs doivent correspondre
+## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
 Évaluation de stocks IML - Pétoncle I de M
 |Andes   |PSentinelle   |valeur   |
 |---|---|---|
