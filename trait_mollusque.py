@@ -4,6 +4,7 @@ import datetime
 
 from project_mollusque import ProjetMollusque
 from peche_sentinelle import TablePecheSentinelle
+from andes_helper import AndesHelper
 from decorators import log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
@@ -97,7 +98,7 @@ class TraitMollusque(TablePecheSentinelle):
         CONTRAINTE
 
         La valeur du champ shared_models_cruise.area_of_operation (FR: Région échantillonée) 
-        doit absolument correspondres avec la descritption présente dans la table SECTEUR_RELEVE_MOLL:
+        doit absolument correspondres avec la description présente dans la table SECTEUR_RELEVE_MOLL:
 
         1 -> Côte-Nord
         4 -> Îles de la Madeleine
@@ -119,7 +120,10 @@ class TraitMollusque(TablePecheSentinelle):
 
 
 if __name__ == "__main__":
-    con = sqlite3.connect("db.sqlite3")
+    # andes_db = AndesHelper("db.sqlite3")
+    andes_db = AndesHelper()
+
+    con = andes_db.con
 
     proj = ProjetMollusque(con)
     proj.init_mission_pk("IML-2023-011")

@@ -24,7 +24,7 @@ class AndesHelper:
             self.con = mysql.connector.connect(host=os.getenv('ANDES_HOST', 'la-tele-du-samedi.ent.dfo-mpo.ca'),
                                                port=int(os.getenv('ANDES_PORT', 4321)),
                                                database=os.getenv('ANDES_DB_NAME', 'BD de BikiniBottom'),
-                                               user=os.getenv('ANDES_DB_USERNAME','andes_user'),
+                                               user=os.getenv('ANDES_DB_USERNAME','Bob Eponge'),
                                                password=os.getenv('ANDES_DB_USERPASS', 'SQUIDWARD'))
             print("Successfully connected to MySQL Database")
 
@@ -113,3 +113,6 @@ class AndesHelper:
 
             return False
 
+if __name__ == "__main__":
+    andes_db = AndesHelper()
+    

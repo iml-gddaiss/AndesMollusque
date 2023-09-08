@@ -73,13 +73,16 @@ class OracleHelper:
         # sanitize string (double escape single quotes)
         val = self._format_sql_string(val)
         query = f"SELECT {pkey_col} FROM {table} WHERE {col}='{val}'"
-
+        print(query)
         self.cur.execute(query)
         res = self.cur.fetchall()
         if len(res) == 1:
             return res[0][0]
+        elif len(res) == 0:
+            self.logger.error("No match found")
+            raise ValueError
         else:
-            print("returned more than one match")
+            self.logger.error("More than one match found")
             raise ValueError
 
     def validate_exists(
@@ -116,7 +119,6 @@ class OracleHelper:
             return True
         else:
             self.logger.error("Andes DB indicates a %s=%s but is not present in Oracle table: %s", col, val, table)
-
             return False
 
 
