@@ -90,9 +90,15 @@ class TraitMollusque(TablePecheSentinelle):
     @log_results
     def get_cod_secteur_releve(self) -> int:
         """
-        Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
-
         COD_SECTEUR_RELEVE INTEGER
+        
+        Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
+        
+        CONTRAINTE
+
+        La valeur du champ shared_models_cruise.area_of_operation (FR: Région échantillonée) 
+        doit absolument correspondres avec la descritption présente dans la table SECTEUR_RELEVE_MOLL:
+
         1 -> Côte-Nord
         4 -> Îles de la Madeleine
         """
@@ -102,8 +108,6 @@ class TraitMollusque(TablePecheSentinelle):
         result = res.fetchall()
         self._assert_one(result)
         secteur = result[0][0]
-        # HACK hard-code for dev, remove to test
-        secteur = "Îles de la Madeleine"
 
         key = self.reference_data.get_ref_key(
             table="SECTEUR_RELEVE_MOLL",

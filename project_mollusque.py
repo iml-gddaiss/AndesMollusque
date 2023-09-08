@@ -131,7 +131,11 @@ class ProjetMollusque(TablePecheSentinelle):
         COD_SOURCE_INFO INTEGER NOT NULL,
 
         CONSTRAINT SYS_PK_13524 PRIMARY KEY (COD_SOURCE_INFO,NO_RELEVE,COD_NBPC)
-        These must match the andes cruise description
+
+        CONTRAINTE
+        La valeur du champ shared_models_cruise.description (FR: Description)
+        doit absolument correspondres avec la description présente dans la table SOURCE_INFO:
+
         18 -> Évaluation de stocks IML - Pétoncle Minganie
         19 -> Évaluation de stocks IML - Pétoncle I de M
         """
@@ -581,7 +585,6 @@ class ProjetMollusque(TablePecheSentinelle):
 
 
 if __name__ == "__main__":
-    con = sqlite3.connect("db.sqlite3")
 
     proj = ProjetMollusque(con)
     proj.init_mission_pk("IML-2023-011")
