@@ -6,9 +6,11 @@ from oracle_helper import OracleHelper
 class TablePecheSentinelle:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.reference_data = OracleHelper(
-            access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
-        )
+        # self.reference_data = OracleHelper(
+        #     access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
+        # )
+        self.reference_data = OracleHelper()
+
 
     def _assert_one(self, result):
         if len(result) == 0:

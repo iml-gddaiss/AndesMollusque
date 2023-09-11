@@ -28,7 +28,8 @@ class TraitMollusque(TablePecheSentinelle):
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_set_list(self):
-        """init a list of sets (just pKeys) from Andes"""
+        """ init a list of sets (just pKeys) from Andes"""
+
         query = f"SELECT shared_models_set.id \
                 FROM shared_models_set \
                 WHERE shared_models_set.cruise_id={self.proj_pk} \
@@ -41,40 +42,78 @@ class TraitMollusque(TablePecheSentinelle):
         self.set_pk_idx = 0
         self.set_pk = self.list_set_pk[self.set_pk_idx][0]
 
+    def _get_current_set_pk(self) -> int:
+        """
+        Return the Andes primary key of the current set 
+        """
+        if self.set_pk_idx is not None and self.list_set_pk:
+            return self.list_set_pk[self.set_pk_idx][0]
+        else:
+            raise ValueError
+
+    def _increment_current_set(self):
+        """ focus on next set
+        """
+        if self.set_pk_idx and self.list_set_pk:
+            if self.set_pk_idx <len(self.list_set_pk)-1 :
+                self.set_pk_idx += 1
+            else:
+                raise StopIteration
+
+    @validate_int()
     def get_cod_source_info(self) -> int:
+        """ COD_SOURCE_INFO INTEGER / NUMBER(5,0)
+        Identification de la source d'information tel que défini dans la table SOURCE_INFO
+
+        Extrait du projet.
         """
-        COD_SOURCE_INFO INTEGER
-        """
+
         return self.proj.get_cod_source_info()
 
+    @validate_int()
     def get_no_releve(self) -> int:
-        """
-        NO_RELEVE INTEGER
+        """ NO_RELEVE INTEGER / NUMBER(5,0)
+        Numéro séquentiel du relevé
+
+        Extrait du projet.
         """
         return self.proj.get_no_releve()
 
     def get_code_nbpc(self) -> str:
-        """
-        COD_NBPC VARCHAR(6)
+        """  COD_NBPC VARCHAR(6) / VARCHAR2(6)
+        Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
+
+        Extrait du projet.
         """
         return self.proj.get_cod_nbpc()
 
+    @validate_int()
     @log_results
     def get_ident_no_trait(self) -> int:
+        """ IDENT_NO_TRAIT INTEGER / NUMBER(5,0)
+        Numéro séquentiel d'identification du trait
+
+        Andes
+        -----
+        shared_models.set.set_number
         """
-        IDENT_NO_TRAIT INTEGER INT
-        """
-        if self.set_pk:
-            return self.set_pk
-        else:
-            raise ValueError
+        set_pk = self._get_current_set_pk()
+        query = f"SELECT shared_models_set.set_number \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={set_pk};"
+
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
 
     @validate_int()
     @log_results
     def get_cod_zone_gest_moll(self) -> int:
-        """
+        """ COD_ZONE_GEST_MOLL  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL
-        COD_ZONE_GEST_MOLL INTEGER(32)
+        
+        Pas présente dans Andes, doit être initialisé via le parametre `zone` du projet.
         """
         zone = self.proj.zone
 
@@ -89,18 +128,20 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int()
     @log_results
     def get_cod_secteur_releve(self) -> int:
-        """
-        COD_SECTEUR_RELEVE INTEGER
-
+        """ COD_SECTEUR_RELEVE INTEGER/NUMBER(5,0) 
         Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
 
         CONTRAINTE
 
-        La valeur du champ shared_models_cruise.area_of_operation (FR: Région échantillonée)
-        doit absolument correspondres avec la description présente dans la table SECTEUR_RELEVE_MOLL:
+        La premiere lettre du champ shared_models_cruise.area_of_operation (FR: Région échantillonée)
+        doit absolument correspondres avec la valeur SECTEUR_RELEVE de la table SECTEUR_RELEVE_MOLL:
 
-        1 -> Côte-Nord
-        4 -> Îles de la Madeleine
+        1 -> C (Côte-Nord)
+        4 -> I (Îles de la Madeleine)
+
+        Bien q'il suffit de mettre seulement la premiere lettre, il est conseiller de mettre
+        le nom en entier pour la lisibilité.
+    
         """
 
         query = f"SELECT shared_models_cruise.area_of_operation \
@@ -110,7 +151,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         secteur:str = result[0][0]
 
-        # first char is stripped of accents in uppercase
+        # first char stripped of accents and cast to uppercase
         secteur = unidecode(secteur[0].upper())
 
         key = self.reference_data.get_ref_key(
@@ -124,17 +165,19 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int()
     @log_results
     def get_no_station(self) -> int:
-        """
-        NO_STATION
+        """ NO_STATION  INTEGER/NUMBER(5,0)
         Numéro de la station en fonction du protocole d'échantillonnage
-
+        
         ANDES: shared_models_newstation.name
+        The station name is stripped of non-numerical characters
+        to generate no_station(i.e., NR524 -> 524)
         """
+        set_pk = self._get_current_set_pk()
         query = f"SELECT shared_models_newstation.name \
                 FROM shared_models_set \
                 LEFT JOIN shared_models_newstation \
                     ON shared_models_set.new_station_id = shared_models_newstation.id \
-                WHERE shared_models_set.id={self.set_pk};"
+                WHERE shared_models_set.id={set_pk};"
 
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
@@ -142,6 +185,54 @@ class TraitMollusque(TablePecheSentinelle):
         # extract all non-numerical chacters
         to_return = ''.join(c for c in to_return if c.isnumeric())
         return to_return
+    
+    @validate_int()
+    @log_results
+    def get_cod_type_trait(self) -> int:
+        """  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
+        Identification du type de trait tel que décrit dans la table TYPE_TRAIT
+
+        Dans un future proche, il serait bien de prendre le code directement d'Andes       
+        Andes
+        -----
+        shared_models.stratificationtype.code
+        via la mission 
+        shared_models.cruise.stratification_type_id
+
+        """
+        # this query does not work because of a mistmatch between reference tables
+        # query = f"SELECT shared_models_stratificationtype.code \
+        #         FROM shared_models_cruise \
+        #         LEFT JOIN shared_models_stratificationtype \
+        #             ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
+        #         WHERE shared_models_cruise.id={self.proj.pk};"
+
+        # manual hack
+        # we take the french description and match with Oracle\
+        # the match isn't even verbatim, we we need a manual map
+        andes_2_oracle_map = {
+            'Échantillonnage aléatoire': 'Aléatoire simple',
+            'Station fixe': 'Station fixe'
+        }
+
+        query = f"SELECT shared_models_stratificationtype.description_fra \
+                FROM shared_models_cruise \
+                LEFT JOIN shared_models_stratificationtype \
+                    ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
+                WHERE shared_models_cruise.id={self.proj.pk};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        desc = result[0][0]
+
+        key = self.reference_data.get_ref_key(
+            table="TYPE_TRAIT",
+            pkey_col="COD_TYP_TRAIT",
+            col="DESC_TYP_TRAIT_F",
+            val=andes_2_oracle_map[desc],
+        )
+        return key
+
+
 
 
 if __name__ == "__main__":
@@ -161,10 +252,9 @@ if __name__ == "__main__":
     trait.get_cod_zone_gest_moll()
     trait.get_cod_secteur_releve()
     trait.get_no_station()
-
+    trait.get_cod_type_trait()
     # trait.validate()
 
-    # COD_TYP_TRAIT
     # COD_RESULT_OPER
     # DATE_DEB_TRAIT
     # DATE_FIN_TRAIT

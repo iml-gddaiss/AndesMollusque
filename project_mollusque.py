@@ -11,7 +11,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 class ProjetMollusque(TablePecheSentinelle):
-    # CREATE TABLE PROJET_MOLLUSQUE (
 
     def __init__(self, andes_db):
         super().__init__()
@@ -140,15 +139,16 @@ class ProjetMollusque(TablePecheSentinelle):
         doit absolument correspondres avec la description présente dans la table SOURCE_INFO:
 
         18 -> Évaluation de stocks IML - Pétoncle Minganie
-        19 -> Évaluation de stocks IML - Pétoncle I de M
+        19 -> Évaluation de stocks IML - Pétoncle I de M (Access)
+        19 -> Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine (Oracle)
         """
         query = f"SELECT description FROM shared_models_cruise where id = {self.pk}"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
         description = result[0][0]
-        # HACK hard-code for dev, remove to test
-        description = "Évaluation de stocks IML - Pétoncle I de M"
+        # # HACK hard-code for dev, remove to test
+        # description = "Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine"
 
         key = self.reference_data.get_ref_key(
             table="Source_Info",

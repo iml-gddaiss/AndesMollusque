@@ -36,9 +36,17 @@ Pour les mission pétoncle, un de ces choix:
  - `Côte-Nord`
 
 ### ATTENTION!
-La table de reference de MS Access `SECTEUR_RELEVE_MOLL` et  la table de reference Peche_Sentinelle `SECTEUR_RELEVE_MOLL` n'ont pas les memes valeurs de descriptions
-(`Îles de la Madeleine` versus `Îles-de-la-Madeleine`), en cas de doubte Peche_Sentinelle devrait etre considéreé comme étant la bonne.
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
 
+#### SECTEUR_RELEVE_MOLL
+
+Table:  `SECTEUR_RELEVE_MOLL` 
+Colonne: `DESC_SECTEUR_RELEVE_F`
+
+IMLP: `Îles-de-la-Madeleine`
+ACCESS: `Îles de la Madeleine`
+
+IMLP:
 | COD_SECTEUR_RELEVE | DESC_SECTEUR_RELEVE_F | SECTEUR_RELEVE |
 |--------------------|-----------------------|----------------|
 | 1                  | Côte-Nord             | C              |
@@ -51,9 +59,31 @@ La table de reference de MS Access `SECTEUR_RELEVE_MOLL` et  la table de referen
 | 8                  | Moyenne Côte-Nord     | M              |
 | 9                  | Anticosti             | A              |
 
-Un approche plus robuste est de faire le lien en utilisant la valeur `SECTEUR_RELEVE`, ce qui est fait par le code.
-Par contre, elle est toute de même extrait de la premier lettre (apres un nettoyage d'accents et mont en majuscules) du champ Andes `Région échantilonnée`.
-Donc dans les faits, seul le premier charatere compte est utilisé.
+
+Le problème est évité en suivant un approche plus robuste en fesant le lien via la valeur dans la colonne `SECTEUR_RELEVE`.
+
+Cette valeur est extrait de la premier lettre (apres un nettoyage d'accents et mont en majuscules) du champ Andes `Région échantilonnée`.
+Nous pouvons donc choisir de saisie la région `Îles-de-la-Madeleine` ou `Îles de la Madeleine` sans problèmes car dans les deux cas, le charactère `I` sera utilisé pour `SECTEUR_RELEVE` afin d'obtenr le code `4` requis. Par contre, il faut s'assurer que tout nouvelles entrées soit compatible avec cette approche.
+
+#### SOURCE_INFO
+
+IMLP: `Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine`
+MSACCESS:` Évaluation de stocks IML - Pétoncle I de M`
+
+IMLP:
+
+| COD_SOURCE_INFO | COD_CLASSE_PROJET | DESC_SOURCE_INFO_F                                           | DESC_SOURCE_INFO_A                                          |
+|-----------------|-------------------|--------------------------------------------------------------|-------------------------------------------------------------|
+| 18              | 7                 | Évaluation de stocks IML - Pétoncle Minganie                 | MLI Stocks' assessment - Scallop Minganie                   |
+| 19              | 7                 | Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine     | MLI Stocks' assessment - Scallop Magdellan Islands          |
+| 22              | 7                 | Évaluation de stocks IML- Buccin Haute-Côte-Nord             | MLI Stocks' assessment - Whelk High North Shore             |
+| 23              | 9                 | Évaluation de stocks IML - Homard                            | MLI Stocks' assessment - Lobster                            |
+| 25              | 7                 | Évaluation de stocks IML - Buccin Îles-de-la-Madeleine       | MLI Stocks' assessment - Whelk Magdellan Islands            |
+| 26              | 7                 | Évaluation de stocks IML - Mactre de Stimpson                | MLI Stocks' assessment - Stimpson's Surf Clam               |
+| 28              | 7                 | Évaluation stock IML - Concombre de mer Gaspésie             | MLI Stocks' assessment - Sea Cucomber Gaspésie              |
+| 29              | 7                 | Évaluation stock IML - Concombre de mer Minganie             | MLI Stocks' assessment - Sea Cucomber Minganie              |
+| 30              | 1                 | Recherche écosystémique - Communautés benthiques             | Ecosystemic research - Benthic communites                   |
+| 32              | 7                 | Projets de recherche - Mollusques                            | Research projects - Mollusks                                |
 
 
 ## Région échantilonnée -> Secteur du relevé
@@ -65,4 +95,5 @@ Donc dans les faits, seul le premier charatere compte est utilisé.
 |--------|---------------|----------|-------|
 |`shared_models_cruise.description`  |`PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F`   |`Évaluation de stocks IML - Pétoncle I de M` | texte verbatim|
 |`shared_models_cruise.area_of_operation`  | `TRAIT_MOLLUSQUE.SECTEUR` | `Côte-Nord` | Permiere lettre seulement (devient `C`)
-| `shared_models_new_station.name`  | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |
+|`shared_models_new_station.name`  | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |
+|`shared_models_stratificationtype.description_fra`|`TYPE_TRAIT.DESC_TYP_TRAIT_F`| `Échantillonnage aléatoire` | map manuel, (devient `Aléatoire simple`)|

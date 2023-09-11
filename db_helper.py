@@ -53,7 +53,6 @@ class DBHelper:
         # sanitize string (double escape single quotes)
         val = self._format_sql_string(val)
         query = f"SELECT {pkey_col} FROM {table} WHERE {col}='{val}'"
-
         res = self.execute_query(query)
 
         if len(res) == 1:
