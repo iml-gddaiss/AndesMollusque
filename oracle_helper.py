@@ -44,7 +44,7 @@ class OracleHelper(DBHelper):
                 dsn=dsn,
 
             )
-            print("Successfully connected to Oracle Database")
+            print("Successfully connected to the Oracle Database")
         self.cur=self.con.cursor()
 
 

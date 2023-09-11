@@ -85,9 +85,13 @@ IMLP:
 | 30              | 1                 | Recherche écosystémique - Communautés benthiques             | Ecosystemic research - Benthic communites                   |
 | 32              | 7                 | Projets de recherche - Mollusques                            | Research projects - Mollusks                                |
 
+Il pourait etre ensisageable de faire comme avec `DESC_SERIE_HIST_F`
+```python
+DESC_SERIE_HIST_F = f"Indice d'abondance zone {self.zone} - {self.espece}"
 
-## Région échantilonnée -> Secteur du relevé
+DESC_SOURCE_INFO_F = f"Évaluation de stocks IML {self.zone} - {self.espece}"
 
+```
 
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
 Évaluation de stocks IML - Pétoncle I de M
