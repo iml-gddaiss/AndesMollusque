@@ -360,10 +360,10 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
 
+    @validate_int(not_null=False)
     @log_results
     def get_cod_type_heure(self) -> int | None:
         """ COD_TYP_HEURE INTEGER / NUMBER(5,0)
-
         Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
 
         Table: TYPE_HEURE:
@@ -373,13 +373,57 @@ class TraitMollusque(TablePecheSentinelle):
         |2	| GMT     | GMT             |
 
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
-        Additionaly, options 0 and 1 are ill-defined as it is just DST info, it still lacks timezone info.
+        This function always returns 2.
+
         """
         # hard-code this
         to_return = self._hard_coded_result(2)
         return (to_return)
- 
 
+    @validate_int(not_null=False)
+    @log_results
+    def get_cod_fuseau_horaire(self) -> int | None:
+        """ COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
+        Fuseau horaire utilisé pour déterminer l'heure de réalisation du trait tel que décrit dans la table FUSEAU_HORAIRE
+
+        |----|------------|-------------|
+        |0   |GMT         |GMT          |
+        |1   |Québec      |Quebec       |
+        |2   |Maritimes   |Atlantic     |
+        |3   |Terre-Neuve |Newfoundland |
+
+        Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
+        This function always returns 0.
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(0)
+        return (to_return)
+
+    @validate_int(not_null=False)
+    @log_results
+    def get_cod_method_pos(self) -> int | None:
+        """ COD_METHOD_POS INTEGER / NUMBER(5,0)
+        Identification de la méthode utilisée pour déterminer les coordonnées de l''emplacement d''échantillonnage tel que défini dans la table METHODE_POSITION
+
+        |----|--------------------|-----------------|
+        |0   |Inconnue            |Unknown          |
+        |1   |Estimation          |Estimated        |
+        |2   |Radar               |Radar            |
+        |3   |Decca               |Decca            |
+        |4   |Loran               |Loran            |
+        |5   |Satellite (GPS)     |Satellite (GPS)  |
+        |6   |Satellite (DGPS)    |Satellite (DGPS) |
+
+        Andes uses the vessel GPS, which may or may not have DGPS data.
+        This is specified via the GPS Quality indicator (6th field) of the $GPGGA NMEA message.
+
+        Historical records indicated having used DGPS, which is what is returnd here.
+        This function always returns 6.
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(6)
+        return (to_return)
 
 
 if __name__ == "__main__":
@@ -405,11 +449,11 @@ if __name__ == "__main__":
     trait.get_date_fin_trait()
     trait.get_hre_deb_trait()
     trait.get_hre_fin_trait()
+    trait.get_cod_type_heure()
+    trait.get_cod_fuseau_horaire()
     
     # trait.validate()
 
-    # COD_FUSEAU_HORAIRE
-    # COD_METHOD_POS
     # LAT_DEB_TRAIT
     # LAT_FIN_TRAIT
     # LONG_DEB_TRAIT
