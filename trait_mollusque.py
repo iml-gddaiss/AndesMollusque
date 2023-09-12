@@ -274,6 +274,111 @@ class TraitMollusque(TablePecheSentinelle):
         return(to_return)
 
 
+    @validate_string(max_len=10, not_null=False)
+    @log_results
+    def get_date_deb_trait(self) -> str | None:
+        """ DATE_DEB_TRAIT DATE 
+        Date du début du trait, format AAAA-MM-JJ
+
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.start_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt='%Y-%m-%d'
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+
+    @validate_string(max_len=10, not_null=False)
+    @log_results
+    def get_date_fin_trait(self) -> str | None:
+        """ DATE_FIN_TRAIT DATE 
+        Date de la fin du trait, format AAAA-MM-JJ
+
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.end_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt='%Y-%m-%d'
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+
+
+    @validate_string(max_len=10, not_null=False)
+    @log_results
+    def get_hre_deb_trait(self) -> str | None:
+        """ hre_DEB_TRAIT DATE 
+        Heure du début du trait, format HH:MI:SS
+
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.start_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt='%H:%M:%S'
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+
+
+    @validate_string(max_len=10, not_null=False)
+    @log_results
+    def get_hre_fin_trait(self) -> str | None:
+        """ hre_FIN_TRAIT DATE 
+        Heure de la fin du trait, format HH:MI:SS
+
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.end_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt='%H:%M:%S'
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+
+    @log_results
+    def get_cod_type_heure(self) -> int | None:
+        """ COD_TYP_HEURE INTEGER / NUMBER(5,0)
+
+        Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
+
+        Table: TYPE_HEURE:
+        |---|---------|-----------------|
+        |0	| Normale | Standard        |
+        |1	| Avancée | Daylight saving |
+        |2	| GMT     | GMT             |
+
+        Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
+        Additionaly, options 0 and 1 are ill-defined as it is just DST info, it still lacks timezone info.
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(2)
+        return (to_return)
+ 
 
 
 
@@ -296,14 +401,13 @@ if __name__ == "__main__":
     trait.get_no_station()
     trait.get_cod_type_trait()
     trait.get_cod_result_oper()
+    trait.get_date_deb_trait()
+    trait.get_date_fin_trait()
+    trait.get_hre_deb_trait()
+    trait.get_hre_fin_trait()
     
     # trait.validate()
 
-    # DATE_DEB_TRAIT
-    # DATE_FIN_TRAIT
-    # HRE_DEB_TRAIT
-    # HRE_FIN_TRAIT
-    # COD_TYP_HEURE
     # COD_FUSEAU_HORAIRE
     # COD_METHOD_POS
     # LAT_DEB_TRAIT
