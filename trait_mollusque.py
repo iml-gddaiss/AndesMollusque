@@ -107,9 +107,9 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @validate_int()
+    @validate_int(not_null=False)
     @log_results
-    def get_cod_zone_gest_moll(self) -> int:
+    def get_cod_zone_gest_moll(self) -> int| None:
         """ COD_ZONE_GEST_MOLL  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL
         
@@ -125,9 +125,9 @@ class TraitMollusque(TablePecheSentinelle):
         )
         return key
 
-    @validate_int()
+    @validate_int(not_null=False)
     @log_results
-    def get_cod_secteur_releve(self) -> int:
+    def get_cod_secteur_releve(self) -> int| None:
         """ COD_SECTEUR_RELEVE INTEGER/NUMBER(5,0) 
         Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
 
@@ -172,12 +172,11 @@ class TraitMollusque(TablePecheSentinelle):
         The station name is stripped of non-numerical characters
         to generate no_station(i.e., NR524 -> 524)
         """
-        set_pk = self._get_current_set_pk()
         query = f"SELECT shared_models_newstation.name \
                 FROM shared_models_set \
                 LEFT JOIN shared_models_newstation \
                     ON shared_models_set.new_station_id = shared_models_newstation.id \
-                WHERE shared_models_set.id={set_pk};"
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
 
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
@@ -192,12 +191,14 @@ class TraitMollusque(TablePecheSentinelle):
         """  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification du type de trait tel que décrit dans la table TYPE_TRAIT
 
-        Dans un future proche, il serait bien de prendre le code directement d'Andes       
         Andes
         -----
         shared_models.stratificationtype.code
         via la mission 
         shared_models.cruise.stratification_type_id
+
+        This one would be good to have linked with a regional code lookup
+        https://github.com/dfo-gulf-science/andes/issues/988
 
         """
         # this query does not work because of a mistmatch between reference tables
@@ -232,6 +233,47 @@ class TraitMollusque(TablePecheSentinelle):
         )
         return key
 
+    @validate_int()
+    @log_results
+    def get_cod_result_oper(self) -> int:
+        """  COD_RESULT_OPER INTEGER / NUMBER(5,0)
+        Résultat de l'activité de pêche tel que défini dans la table COD_RESULT_OPER
+
+        Andes
+        -----
+        shared_models_setresult.code
+
+        The Andes codes seem to match the first six from the Oracle database,
+        except for hte mistmatch between code 5 and 6.
+        see issue https://github.com/dfo-gulf-science/andes/issues/1237
+        
+        This one would be good to have linked with a regional code lookup
+        https://github.com/dfo-gulf-science/andes/issues/988
+
+        """
+        query = f"SELECT shared_models_setresult.code \
+                FROM shared_models_set \
+                LEFT JOIN shared_models_setresult \
+                    ON shared_models_set.set_result_id = shared_models_setresult.id \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # this ia a weird one...
+        # see issue #1237
+        andes_2_oracle_map = {
+            '1': 1,
+            '2': 2,
+            '3': 3,
+            '4': 4,
+            '5': 6,
+            '6': 5,
+        }
+        to_return = andes_2_oracle_map[str(to_return)]
+        return(to_return)
+
+
 
 
 
@@ -253,9 +295,10 @@ if __name__ == "__main__":
     trait.get_cod_secteur_releve()
     trait.get_no_station()
     trait.get_cod_type_trait()
+    trait.get_cod_result_oper()
+    
     # trait.validate()
 
-    # COD_RESULT_OPER
     # DATE_DEB_TRAIT
     # DATE_FIN_TRAIT
     # HRE_DEB_TRAIT
