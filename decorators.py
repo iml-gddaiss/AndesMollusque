@@ -7,18 +7,25 @@ def log_results(f):
     return wrapper
 
 
-def validate_string(max_len=0):
+def validate_string(max_len:int=0, not_null:bool=True):
     def decorator(f):
         def wrapper(*args, **kwargs):
             res = f(*args, **kwargs)
+            if res is None and not_null:
+                args[0].logger.info("Value cannot be null")
+                raise ValueError
+            elif res is None:
+                args[0].logger.info("String variable is Null and allowed")
+                return res
+            
             if max_len and len(res) <= max_len:
                 args[0].logger.info(
-                    "string variable is within the allowed length of VARCHAR(%s) ",
+                    "String variable is within the allowed length of VARCHAR(%s) ",
                     max_len,
                 )
             else:
                 args[0].logger.error(
-                    "string variable is NOT within the allowed length of VARCHAR(%s) ",
+                    "String variable is NOT within the allowed length of VARCHAR(%s) ",
                     max_len,
                 )
                 raise ValueError
@@ -29,7 +36,7 @@ def validate_string(max_len=0):
     return decorator
 
 
-def validate_int(min_val: int = 0, max_val: int = 2147483647):
+def validate_int(min_val: int = 0, max_val: int = 2147483647, not_null:bool=True):
     """validates that the return value is an integer
 
     :param min_val: lower range bound (inclusive), defaults to 0
@@ -41,6 +48,13 @@ def validate_int(min_val: int = 0, max_val: int = 2147483647):
     def decorator(f):
         def wrapper(*args, **kwargs):
             res = f(*args, **kwargs)
+            if res is None and not_null:
+                args[0].logger.info("Value cannot be null")
+                raise ValueError
+            elif res is None:
+                args[0].logger.info("Value is Null and allowed")
+                return res
+
             res = int(res)
             if min_val <= res and res <= max_val:
                 args[0].logger.info(
