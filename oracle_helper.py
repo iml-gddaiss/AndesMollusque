@@ -47,7 +47,6 @@ class OracleHelper(DBHelper):
             print("Successfully connected to the Oracle Database")
         self.cur=self.con.cursor()
 
-
     def execute_query(self, query:str):
         if self.ms_access:
             res = self.cur.execute(query)
@@ -55,7 +54,56 @@ class OracleHelper(DBHelper):
         else:
             self.cur.execute(query)
             return self.cur.fetchall() 
+
+    def _to_oracle_coord(self, coord:float|None) -> float|None:
+        """ convert to the unique coordinate encoding scheme
+
+        The input coord (in degrees decimal) is encoded and returned as
         
+        {whole_degrees}{whole_minutes}.{decimal_minutes}
+
+        For example, the latitude of 47.155927
+        is decomposed into:
+        whole_degrees = 47
+        whole_minutes = 9
+        decimal_minues = 35562
+
+        and yields:
+        4709.35562
+
+        """
+        if coord:
+            degrees = int(coord)
+            min_dec = (coord - degrees)*60
+            to_return = degrees*100 + min_dec
+            return to_return
+        else:
+            return None
+
+    def _from_oracle_coord(self, coord:float|None) -> float|None:
+        """ convert from the unique coordinate encoding scheme
+
+        The input coord in the oracle encoding of
+        {whole_degrees}{whole_minutes}.{decimal_minutes}
+        is returnd as (standard) degree decimal value
+
+        For example, the value 4709.35562
+
+        is decomposed into:
+        whole_degrees = 47
+        whole_minutes = 9
+        decimal_minues = 35562
+
+        and returns a latitude of 47.155927
+
+        """
+        if coord:
+            degrees = int(coord/100)
+            min_dec = (coord - degrees*100)/60
+            to_return = degrees + min_dec
+            return to_return
+        else:
+            return None
 
 
 if __name__ == "__main__":
