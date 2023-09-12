@@ -1,5 +1,4 @@
 import logging
-import sqlite3
 import datetime
 from unidecode import unidecode
 
@@ -425,7 +424,87 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(6)
         return (to_return)
 
+    @log_results
+    def get_lat_deb_trait(self) -> float | None:
+        """ LAT_DEB_TRAIT DOUBLE / NUMBER
+        Position de latitude du début du trait, unité ddmm.%%%% N
 
+        This uses a unique encoding scheme for the coordinates.
+
+        """
+        query = f"SELECT shared_models_set.start_latitude \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        # convert to Oracle coord encoding
+        to_return = self.reference_data._to_oracle_coord(to_return)
+        return to_return
+
+
+    @log_results
+    def get_lat_fin_trait(self) -> float | None:
+        """ LAT_FIN_TRAIT DOUBLE / NUMBER
+        Position de latitude de la fin du trait, unité ddmm.%%%% N
+
+        This uses a unique encoding scheme for the coordinates.
+
+        """
+        query = f"SELECT shared_models_set.end_latitude \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        # convert to Oracle coord encoding
+        to_return = self.reference_data._to_oracle_coord(to_return)
+        return to_return
+
+    @log_results
+    def get_long_deb_trait(self) -> float | None:
+        """ LONG_DEB_TRAIT DOUBLE / NUMBER
+        Position de longitude du début du trait, unité ddmm.%%%% W
+        This uses a unique encoding scheme for the coordinates.
+
+        """
+        query = f"SELECT shared_models_set.start_longitude \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        # convert to Oracle coord encoding
+        to_return = self.reference_data._to_oracle_coord(to_return)
+        # strip negative from longitudes
+        to_return *= -1
+        return to_return
+
+    @log_results
+    def get_long_fin_trait(self) -> float | None:
+        """ LONG_fin_TRAIT DOUBLE / NUMBER
+        Position de longitude de la fin du trait, unité ddmm.%%%% W
+        This uses a unique encoding scheme for the coordinates.
+
+        """
+        query = f"SELECT shared_models_set.end_longitude \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        # convert to Oracle coord encoding
+        to_return = self.reference_data._to_oracle_coord(to_return)
+        # strip negative from longitudes
+        to_return *= -1
+        return to_return
+    
+    @log_results
+    def get_latlong_p(self) -> float | None:
+        """ LATLONG_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage pour les variables de positionnement en latitude et longitude
+
+        """
 if __name__ == "__main__":
     # andes_db = AndesHelper("db.sqlite3")
     andes_db = AndesHelper()
@@ -451,14 +530,13 @@ if __name__ == "__main__":
     trait.get_hre_fin_trait()
     trait.get_cod_type_heure()
     trait.get_cod_fuseau_horaire()
+    trait.get_lat_deb_trait()
+    trait.get_lat_fin_trait()
+    trait.get_long_deb_trait()
+    trait.get_long_fin_trait()
     
     # trait.validate()
 
-    # LAT_DEB_TRAIT
-    # LAT_FIN_TRAIT
-    # LONG_DEB_TRAIT
-    # LONG_FIN_TRAIT
-    # LATLONG_P
     # DISTANCE_POS
     # DISTANCE_POS_P
     # VIT_TOUAGE

@@ -1,6 +1,3 @@
-import os
-import pyodbc
-import oracledb
 
 import logging
 
