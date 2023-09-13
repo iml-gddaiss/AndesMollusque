@@ -5,7 +5,7 @@ from unidecode import unidecode
 from project_mollusque import ProjetMollusque
 from peche_sentinelle import TablePecheSentinelle
 from andes_helper import AndesHelper
-from decorators import log_results, validate_string, validate_int
+from decorators import deprecate, log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
 
@@ -271,6 +271,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = andes_2_oracle_map[str(to_return)]
         return to_return
 
+    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_deb_trait(self) -> str | None:
@@ -293,6 +294,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_fin_trait(self) -> str | None:
@@ -315,6 +317,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_deb_trait(self) -> str | None:
@@ -337,7 +340,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-
+    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_fin_trait(self) -> str | None:
@@ -734,8 +737,9 @@ class TraitMollusque(TablePecheSentinelle):
         """ NO_CHARGEMENT DOUBLE / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
+        Oracle Optimisation: this datatype should be INTEGER 
+
         Andes is unaware of this field, and will need to be populated manually
-        Looking at existing values, this could benefit from being migrated to an integer
         """
         # hard-code this? Not a seq-type, but similar
         self._seq_result()
@@ -747,8 +751,15 @@ class TraitMollusque(TablePecheSentinelle):
     def get_date_heure_deb_trait(self) -> str | None:
         """ DATE_HEURE_DEB_TRAIT
         Date et heure du début du trait, format AAAA-MM-JJ HH:MI:SS
-        
-        TODO: verify datetime format
+
+        Andes
+        -----
+        shared_models_set.end_date
+
+        Best practices dictate the use of UTC to store datetimes.
+        The convention is followed by andes, and thus all imported andes datetimes
+        will be in the UTC, as indicate in COD_FUSEAU_HORAIRE and COD_TYPE_HEURE
+                
         """
 
         query = f"SELECT shared_models_set.start_date \
@@ -773,7 +784,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         Best practices dictate the use of UTC to store datetimes.
         The convention is followed by andes, and thus all imported andes datetimes
-        will be in the UTC, as indicate with 
+        will be in the UTC, as indicate in COD_FUSEAU_HORAIRE and COD_TYPE_HEURE
 
         """
 
@@ -787,10 +798,48 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
 
+    @deprecate
+    @log_results
+    def get_salinite_fond(self) -> float | None:
+        """ SALINITE_FOND DOUBLE / NUMBER
+        Salinité de l'eau au fond, unité psu
 
-# SALINITE_FOND
-# SALINITE_FOND_P
-# COD_TYP_ECH_TRAIT
+        Oracle Optimisation: column not in MSACCESS, is deprecated?
+
+        Andes does not log salinity data.
+        This function always returns None
+        
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @deprecate
+    @log_results
+    def get_salinite_fond_p(self) -> float | None:
+        """ SALINITE_FOND_P DOUBLE / NUMBER
+        Précision d'affichage associée à '' Salinite_Fond''
+
+        Oracle Optimisation: column not in MSACCESS, is deprecated?
+
+        Andes does not log salinity data.
+        This function always returns None
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @deprecate
+    @log_results
+    def get_cod_type_ech_trait(self) -> float | None:
+        """  COD_TYP_ECH_TRAIT DOUBLE / NUMBER
+        Identification du type d'activité d'échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT
+        
+        Oracle Optimisation: this datatype should be INTEGER 
+        Oracle Optimisation: seems to be relational, but not setup that way
+        Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?
+        """
+
 
 if __name__ == "__main__":
     # andes_db = AndesHelper("db.sqlite3")
@@ -838,5 +887,7 @@ if __name__ == "__main__":
     trait.get_no_chargement()
     trait.get_date_heure_deb_trait()
     trait.get_date_heure_fin_trait()
+    trait.get_salinite_fond()
+    trait.get_salinite_fond_p()
 
     # trait.validate()

@@ -1,9 +1,22 @@
+
+def deprecate(successor=None):
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            if successor:
+                args[0].logger.warn("The function is deprecated, please use %s", successor)
+            else:
+                args[0].logger.warn("The function is tied to a column that should be deprecated.")
+            return f(*args, **kwargs)
+        return wrapper
+
+    return decorator
+
+
 def log_results(f):
     def wrapper(*args, **kwargs):
         res = f(*args, **kwargs)
         args[0].logger.info("%s -> %s", f.__name__, res)
         return res
-
     return wrapper
 
 
