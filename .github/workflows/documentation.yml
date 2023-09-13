@@ -11,7 +11,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install sphinx furo
-          pip install --upgrade myst-parse
+          pip install --upgrade myst-parser
       - name: Sphinx build
         run: |
           sphinx-build docs/source _build
