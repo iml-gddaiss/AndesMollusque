@@ -1,27 +1,38 @@
+from functools import wraps
+
 
 def deprecate(successor=None):
     def decorator(f):
+        @wraps(f)
         def wrapper(*args, **kwargs):
             if successor:
-                args[0].logger.warn("The function is deprecated, please use %s", successor)
+                args[0].logger.warn(
+                    "The function is deprecated, please use %s", successor
+                )
             else:
-                args[0].logger.warn("The function is tied to a column that should be deprecated.")
+                args[0].logger.warn(
+                    "The function is tied to a column that should be deprecated."
+                )
             return f(*args, **kwargs)
+
         return wrapper
 
     return decorator
 
 
 def log_results(f):
+    @wraps(f)
     def wrapper(*args, **kwargs):
         res = f(*args, **kwargs)
         args[0].logger.info("%s -> %s", f.__name__, res)
         return res
+
     return wrapper
 
 
-def validate_string(max_len:int=0, not_null:bool=True):
+def validate_string(max_len: int = 0, not_null: bool = True):
     def decorator(f):
+        @wraps(f)
         def wrapper(*args, **kwargs):
             res = f(*args, **kwargs)
             if res is None and not_null:
@@ -30,7 +41,7 @@ def validate_string(max_len:int=0, not_null:bool=True):
             elif res is None:
                 args[0].logger.info("String variable is Null and allowed")
                 return res
-            
+
             if max_len and len(res) <= max_len:
                 args[0].logger.info(
                     "String variable is within the allowed length of VARCHAR(%s) ",
@@ -49,7 +60,7 @@ def validate_string(max_len:int=0, not_null:bool=True):
     return decorator
 
 
-def validate_int(min_val: int = 0, max_val: int = 2147483647, not_null:bool=True):
+def validate_int(min_val: int = 0, max_val: int = 2147483647, not_null: bool = True):
     """validates that the return value is an integer
 
     :param min_val: lower range bound (inclusive), defaults to 0
@@ -58,7 +69,9 @@ def validate_int(min_val: int = 0, max_val: int = 2147483647, not_null:bool=True
     :type max_val: int, optional
     :raises ValueError: If the test fails
     """
+
     def decorator(f):
+        @wraps(f)
         def wrapper(*args, **kwargs):
             res = f(*args, **kwargs)
             if res is None and not_null:

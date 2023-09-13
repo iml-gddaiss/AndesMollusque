@@ -1,11 +1,9 @@
 import logging
-import sqlite3
 import datetime
-from andes_helper import AndesHelper
-from oracle_helper import OracleHelper
 
-from peche_sentinelle import TablePecheSentinelle
-from decorators import log_results, validate_string, validate_int
+from andes_migrate.andes_helper import AndesHelper
+from andes_migrate.peche_sentinelle import TablePecheSentinelle
+from andes_migrate.decorators import log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
 

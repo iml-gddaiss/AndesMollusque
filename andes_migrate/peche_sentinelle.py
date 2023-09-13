@@ -1,6 +1,6 @@
 import logging
 
-from oracle_helper import OracleHelper
+from andes_migrate.oracle_helper import OracleHelper
 
 
 class TablePecheSentinelle:
@@ -10,7 +10,6 @@ class TablePecheSentinelle:
         #     access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
         # )
         self.reference_data = OracleHelper()
-
 
     def _assert_one(self, result):
         if len(result) == 0:

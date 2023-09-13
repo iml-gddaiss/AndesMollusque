@@ -2,10 +2,15 @@ import logging
 import datetime
 from unidecode import unidecode
 
-from projet_mollusque import ProjetMollusque
-from peche_sentinelle import TablePecheSentinelle
-from andes_helper import AndesHelper
-from decorators import deprecate, log_results, validate_string, validate_int
+from andes_migrate.projet_mollusque import ProjetMollusque
+from andes_migrate.peche_sentinelle import TablePecheSentinelle
+from andes_migrate.andes_helper import AndesHelper
+from andes_migrate.decorators import (
+    deprecate,
+    log_results,
+    validate_string,
+    validate_int,
+)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -59,46 +64,45 @@ class TraitMollusque(TablePecheSentinelle):
                 raise StopIteration
 
     def populate_data(self):
-        self.data['COD_SOURCE_INFO'] = self.get_cod_source_info()
-        self.data['NO_RELEVE'] = self.get_no_releve()
-        self.data['CODE_NBPC'] = self.get_code_nbpc()
-        self.data['IDENT_NO_TRAIT'] = self.get_ident_no_trait()
-        self.data['COD_ZONE_GEST_MOLL'] = self.get_cod_zone_gest_moll()
-        self.data['COD_SECTEUR_RELEVE'] = self.get_cod_secteur_releve()
-        self.data['NO_STATION'] = self.get_no_station()
-        self.data['COD_TYPE_TRAIT'] = self.get_cod_type_trait()
-        self.data['COD_RESULT_OPER'] = self.get_cod_result_oper()
-        self.data['DATE_DEB_TRAIT'] = self.get_date_deb_trait()
-        self.data['DATE_FIN_TRAIT'] = self.get_date_fin_trait()
-        self.data['HRE_DEB_TRAIT'] = self.get_hre_deb_trait()
-        self.data['HRE_FIN_TRAIT'] = self.get_hre_fin_trait()
-        self.data['CODE_TYPE_HEURE'] = self.get_cod_type_heure()
-        self.data['CODE_FUSEAU_HORAIRE'] = self.get_cod_fuseau_horaire()
-        self.data['LAT_DEB_TRAIT'] = self.get_lat_deb_trait()
-        self.data['LAT_FIN_TRAIT'] = self.get_lat_fin_trait()
-        self.data['LONG_DEB_TRAIT'] = self.get_long_deb_trait()
-        self.data['LONG_FIN_TRAIT'] = self.get_long_fin_trait()
-        self.data['LATLONG_P'] = self.get_latlong_p()
-        self.data['DISTANCE_POS'] = self.get_distance_pos()
-        self.data['DISTANCE_POS_P'] = self.get_distance_pos_p()
-        self.data['VIT_TOUAGE'] = self.get_vit_touage()
-        self.data['VIT_TOUAGE_P'] = self.get_vit_touage_p()
-        self.data['DUREE_TRAIT'] = self.get_duree_trait()
-        self.data['DUREE_TRAIT_P'] = self.get_duree_trait_p()
-        self.data['TEMP_FOND'] = self.get_temp_fond()
-        self.data['TEMP_FOND_P'] = self.get_temp_fond_p()
-        self.data['PROF_DEB'] = self.get_prof_deb()
-        self.data['PROF_DEB_P'] = self.get_prof_deb_p()
-        self.data['PROF_FIN'] = self.get_prof_fin()
-        self.data['PROF_FIN_P'] = self.get_prof_fin_p()
-        self.data['REM_PROJET_MOLL'] = self.get_rem_projet_moll()
-        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
-        self.data['DATE_HRE_DEB_TRAIT'] = self.get_date_heure_deb_trait()
-        self.data['DATE_HRE_FIN_TRAIT'] = self.get_date_heure_fin_trait()
-        self.data['SALINITE_FOND'] = self.get_salinite_fond()
-        self.data['SALINITE_FOND_P'] = self.get_salinite_fond_p()
-        self.data['COD_TYPE_ECH_TRAIT'] = self.get_cod_type_ech_trait()
-
+        self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
+        self.data["NO_RELEVE"] = self.get_no_releve()
+        self.data["CODE_NBPC"] = self.get_code_nbpc()
+        self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
+        self.data["COD_ZONE_GEST_MOLL"] = self.get_cod_zone_gest_moll()
+        self.data["COD_SECTEUR_RELEVE"] = self.get_cod_secteur_releve()
+        self.data["NO_STATION"] = self.get_no_station()
+        self.data["COD_TYPE_TRAIT"] = self.get_cod_type_trait()
+        self.data["COD_RESULT_OPER"] = self.get_cod_result_oper()
+        self.data["DATE_DEB_TRAIT"] = self.get_date_deb_trait()
+        self.data["DATE_FIN_TRAIT"] = self.get_date_fin_trait()
+        self.data["HRE_DEB_TRAIT"] = self.get_hre_deb_trait()
+        self.data["HRE_FIN_TRAIT"] = self.get_hre_fin_trait()
+        self.data["CODE_TYPE_HEURE"] = self.get_cod_type_heure()
+        self.data["CODE_FUSEAU_HORAIRE"] = self.get_cod_fuseau_horaire()
+        self.data["LAT_DEB_TRAIT"] = self.get_lat_deb_trait()
+        self.data["LAT_FIN_TRAIT"] = self.get_lat_fin_trait()
+        self.data["LONG_DEB_TRAIT"] = self.get_long_deb_trait()
+        self.data["LONG_FIN_TRAIT"] = self.get_long_fin_trait()
+        self.data["LATLONG_P"] = self.get_latlong_p()
+        self.data["DISTANCE_POS"] = self.get_distance_pos()
+        self.data["DISTANCE_POS_P"] = self.get_distance_pos_p()
+        self.data["VIT_TOUAGE"] = self.get_vit_touage()
+        self.data["VIT_TOUAGE_P"] = self.get_vit_touage_p()
+        self.data["DUREE_TRAIT"] = self.get_duree_trait()
+        self.data["DUREE_TRAIT_P"] = self.get_duree_trait_p()
+        self.data["TEMP_FOND"] = self.get_temp_fond()
+        self.data["TEMP_FOND_P"] = self.get_temp_fond_p()
+        self.data["PROF_DEB"] = self.get_prof_deb()
+        self.data["PROF_DEB_P"] = self.get_prof_deb_p()
+        self.data["PROF_FIN"] = self.get_prof_fin()
+        self.data["PROF_FIN_P"] = self.get_prof_fin_p()
+        self.data["REM_PROJET_MOLL"] = self.get_rem_projet_moll()
+        self.data["NO_CHARGEMENT"] = self.get_no_chargement()
+        self.data["DATE_HRE_DEB_TRAIT"] = self.get_date_heure_deb_trait()
+        self.data["DATE_HRE_FIN_TRAIT"] = self.get_date_heure_fin_trait()
+        self.data["SALINITE_FOND"] = self.get_salinite_fond()
+        self.data["SALINITE_FOND_P"] = self.get_salinite_fond_p()
+        self.data["COD_TYPE_ECH_TRAIT"] = self.get_cod_type_ech_trait()
 
     @validate_int()
     def get_cod_source_info(self) -> int:
@@ -119,6 +123,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         return self.proj.get_no_releve()
 
+    @log_results
     def get_code_nbpc(self) -> str:
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
@@ -313,7 +318,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = andes_2_oracle_map[str(to_return)]
         return to_return
 
-    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
+    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_deb_trait(self) -> str | None:
@@ -336,7 +341,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
+    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_fin_trait(self) -> str | None:
@@ -359,11 +364,11 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
+    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_deb_trait(self) -> str | None:
-        """ HRE_DEB_TRAIT DATE
+        """HRE_DEB_TRAIT DATE
         Heure du début du trait, format HH:MI:SS
 
         This field is deprecated in favour of DATE_HEURE_DEB_TRAIT
@@ -382,7 +387,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @deprecate(successor='DATE_HEURE_FIN_TRAIT')
+    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_fin_trait(self) -> str | None:
@@ -625,7 +630,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_vit_touage_p(self) -> float | None:
-        """ VIT_TOUAGE_P DOUBLE / NUMBER
+        """VIT_TOUAGE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Vit_Touage"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -638,9 +643,9 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_duree_trait(self) -> float | None:
-        """ DUREE_TRAIT DOUBLE / NUMBER
+        """DUREE_TRAIT DOUBLE / NUMBER
         Durée du trait, en seconde évaluée selon différence entre l'heures de fin et de début
-        
+
         This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
         It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
 
@@ -651,10 +656,9 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-
     @log_results
     def get_duree_trait_p(self) -> float | None:
-        """ DUREE_TRAIT_P DOUBLE / NUMBER
+        """DUREE_TRAIT_P DOUBLE / NUMBER
         Nombre de chiiffre après la décimale pour la précision d'affichage associée à "Duree_Trait"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -667,9 +671,9 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_temp_fond(self) -> float | None:
-        """ TEMP_FOND DOUBLE / NUMBER
+        """TEMP_FOND DOUBLE / NUMBER
         Température de l'eau sur le fond, unité ° C
-       
+
         Andes does not log temperature data.
         This function always returns None
 
@@ -680,7 +684,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_temp_fond_p(self) -> float | None:
-        """ TEMP_FOND_P DOUBLE / NUMBER
+        """TEMP_FOND_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -692,10 +696,9 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-
     @log_results
     def get_prof_deb(self) -> float | None:
-        """ PROF_DEB DOUBLE / NUMBER
+        """PROF_DEB DOUBLE / NUMBER
         Profondeur au début du trait, unité mètre
         units: metre
 
@@ -714,7 +717,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_prof_deb_p(self) -> float | None:
-        """ PROF_DEB_P DOUBLE / NUMBER
+        """PROF_DEB_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -726,7 +729,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_prof_fin(self) -> float | None:
-        """ PROF_FIN DOUBLE / NUMBER
+        """PROF_FIN DOUBLE / NUMBER
         Profondeur au début du trait, unité mètre
         units: metre
 
@@ -745,7 +748,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_prof_fin_p(self) -> float | None:
-        """ PROF_FIN_P DOUBLE / NUMBER
+        """PROF_FIN_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -758,7 +761,7 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_string(max_len=500, not_null=False)
     @log_results
     def get_rem_projet_moll(self) -> str | None:
-        """ REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)
+        """REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)
         Remarque sur la réalisation du trait
 
         Andes
@@ -776,10 +779,10 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_no_chargement(self) -> float | None:
-        """ NO_CHARGEMENT DOUBLE / NUMBER
+        """NO_CHARGEMENT DOUBLE / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
-        Oracle Optimisation: this datatype should be INTEGER 
+        Oracle Optimisation: this datatype should be INTEGER
 
         Andes is unaware of this field, and will need to be populated manually
         """
@@ -787,11 +790,11 @@ class TraitMollusque(TablePecheSentinelle):
         self._seq_result()
         to_return = self._hard_coded_result(None)
         return to_return
-    
+
     @validate_string(max_len=19, not_null=False)
     @log_results
     def get_date_heure_deb_trait(self) -> str | None:
-        """ DATE_HEURE_DEB_TRAIT
+        """DATE_HEURE_DEB_TRAIT
         Date et heure du début du trait, format AAAA-MM-JJ HH:MI:SS
 
         Andes
@@ -801,7 +804,7 @@ class TraitMollusque(TablePecheSentinelle):
         Best practices dictate the use of UTC to store datetimes.
         The convention is followed by andes, and thus all imported andes datetimes
         will be in the UTC, as indicate in COD_FUSEAU_HORAIRE and COD_TYPE_HEURE
-                
+
         """
 
         query = f"SELECT shared_models_set.start_date \
@@ -813,13 +816,13 @@ class TraitMollusque(TablePecheSentinelle):
         strfmt = "%Y-%m-%d %H:%M:%S"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
- 
+
     @validate_string(max_len=19, not_null=False)
     @log_results
     def get_date_heure_fin_trait(self) -> str | None:
-        """ DATE_HEURE_FIN_TRAIT
+        """DATE_HEURE_FIN_TRAIT
         Date et heure de la fin du trait, format AAAA-MM-JJ HH:MI:SS
-        
+
         Andes
         -----
         shared_models_set.end_date
@@ -843,14 +846,14 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
-        """ SALINITE_FOND DOUBLE / NUMBER
+        """SALINITE_FOND DOUBLE / NUMBER
         Salinité de l'eau au fond, unité psu
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
 
         Andes does not log salinity data.
         This function always returns None
-        
+
         """
         # hard-code this
         to_return = self._hard_coded_result(None)
@@ -859,7 +862,7 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
-        """ SALINITE_FOND_P DOUBLE / NUMBER
+        """SALINITE_FOND_P DOUBLE / NUMBER
         Précision d'affichage associée à '' Salinite_Fond''
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
@@ -873,10 +876,10 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_cod_type_ech_trait(self) -> float | None:
-        """  COD_TYP_ECH_TRAIT DOUBLE / NUMBER
+        """COD_TYP_ECH_TRAIT DOUBLE / NUMBER
         Identification du type d'activité d'échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT
-        
-        Oracle Optimisation: this datatype should be INTEGER 
+
+        Oracle Optimisation: this datatype should be INTEGER
         Oracle Optimisation: seems to be relational, but not setup that way
         Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?
         This function always returns None

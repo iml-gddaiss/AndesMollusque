@@ -1,29 +1,26 @@
-
 import logging
 
+
 class DBHelper:
-
     def __init__(self, file=None):
-
-        self.datetime_strfmt='%Y-%m-%d %H:%M:%S'
+        self.datetime_strfmt = "%Y-%m-%d %H:%M:%S"
         # children classes need to init these
         self.con = None
         self.cur = None
-        self.db_charset:str
-        self.logger:logging.Logger
+        self.db_charset: str
+        self.logger: logging.Logger
 
-
-    def _format_sql_string(self, input:str)->str:
-        """ use two single-quotes to properly generate the SQL statement
+    def _format_sql_string(self, input: str) -> str:
+        """use two single-quotes to properly generate the SQL statement
 
         :param input: input string to fix
         :type input: str
         :return: inptstirng with doubled single quotes
         :rtype: str
         """
-        return input.replace("'","''")
-    
-    def execute_query(self, query:str):
+        return input.replace("'", "''")
+
+    def execute_query(self, query: str):
         # child class must override
         raise NotImplemented
 
@@ -55,17 +52,17 @@ class DBHelper:
         if len(res) == 1:
             return res[0][0]
         elif len(res) == 0:
-            self.logger.error("No match found for query: %s",query)
+            self.logger.error("No match found for query: %s", query)
             raise ValueError
         else:
-            self.logger.error("More than one match found for query: %s",query)
+            self.logger.error("More than one match found for query: %s", query)
             raise ValueError
 
     def validate_exists(
         self,
         table: str = "tablename",
         col: str = "columnname",
-        val:int|str="entryvalue",
+        val: int | str = "entryvalue",
     ) -> bool:
         """
         Validate that a value exists (and there is only one) in the DB
@@ -93,6 +90,7 @@ class DBHelper:
         if len(res) == 1:
             return True
         else:
-            self.logger.error("Looking for %s=%s but is not present in table: %s", col, val, table)
+            self.logger.error(
+                "Looking for %s=%s but is not present in table: %s", col, val, table
+            )
             return False
-
