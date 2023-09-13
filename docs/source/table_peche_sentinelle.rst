@@ -1,10 +1,10 @@
-Peche Sentinelle
+Table Peche Sentinelle
 ==================
 
-.. automodule:: andes_migrate.peche_sentinelle
+.. automodule:: andes_migrate.table_peche_sentinelle
    :members: 
    :no-index:
 
-.. autoclass:: PecheSentinelle
+.. autoclass:: TablePecheSentinelle
    :members:
    :undoc-members:

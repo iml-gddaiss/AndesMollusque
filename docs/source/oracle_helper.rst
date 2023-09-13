@@ -5,6 +5,6 @@ Oracle Helper
    :members: 
    :no-index:
 
-.. autoclass:: Oracle Helper
+.. autoclass:: OracleHelper
    :members:
    :undoc-members:

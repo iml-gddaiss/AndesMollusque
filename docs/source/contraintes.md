@@ -2,7 +2,7 @@
 
 ## Distance de trait visée par la mission
 
-[<img src="shared_models.cruise.targeted_vessel_speed.png">](static/shared_models.cruise.targeted_vessel_speed.png)
+![targeted_vessel_speed>](_static/shared_models.cruise.targeted_vessel_speed.png)
 
 Dans l'ancien outil de saisie, il faut saisir des métadonnées de mission tel que i) la vitesse visée ($v$), ii) la durée visée ($t$) et ii) la distance visée ($d$) comme trois variables indépendantes. Étant donnée la relation $v=d t$, il ne peut q'avoir deux variables indépendents (il est donc possible sur l'ancien outil de saisir des valeurs invalides).
 
@@ -16,7 +16,7 @@ N.B. Ces distances sont utilisé comme métadonnées de mission. Il est possible
 
 ## Déscription de mission
 
-[<img src="shared_models_cruise.description.png">](static/shared_models_cruise.description.png)
+![description](_static/shared_models_cruise.description.png)
 
 Doit corréspondre à une entrée de la table `PROJET_MOLLUSQUE` ayant une valeur éxistante pour la colonne `DESC_SOURCE_INFO_F`
 
@@ -27,7 +27,7 @@ Pour les mission pétoncle, un de ces choix:
 
 ## Région échantilonnée -> Secteur du relevé
 
-[<img src="shared_models_cruise.area_of_operation.png">](static/shared_models_cruise.area_of_operation.png)
+![area_of_operation](_static/shared_models_cruise.area_of_operation.png)
 
 Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur éxistante pour la colonne `DESC_SECTEUR_RELEVE_F`
 
@@ -92,6 +92,8 @@ DESC_SERIE_HIST_F = f"Indice d'abondance zone {self.zone} - {self.espece}"
 DESC_SOURCE_INFO_F = f"Évaluation de stocks IML {self.zone} - {self.espece}"
 
 ```
+
+
 
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
 Évaluation de stocks IML - Pétoncle I de M

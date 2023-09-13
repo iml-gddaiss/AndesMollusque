@@ -9,6 +9,7 @@ Documentation for Andes -> Projet Mollusque data migration
    :maxdepth: 2
    :caption: Contents:
 
+   contraintes
    trait_mollusque
    projet_mollusque
    table_peche_sentinelle
