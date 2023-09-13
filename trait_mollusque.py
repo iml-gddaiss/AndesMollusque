@@ -27,7 +27,7 @@ class TraitMollusque(TablePecheSentinelle):
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_set_list(self):
-        """ init a list of sets (just pKeys) from Andes"""
+        """init a list of sets (just pKeys) from Andes"""
 
         query = f"SELECT shared_models_set.id \
                 FROM shared_models_set \
@@ -37,13 +37,13 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
 
-        self.list_set_pk:list = result
+        self.list_set_pk: list = result
         self.set_pk_idx = 0
         self.set_pk = self.list_set_pk[self.set_pk_idx][0]
 
     def _get_current_set_pk(self) -> int:
         """
-        Return the Andes primary key of the current set 
+        Return the Andes primary key of the current set
         """
         if self.set_pk_idx is not None and self.list_set_pk:
             return self.list_set_pk[self.set_pk_idx][0]
@@ -51,17 +51,16 @@ class TraitMollusque(TablePecheSentinelle):
             raise ValueError
 
     def _increment_current_set(self):
-        """ focus on next set
-        """
+        """focus on next set"""
         if self.set_pk_idx and self.list_set_pk:
-            if self.set_pk_idx <len(self.list_set_pk)-1 :
+            if self.set_pk_idx < len(self.list_set_pk) - 1:
                 self.set_pk_idx += 1
             else:
                 raise StopIteration
 
     @validate_int()
     def get_cod_source_info(self) -> int:
-        """ COD_SOURCE_INFO INTEGER / NUMBER(5,0)
+        """COD_SOURCE_INFO INTEGER / NUMBER(5,0)
         Identification de la source d'information tel que défini dans la table SOURCE_INFO
 
         Extrait du projet.
@@ -71,7 +70,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @validate_int()
     def get_no_releve(self) -> int:
-        """ NO_RELEVE INTEGER / NUMBER(5,0)
+        """NO_RELEVE INTEGER / NUMBER(5,0)
         Numéro séquentiel du relevé
 
         Extrait du projet.
@@ -79,7 +78,7 @@ class TraitMollusque(TablePecheSentinelle):
         return self.proj.get_no_releve()
 
     def get_code_nbpc(self) -> str:
-        """  COD_NBPC VARCHAR(6) / VARCHAR2(6)
+        """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 
         Extrait du projet.
@@ -89,7 +88,7 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int()
     @log_results
     def get_ident_no_trait(self) -> int:
-        """ IDENT_NO_TRAIT INTEGER / NUMBER(5,0)
+        """IDENT_NO_TRAIT INTEGER / NUMBER(5,0)
         Numéro séquentiel d'identification du trait
 
         Andes
@@ -108,10 +107,10 @@ class TraitMollusque(TablePecheSentinelle):
 
     @validate_int(not_null=False)
     @log_results
-    def get_cod_zone_gest_moll(self) -> int| None:
-        """ COD_ZONE_GEST_MOLL  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
+    def get_cod_zone_gest_moll(self) -> int | None:
+        """COD_ZONE_GEST_MOLL  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL
-        
+
         Pas présente dans Andes, doit être initialisé via le parametre `zone` du projet.
         """
         zone = self.proj.zone
@@ -126,8 +125,8 @@ class TraitMollusque(TablePecheSentinelle):
 
     @validate_int(not_null=False)
     @log_results
-    def get_cod_secteur_releve(self) -> int| None:
-        """ COD_SECTEUR_RELEVE INTEGER/NUMBER(5,0) 
+    def get_cod_secteur_releve(self) -> int | None:
+        """COD_SECTEUR_RELEVE INTEGER/NUMBER(5,0)
         Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL
 
         CONTRAINTE
@@ -140,7 +139,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         Bien q'il suffit de mettre seulement la premiere lettre, il est conseiller de mettre
         le nom en entier pour la lisibilité.
-    
+
         """
 
         query = f"SELECT shared_models_cruise.area_of_operation \
@@ -148,7 +147,7 @@ class TraitMollusque(TablePecheSentinelle):
                 WHERE shared_models_cruise.id={self.proj.pk};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        secteur:str = result[0][0]
+        secteur: str = result[0][0]
 
         # first char stripped of accents and cast to uppercase
         secteur = unidecode(secteur[0].upper())
@@ -164,9 +163,9 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int()
     @log_results
     def get_no_station(self) -> int:
-        """ NO_STATION  INTEGER/NUMBER(5,0)
+        """NO_STATION  INTEGER/NUMBER(5,0)
         Numéro de la station en fonction du protocole d'échantillonnage
-        
+
         ANDES: shared_models_newstation.name
         The station name is stripped of non-numerical characters
         to generate no_station(i.e., NR524 -> 524)
@@ -181,19 +180,19 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         # extract all non-numerical chacters
-        to_return = ''.join(c for c in to_return if c.isnumeric())
+        to_return = "".join(c for c in to_return if c.isnumeric())
         return to_return
-    
+
     @validate_int()
     @log_results
     def get_cod_type_trait(self) -> int:
-        """  COD_TYP_TRAIT INTEGER / NUMBER(5,0)
+        """COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification du type de trait tel que décrit dans la table TYPE_TRAIT
 
         Andes
         -----
         shared_models.stratificationtype.code
-        via la mission 
+        via la mission
         shared_models.cruise.stratification_type_id
 
         This one would be good to have linked with a regional code lookup
@@ -211,8 +210,8 @@ class TraitMollusque(TablePecheSentinelle):
         # we take the french description and match with Oracle\
         # the match isn't even verbatim, we we need a manual map
         andes_2_oracle_map = {
-            'Échantillonnage aléatoire': 'Aléatoire simple',
-            'Station fixe': 'Station fixe'
+            "Échantillonnage aléatoire": "Aléatoire simple",
+            "Station fixe": "Station fixe",
         }
 
         query = f"SELECT shared_models_stratificationtype.description_fra \
@@ -235,7 +234,7 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int()
     @log_results
     def get_cod_result_oper(self) -> int:
-        """  COD_RESULT_OPER INTEGER / NUMBER(5,0)
+        """COD_RESULT_OPER INTEGER / NUMBER(5,0)
         Résultat de l'activité de pêche tel que défini dans la table COD_RESULT_OPER
 
         Andes
@@ -245,7 +244,7 @@ class TraitMollusque(TablePecheSentinelle):
         The Andes codes seem to match the first six from the Oracle database,
         except for hte mistmatch between code 5 and 6.
         see issue https://github.com/dfo-gulf-science/andes/issues/1237
-        
+
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
 
@@ -262,21 +261,20 @@ class TraitMollusque(TablePecheSentinelle):
         # this ia a weird one...
         # see issue #1237
         andes_2_oracle_map = {
-            '1': 1,
-            '2': 2,
-            '3': 3,
-            '4': 4,
-            '5': 6,
-            '6': 5,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 6,
+            "6": 5,
         }
         to_return = andes_2_oracle_map[str(to_return)]
-        return(to_return)
-
+        return to_return
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_deb_trait(self) -> str | None:
-        """ DATE_DEB_TRAIT DATE 
+        """DATE_DEB_TRAIT DATE
         Date du début du trait, format AAAA-MM-JJ
 
         TODO: verify datetime format
@@ -290,14 +288,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
 
         # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt='%Y-%m-%d'
+        strfmt = "%Y-%m-%d"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_date_fin_trait(self) -> str | None:
-        """ DATE_FIN_TRAIT DATE 
+        """DATE_FIN_TRAIT DATE
         Date de la fin du trait, format AAAA-MM-JJ
 
         TODO: verify datetime format
@@ -311,15 +309,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
 
         # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt='%Y-%m-%d'
+        strfmt = "%Y-%m-%d"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
-
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_deb_trait(self) -> str | None:
-        """ hre_DEB_TRAIT DATE 
+        """hre_DEB_TRAIT DATE
         Heure du début du trait, format HH:MI:SS
 
         TODO: verify datetime format
@@ -333,15 +330,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
 
         # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt='%H:%M:%S'
+        strfmt = "%H:%M:%S"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
-
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_fin_trait(self) -> str | None:
-        """ hre_FIN_TRAIT DATE 
+        """hre_FIN_TRAIT DATE
         Heure de la fin du trait, format HH:MI:SS
 
         TODO: verify datetime format
@@ -355,14 +351,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
 
         # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt='%H:%M:%S'
+        strfmt = "%H:%M:%S"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
 
     @validate_int(not_null=False)
     @log_results
     def get_cod_type_heure(self) -> int | None:
-        """ COD_TYP_HEURE INTEGER / NUMBER(5,0)
+        """COD_TYP_HEURE INTEGER / NUMBER(5,0)
         Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
 
         Table: TYPE_HEURE:
@@ -382,7 +378,7 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int(not_null=False)
     @log_results
     def get_cod_fuseau_horaire(self) -> int | None:
-        """ COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
+        """COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
         Fuseau horaire utilisé pour déterminer l'heure de réalisation du trait tel que décrit dans la table FUSEAU_HORAIRE
 
         |----|------------|-------------|
@@ -402,7 +398,7 @@ class TraitMollusque(TablePecheSentinelle):
     @validate_int(not_null=False)
     @log_results
     def get_cod_method_pos(self) -> int | None:
-        """ COD_METHOD_POS INTEGER / NUMBER(5,0)
+        """COD_METHOD_POS INTEGER / NUMBER(5,0)
         Identification de la méthode utilisée pour déterminer les coordonnées de l''emplacement d''échantillonnage tel que défini dans la table METHODE_POSITION
 
         |----|--------------------|-----------------|
@@ -426,10 +422,14 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_lat_deb_trait(self) -> float | None:
-        """ LAT_DEB_TRAIT DOUBLE / NUMBER
+        """LAT_DEB_TRAIT DOUBLE / NUMBER
         Position de latitude du début du trait, unité ddmm.%%%% N
 
         This uses a unique encoding scheme for the coordinates.
+
+        Andes
+        -----
+        shared_models_set.start_latitude
 
         """
         query = f"SELECT shared_models_set.start_latitude \
@@ -442,13 +442,16 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self.reference_data._to_oracle_coord(to_return)
         return to_return
 
-
     @log_results
     def get_lat_fin_trait(self) -> float | None:
-        """ LAT_FIN_TRAIT DOUBLE / NUMBER
+        """LAT_FIN_TRAIT DOUBLE / NUMBER
         Position de latitude de la fin du trait, unité ddmm.%%%% N
 
         This uses a unique encoding scheme for the coordinates.
+
+        Andes
+        -----
+        shared_models_set.end_latitude
 
         """
         query = f"SELECT shared_models_set.end_latitude \
@@ -463,9 +466,13 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_long_deb_trait(self) -> float | None:
-        """ LONG_DEB_TRAIT DOUBLE / NUMBER
+        """LONG_DEB_TRAIT DOUBLE / NUMBER
         Position de longitude du début du trait, unité ddmm.%%%% W
         This uses a unique encoding scheme for the coordinates.
+
+        Andes
+        -----
+        shared_models_set.start_longitude
 
         """
         query = f"SELECT shared_models_set.start_longitude \
@@ -482,9 +489,13 @@ class TraitMollusque(TablePecheSentinelle):
 
     @log_results
     def get_long_fin_trait(self) -> float | None:
-        """ LONG_fin_TRAIT DOUBLE / NUMBER
+        """LONG_fin_TRAIT DOUBLE / NUMBER
         Position de longitude de la fin du trait, unité ddmm.%%%% W
         This uses a unique encoding scheme for the coordinates.
+
+        Andes
+        -----
+        shared_models_set.end_longitude
 
         """
         query = f"SELECT shared_models_set.end_longitude \
@@ -498,10 +509,10 @@ class TraitMollusque(TablePecheSentinelle):
         # strip negative from longitudes
         to_return *= -1
         return to_return
-    
+
     @log_results
     def get_latlong_p(self) -> float | None:
-        """ LATLONG_P DOUBLE / NUMBER
+        """LATLONG_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage pour les variables de positionnement en latitude et longitude
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -513,11 +524,188 @@ class TraitMollusque(TablePecheSentinelle):
         # TODO: Find what to do about this.
         # hard-code this
         to_return = self._hard_coded_result(None)
-        return (to_return)
+        return to_return
+
+    @log_results
+    def get_distance_pos(self) -> float | None:
+        """DISTANCE_POS DOUBLE / NUMBER
+        Distance parcourue évaluée à partir des coordonnées des positions en latitude et longitude, unité mètre
+
+        There can be more that than one way to evaluate the distance:
+         - crow's distance on a locally flat projection (like quebec-lambert)
+         - crow's distance on a curved surface
+         - integration of the vessel position (path length) on a flat projection
+         - integration of the vessel position (path length) on a curved surface
+
+        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
+        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_distance_pos_p(self) -> float | None:
+        """DISTANCE_POS_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Distance_Pos"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_vit_touage(self) -> float | None:
+        """VIT_TOUAGE DOUBLE / NUMBER
+        Vitesse de touage, en nœuds,  lors de la réalisation du trait
+
+        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
+        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
+
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_vit_touage_p(self) -> float | None:
+        """ VIT_TOUAGE_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Vit_Touage"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_duree_trait(self) -> float | None:
+        """ DUREE_TRAIT DOUBLE / NUMBER
+        Durée du trait, en seconde évaluée selon différence entre l'heures de fin et de début
+        
+        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
+        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
+
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
 
 
-    # DISTANCE_POS
-    # DISTANCE_POS_P
+    @log_results
+    def get_duree_trait_p(self) -> float | None:
+        """ DUREE_TRAIT_P DOUBLE / NUMBER
+        Nombre de chiiffre après la décimale pour la précision d'affichage associée à "Duree_Trait"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_temp_fond(self) -> float | None:
+        """ TEMP_FOND DOUBLE / NUMBER
+        Température de l'eau sur le fond, unité ° C
+       
+        Andes does not log temperature data.
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_temp_fond_p(self) -> float | None:
+        """ TEMP_FOND_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        Andes does not log temperature data.
+        This function always returns None
+
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+
+    @log_results
+    def get_prof_deb(self) -> float | None:
+        """ PROF_DEB DOUBLE / NUMBER
+        Profondeur au début du trait, unité mètre
+        units: metre
+
+        Andes
+        -----
+        shared_models_set.start_depth_m
+
+        """
+        query = f"SELECT shared_models_set.start_depth_m \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
+    @log_results
+    def get_prof_deb_p(self) -> float | None:
+        """ PROF_DEB_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        This function always returns None
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
+    @log_results
+    def get_prof_fin(self) -> float | None:
+        """ PROF_FIN DOUBLE / NUMBER
+        Profondeur au début du trait, unité mètre
+        units: metre
+
+        Andes
+        -----
+        shared_models_set.start_depth_m
+
+        """
+        query = f"SELECT shared_models_set.start_depth_m \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
+    @log_results
+    def get_prof_fin_p(self) -> float | None:
+        """ PROF_FIN_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        This function always returns None
+        """
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return to_return
+
 
 
 if __name__ == "__main__":
@@ -550,17 +738,20 @@ if __name__ == "__main__":
     trait.get_long_deb_trait()
     trait.get_long_fin_trait()
     trait.get_latlong_p()
+    trait.get_distance_pos()
+    trait.get_distance_pos_p()
+    trait.get_vit_touage()
+    trait.get_vit_touage_p()
+    trait.get_duree_trait()
+    trait.get_duree_trait_p()
+    trait.get_temp_fond()
+    trait.get_temp_fond_p()
+    trait.get_prof_deb()
+    trait.get_prof_deb_p()
+    trait.get_prof_fin()
+    trait.get_prof_fin_p()
+
     # trait.validate()
 
-    # VIT_TOUAGE
-    # VIT_TOUAGE_P
-    # DUREE_TRAIT
-    # DUREE_TRAIT_P
-    # TEMP_FOND
-    # TEMP_FOND_P
-    # PROF_DEB
-    # PROF_DEB_P
-    # PROF_FIN
-    # PROF_FIN_P
     # REM_TRAIT_MOLL
     # NO_CHARGEMENT
