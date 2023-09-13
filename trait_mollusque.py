@@ -377,7 +377,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(2)
-        return (to_return)
+        return to_return
 
     @validate_int(not_null=False)
     @log_results
@@ -397,7 +397,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(0)
-        return (to_return)
+        return to_return
 
     @validate_int(not_null=False)
     @log_results
@@ -422,7 +422,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(6)
-        return (to_return)
+        return to_return
 
     @log_results
     def get_lat_deb_trait(self) -> float | None:
@@ -504,7 +504,22 @@ class TraitMollusque(TablePecheSentinelle):
         """ LATLONG_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage pour les variables de positionnement en latitude et longitude
 
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+
+        Not sure what to use for GPS coords taken from the vessel NMEA feed.
+        Historical records indicate 0.01 and 0.001, for now, this function will always return None.
+
         """
+        # TODO: Find what to do about this.
+        # hard-code this
+        to_return = self._hard_coded_result(None)
+        return (to_return)
+
+
+    # DISTANCE_POS
+    # DISTANCE_POS_P
+
+
 if __name__ == "__main__":
     # andes_db = AndesHelper("db.sqlite3")
     andes_db = AndesHelper()
@@ -534,11 +549,9 @@ if __name__ == "__main__":
     trait.get_lat_fin_trait()
     trait.get_long_deb_trait()
     trait.get_long_fin_trait()
-    
+    trait.get_latlong_p()
     # trait.validate()
 
-    # DISTANCE_POS
-    # DISTANCE_POS_P
     # VIT_TOUAGE
     # VIT_TOUAGE_P
     # DUREE_TRAIT
