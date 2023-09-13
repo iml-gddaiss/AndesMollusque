@@ -1,4 +1,7 @@
 # AndesMollusque
+[![Docs](https://github.com/iml-gddaiss/AndesMollusque/actions/workflows/documentation.yml/badge.svg?branch=main)](https://github.com/iml-gddaiss/AndesMollusque/actions/workflows/documentation.yml)
+
+
 Map entre la BD Andes et les tables mollusque de PSENTINELLE_PRO
 
 The documentation available at: [https://iml-gddaiss.github.io/AndesMollusque/](https://iml-gddaiss.github.io/AndesMollusque/)
