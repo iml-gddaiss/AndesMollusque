@@ -825,7 +825,6 @@ class TraitMollusque(TablePecheSentinelle):
         Andes does not log salinity data.
         This function always returns None
         """
-        # hard-code this
         to_return = self._hard_coded_result(None)
         return to_return
 
@@ -838,7 +837,11 @@ class TraitMollusque(TablePecheSentinelle):
         Oracle Optimisation: this datatype should be INTEGER 
         Oracle Optimisation: seems to be relational, but not setup that way
         Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?
+        This function always returns None
+
         """
+
+        return self._hard_coded_result(None)
 
 
 if __name__ == "__main__":
@@ -889,5 +892,5 @@ if __name__ == "__main__":
     trait.get_date_heure_fin_trait()
     trait.get_salinite_fond()
     trait.get_salinite_fond_p()
-
+    trait.get_cod_type_ech_trait()
     # trait.validate()
