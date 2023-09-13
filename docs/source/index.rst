@@ -5,18 +5,14 @@ Documentation for Andes -> Projet Mollusque data migration
 
 
 
-
-   
-
-
-
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    trait_mollusque
    projet_mollusque
+   table_peche_sentinelle
+   oracle_helper
 
 
 Indices and tables

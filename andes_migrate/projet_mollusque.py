@@ -2,7 +2,7 @@ import logging
 import datetime
 
 from andes_migrate.andes_helper import AndesHelper
-from andes_migrate.peche_sentinelle import TablePecheSentinelle
+from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)

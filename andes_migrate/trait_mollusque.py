@@ -3,7 +3,7 @@ import datetime
 from unidecode import unidecode
 
 from andes_migrate.projet_mollusque import ProjetMollusque
-from andes_migrate.peche_sentinelle import TablePecheSentinelle
+from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.decorators import (
     deprecate,
