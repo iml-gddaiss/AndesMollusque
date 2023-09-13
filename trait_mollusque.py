@@ -277,19 +277,20 @@ class TraitMollusque(TablePecheSentinelle):
         """DATE_DEB_TRAIT DATE
         Date du début du trait, format AAAA-MM-JJ
 
-        TODO: verify datetime format
+        This field is deprecated in favour of DATE_HEURE_DEB_TRAIT
+        This function will always return None
+
         """
 
-        query = f"SELECT shared_models_set.start_date \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt = "%Y-%m-%d"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
+        # query = f"SELECT shared_models_set.start_date \
+        #         FROM shared_models_set \
+        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # to_return = result[0][0]
+        # strfmt = "%Y-%m-%d"
+        # to_return = datetime.datetime.strftime(to_return, strfmt)
+        to_return = self._hard_coded_result(None)
         return to_return
 
     @validate_string(max_len=10, not_null=False)
@@ -298,61 +299,64 @@ class TraitMollusque(TablePecheSentinelle):
         """DATE_FIN_TRAIT DATE
         Date de la fin du trait, format AAAA-MM-JJ
 
-        TODO: verify datetime format
+        This field is deprecated in favour of DATE_HEURE_FIN_TRAIT
+        This function will always return None
+
         """
 
-        query = f"SELECT shared_models_set.end_date \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt = "%Y-%m-%d"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
+        # query = f"SELECT shared_models_set.end_date \
+        #         FROM shared_models_set \
+        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # to_return = result[0][0]
+        # strfmt = "%Y-%m-%d"
+        # to_return = datetime.datetime.strftime(to_return, strfmt)
+        to_return = self._hard_coded_result(None)
         return to_return
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_deb_trait(self) -> str | None:
-        """hre_DEB_TRAIT DATE
+        """ HRE_DEB_TRAIT DATE
         Heure du début du trait, format HH:MI:SS
 
-        TODO: verify datetime format
+        This field is deprecated in favour of DATE_HEURE_DEB_TRAIT
+        This function will always return None
+
         """
 
-        query = f"SELECT shared_models_set.start_date \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt = "%H:%M:%S"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
+        # query = f"SELECT shared_models_set.start_date \
+        #         FROM shared_models_set \
+        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # to_return = result[0][0]
+        # strfmt = "%H:%M:%S"
+        # to_return = datetime.datetime.strftime(to_return, strfmt)
+        to_return = self._hard_coded_result(None)
         return to_return
+
 
     @validate_string(max_len=10, not_null=False)
     @log_results
     def get_hre_fin_trait(self) -> str | None:
-        """hre_FIN_TRAIT DATE
+        """HRE_FIN_TRAIT DATE
         Heure de la fin du trait, format HH:MI:SS
 
-        TODO: verify datetime format
+        This field is deprecated in favour of DATE_HEURE_FIN_TRAIT
+        This function will always return None
+
         """
-
-        query = f"SELECT shared_models_set.end_date \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
-        strfmt = "%H:%M:%S"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
+        # query = f"SELECT shared_models_set.end_date \
+        #         FROM shared_models_set \
+        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # to_return = result[0][0]
+        # strfmt = "%H:%M:%S"
+        # to_return = datetime.datetime.strftime(to_return, strfmt)
+        to_return = self._hard_coded_result(None)
         return to_return
 
     @validate_int(not_null=False)
@@ -753,8 +757,6 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
         strfmt = "%Y-%m-%d %H:%M:%S"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
@@ -765,7 +767,14 @@ class TraitMollusque(TablePecheSentinelle):
         """ DATE_HEURE_FIN_TRAIT
         Date et heure de la fin du trait, format AAAA-MM-JJ HH:MI:SS
         
-        TODO: verify datetime format
+        Andes
+        -----
+        shared_models_set.end_date
+
+        Best practices dictate the use of UTC to store datetimes.
+        The convention is followed by andes, and thus all imported andes datetimes
+        will be in the UTC, as indicate with 
+
         """
 
         query = f"SELECT shared_models_set.end_date \
@@ -774,8 +783,6 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-
-        # strfmt='%Y-%m-%d %H:%M:%S'
         strfmt = "%Y-%m-%d %H:%M:%S"
         to_return = datetime.datetime.strftime(to_return, strfmt)
         return to_return
