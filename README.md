@@ -1,6 +1,8 @@
 # AndesMollusque
 Map entre la BD Andes et les tables mollusque de PSENTINELLE_PRO
 
+The documentation available at: [https://iml-gddaiss.github.io/AndesMollusque/](https://iml-gddaiss.github.io/AndesMollusque/)
+
 # Quickstart
 After creating (and activating) a virtual python environment, install requirements:
 ```
