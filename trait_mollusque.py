@@ -706,7 +706,84 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @validate_string(max_len=500, not_null=False)
+    @log_results
+    def get_rem_projet_moll(self) -> str | None:
+        """ REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)
+        Remarque sur la réalisation du trait
 
+        Andes
+        -----
+        shared_models_set.remarks
+
+        """
+        query = f"SELECT shared_models_set.remarks \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
+    @log_results
+    def get_no_chargement(self) -> float | None:
+        """ NO_CHARGEMENT DOUBLE / NUMBER
+        Numéro de l'activité de chargement de données dans la base Oracle
+
+        Andes is unaware of this field, and will need to be populated manually
+        Looking at existing values, this could benefit from being migrated to an integer
+        """
+        # hard-code this? Not a seq-type, but similar
+        self._seq_result()
+        to_return = self._hard_coded_result(None)
+        return to_return
+    
+    @validate_string(max_len=19, not_null=False)
+    @log_results
+    def get_date_heure_deb_trait(self) -> str | None:
+        """ DATE_HEURE_DEB_TRAIT
+        Date et heure du début du trait, format AAAA-MM-JJ HH:MI:SS
+        
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.start_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt = "%Y-%m-%d %H:%M:%S"
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+ 
+    @validate_string(max_len=19, not_null=False)
+    @log_results
+    def get_date_heure_fin_trait(self) -> str | None:
+        """ DATE_HEURE_FIN_TRAIT
+        Date et heure de la fin du trait, format AAAA-MM-JJ HH:MI:SS
+        
+        TODO: verify datetime format
+        """
+
+        query = f"SELECT shared_models_set.end_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_set_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        # strfmt='%Y-%m-%d %H:%M:%S'
+        strfmt = "%Y-%m-%d %H:%M:%S"
+        to_return = datetime.datetime.strftime(to_return, strfmt)
+        return to_return
+
+
+# SALINITE_FOND
+# SALINITE_FOND_P
+# COD_TYP_ECH_TRAIT
 
 if __name__ == "__main__":
     # andes_db = AndesHelper("db.sqlite3")
@@ -750,8 +827,9 @@ if __name__ == "__main__":
     trait.get_prof_deb_p()
     trait.get_prof_fin()
     trait.get_prof_fin_p()
+    trait.get_rem_projet_moll()
+    trait.get_no_chargement()
+    trait.get_date_heure_deb_trait()
+    trait.get_date_heure_fin_trait()
 
     # trait.validate()
-
-    # REM_TRAIT_MOLL
-    # NO_CHARGEMENT
