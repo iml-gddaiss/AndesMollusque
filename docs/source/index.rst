@@ -16,6 +16,7 @@ Documentation for Andes -> Projet Mollusque data migration
    :caption: Contents:
 
    trait_mollusque
+   projet_mollusque
 
 
 Indices and tables
