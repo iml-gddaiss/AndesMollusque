@@ -10,7 +10,8 @@ jobs:
       - uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme
+          pip install sphinx furo
+          pip install --upgrade myst-parse
       - name: Sphinx build
         run: |
           sphinx-build docs/source _build
