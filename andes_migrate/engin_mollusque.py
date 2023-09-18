@@ -32,7 +32,7 @@ class EnginMollusque(TablePecheSentinelle):
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["NO_ENGIN"] = self.get_no_engin()
         self.data["CODE_NBPC"] = self.get_code_nbpc()
-        self.data["COD_TYP_PANIER"] = self.get_code_type_panier()
+        self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
         # self.data["NO_CHARGEMENT"] = self.get_()
         # self.data["LONG_FUNE"] = self.get_()
         # self.data["LONG_FUNE_P"] = self.get_()
@@ -118,18 +118,17 @@ class EnginMollusque(TablePecheSentinelle):
         return self.trait.get_cod_nbpc()
     
     @log_results
-    def get_code_type_panier(self) -> int:
+    def get_cod_type_panier(self) -> int | None:
         """ COD_TYP_PANIER INTEGER / NUMBER(5,0)
         Identification du type de panier utilisé tel que défini dans la table TYPE_PANIER
 
-        0 -> Pas de panier dans l'engin
         1 -> Panier standard
         2 -> Panier doublé
 
-        Différences entre ACCESS et PSE
-        
-
-        :return: _description_
-        :rtype: int
+        Ces infos sont pas utiles car ils sont encodé dans sous cod_eng_gen
+        Ils sont conservées pour des raisons historiques.
         """
+        # hard-code this
+        to_return = self._hard_coded_result(0.1)
+        return to_return
 
