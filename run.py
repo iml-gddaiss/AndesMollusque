@@ -1,28 +1,16 @@
-
-import sqlite3
-from project_mollusque import ProjetMollusque
-
-# 15 -> Indice d'abondance zone 16E - pétoncle
-# 16 -> Indice d'abondance zone 16F - pétoncle
-# 18 -> Indice d'abondance zone 20 - pétoncle
+from andes_migrate.projet_mollusque import ProjetMollusque
+from andes_migrate.trait_mollusque import TraitMollusque
+from andes_migrate.engin_mollusque import EnginMollusque
+from andes_migrate.andes_helper import AndesHelper
 
 
-con = sqlite3.connect("db.sqlite3")
+andes_db = AndesHelper()
 
-proj = ProjetMollusque(con)
+proj = ProjetMollusque(andes_db)
 proj.init_mission_pk("IML-2023-011")
-proj.init_input(zone='20',
-                no_releve=34,
-                no_notif='IML-2023-011'
-                )
-proj.get_cod_source_info()
-proj.get_cod_nbpc()
-proj.get_annee()
-proj.get_cod_serie_hist()
-proj.get_cod_type_stratif()
-proj.get_date_deb_project()
-proj.get_date_fin_project()
-proj.get_no_notif_iml()
-proj.get_chef_mission()
-proj.get_seq_pecheur()
-# proj.validate()
+proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
+trait = TraitMollusque(andes_db, proj)
+
+engin = EnginMollusque(trait)
+
+engin.populate_data()

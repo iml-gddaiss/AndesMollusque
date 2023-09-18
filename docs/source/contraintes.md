@@ -36,9 +36,25 @@ Pour les mission pétoncle, un de ces choix:
  - `Côte-Nord`
 
 ### ATTENTION!
+
 Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
+Cetaines Tables/colonnes ne sont pas présente dans la BD Access.
+
+#### TRAIT_MOLLUSQUE
+les colonnes:
+ - SALINITE_FOND
+ - SALINITE_FOND_P
+ - COD_TYP_ECH_TRAIT
+Ne sont pas dans la table `TRAIT_MOLLUSQUE` de la BD Access, mais est presente dans sur IMLP.
+Étant donné que ces valeurs peuvent etre null (et le sont pour la plupart des relevées récents), nous allons simplement insérer une valeur null.
+(relevé 32 a trois traits avec une valeur non null !?)
+#### TYPE_ECHANT_TRAIT
+La table IMLP `TYPE_ECHANT_TRAIT` n'éxiste pas dans la BD ACccess:
+![area_of_operation](_static/TYPE_ECHANT_TRAIT.png)
+
 
 #### SECTEUR_RELEVE_MOLL
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
 
 Table:  `SECTEUR_RELEVE_MOLL` 
 Colonne: `DESC_SECTEUR_RELEVE_F`
@@ -66,6 +82,7 @@ Cette valeur est extrait de la premier lettre (apres un nettoyage d'accents et m
 Nous pouvons donc choisir de saisie la région `Îles-de-la-Madeleine` ou `Îles de la Madeleine` sans problèmes car dans les deux cas, le charactère `I` sera utilisé pour `SECTEUR_RELEVE` afin d'obtenr le code `4` requis. Par contre, il faut s'assurer que tout nouvelles entrées soit compatible avec cette approche.
 
 #### SOURCE_INFO
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
 
 IMLP: `Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine`
 MSACCESS:` Évaluation de stocks IML - Pétoncle I de M`
@@ -76,12 +93,12 @@ IMLP:
 |-----------------|-------------------|--------------------------------------------------------------|-------------------------------------------------------------|
 | 18              | 7                 | Évaluation de stocks IML - Pétoncle Minganie                 | MLI Stocks' assessment - Scallop Minganie                   |
 | 19              | 7                 | Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine     | MLI Stocks' assessment - Scallop Magdellan Islands          |
-| 22              | 7                 | Évaluation de stocks IML- Buccin Haute-Côte-Nord             | MLI Stocks' assessment - Whelk High North Shore             |
+| 22              | 7                 | Évaluation de stocks IML - Buccin Haute-Côte-Nord             | MLI Stocks' assessment - Whelk High North Shore             |
 | 23              | 9                 | Évaluation de stocks IML - Homard                            | MLI Stocks' assessment - Lobster                            |
 | 25              | 7                 | Évaluation de stocks IML - Buccin Îles-de-la-Madeleine       | MLI Stocks' assessment - Whelk Magdellan Islands            |
 | 26              | 7                 | Évaluation de stocks IML - Mactre de Stimpson                | MLI Stocks' assessment - Stimpson's Surf Clam               |
-| 28              | 7                 | Évaluation stock IML - Concombre de mer Gaspésie             | MLI Stocks' assessment - Sea Cucomber Gaspésie              |
-| 29              | 7                 | Évaluation stock IML - Concombre de mer Minganie             | MLI Stocks' assessment - Sea Cucomber Minganie              |
+| 28              | 7                 | Évaluation de stocks IML - Concombre de mer Gaspésie             | MLI Stocks' assessment - Sea Cucomber Gaspésie              |
+| 29              | 7                 | Évaluation de stocks IML - Concombre de mer Minganie             | MLI Stocks' assessment - Sea Cucomber Minganie              |
 | 30              | 1                 | Recherche écosystémique - Communautés benthiques             | Ecosystemic research - Benthic communites                   |
 | 32              | 7                 | Projets de recherche - Mollusques                            | Research projects - Mollusks                                |
 
@@ -93,6 +110,25 @@ DESC_SOURCE_INFO_F = f"Évaluation de stocks IML {self.zone} - {self.espece}"
 
 ```
 
+
+#### TYPE_PANIER
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
+
+IMLP:
+|COD_TYPE_PANIER  | DESC_TYPE_PANIER          |
+|-----------------|---------------------------|
+|0                |Pas de panier dans l'engin |	
+|1                |Panier standard            |
+|2                |Panier doublé              |
+
+ACCESS:
+|COD_TYPE_PANIER  | DESC_TYPE_PANIER          |
+|-----------------|---------------------------|
+|1                |Panier standard            |
+|2                |Panier doublé              |
+|3                |Aucun                      |	
+
+Il faudrait chercher (et valider) l'existance de type `0` et `3` dans ACCESS et IMLP (respectivement).
 
 
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle
