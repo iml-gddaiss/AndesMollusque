@@ -66,7 +66,7 @@ class TraitMollusque(TablePecheSentinelle):
     def populate_data(self):
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
         self.data["NO_RELEVE"] = self.get_no_releve()
-        self.data["CODE_NBPC"] = self.get_code_nbpc()
+        self.data["CODE_NBPC"] = self.get_cod_nbpc()
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["COD_ZONE_GEST_MOLL"] = self.get_cod_zone_gest_moll()
         self.data["COD_SECTEUR_RELEVE"] = self.get_cod_secteur_releve()
@@ -124,7 +124,7 @@ class TraitMollusque(TablePecheSentinelle):
         return self.proj.get_no_releve()
 
     @log_results
-    def get_code_nbpc(self) -> str:
+    def get_cod_nbpc(self) -> str:
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 
@@ -846,7 +846,7 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
-        """SALINITE_FOND DOUBLE / NUMBER
+        """ SALINITE_FOND DOUBLE / NUMBER
         Salinité de l'eau au fond, unité psu
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
@@ -862,7 +862,7 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
-        """SALINITE_FOND_P DOUBLE / NUMBER
+        """ SALINITE_FOND_P DOUBLE / NUMBER
         Précision d'affichage associée à '' Salinite_Fond''
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
@@ -876,7 +876,7 @@ class TraitMollusque(TablePecheSentinelle):
     @deprecate
     @log_results
     def get_cod_type_ech_trait(self) -> float | None:
-        """COD_TYP_ECH_TRAIT DOUBLE / NUMBER
+        """ COD_TYP_ECH_TRAIT DOUBLE / NUMBER
         Identification du type d'activité d'échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT
 
         Oracle Optimisation: this datatype should be INTEGER
