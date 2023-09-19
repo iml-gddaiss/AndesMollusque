@@ -1,5 +1,5 @@
-ProjetMollusque
-==================
+Table PROJET_MOLLUSQUE
+======================
 
 .. automodule:: andes_migrate.projet_mollusque
    :members: 

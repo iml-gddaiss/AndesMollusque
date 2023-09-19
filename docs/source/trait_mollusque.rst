@@ -1,5 +1,5 @@
-TraitMollusque
-==================
+Table TRAIT_MOLLUSQUE
+=====================
 
 .. automodule:: andes_migrate.trait_mollusque
    :members:

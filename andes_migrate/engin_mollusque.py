@@ -121,8 +121,8 @@ class EnginMollusque(TablePecheSentinelle):
         """COD_TYP_PANIER INTEGER / NUMBER(5,0)
         Identification du type de panier utilisé tel que défini dans la table TYPE_PANIER
 
-        1 -> Panier standard
-        2 -> Panier doublé
+            - 1 -> Panier standard
+            - 2 -> Panier doublé
 
         Ces infos sont pas utiles car ils sont encodé dans sous cod_eng_gen
         Ils sont conservées pour des raisons historiques.
@@ -132,7 +132,7 @@ class EnginMollusque(TablePecheSentinelle):
             - 2->'Panier doublé' if 'Drague Digby (4 paniers doublés)'
             - 3->'Aucun' (or '0->Pas de panier dans l’engin') for anyhing else
 
-        This function raises ValueError an ambiguous case (needing manual intervention):
+        This function raises ValueError for an ambiguous case (needing manual intervention):
             - "Drague (non spécifiée)",
             - "Drague Digby 4 paniers (2 doublés-2 non doublés)",
             - "Drague Digby 3 paniers avec et sans doublure",
@@ -293,6 +293,6 @@ class EnginMollusque(TablePecheSentinelle):
         These comment can easily be moved to Set comment and the col can be removed.
         
         """
-        
+
         return self._hard_coded_result(None)
 

@@ -1,5 +1,5 @@
-Table Peche Sentinelle
-======================
+Abstract Class Peche Sentinelle
+===============================
 
 .. automodule:: andes_migrate.table_peche_sentinelle
    :members: 
