@@ -142,8 +142,6 @@ class ProjetMollusque(TablePecheSentinelle):
         self._assert_one(result)
 
         description = result[0][0]
-        # # HACK hard-code for dev, remove to test
-        # description = "Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine"
 
         key = self.reference_data.get_ref_key(
             table="Source_Info",
