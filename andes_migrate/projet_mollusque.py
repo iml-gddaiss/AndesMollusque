@@ -9,6 +9,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 class ProjetMollusque(TablePecheSentinelle):
+    """ 
+    Object model representing the PROJET_MOLLUSQUE table
+    """
     def __init__(self, andes_db):
         super().__init__()
 

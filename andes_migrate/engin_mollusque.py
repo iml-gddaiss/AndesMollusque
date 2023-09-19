@@ -17,6 +17,10 @@ logging.basicConfig(level=logging.INFO)
 
 
 class EnginMollusque(TablePecheSentinelle):
+    """ 
+    Object model representing the ENGIN_MOLLUSQUE table
+    """
+
     def __init__(self, trait: TraitMollusque):
         super().__init__()
         self.trait: TraitMollusque = trait
