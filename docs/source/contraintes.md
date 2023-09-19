@@ -1,4 +1,4 @@
-# Équipe Pétoncle
+# Contraintes pour Pétoncle
 
 ## Distance de trait visée par la mission
 
