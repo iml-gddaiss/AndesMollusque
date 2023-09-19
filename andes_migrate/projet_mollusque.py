@@ -564,16 +564,21 @@ class ProjetMollusque(TablePecheSentinelle):
 
     @validate_int(not_null=False)
     @log_results
-    def get_no_chargement(self) -> int | None:
+    def get_no_chargement(self) -> int | float | None:
         """NO_CHARGEMENT INTEGER / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
         N.B. Datatype mistmatch between Oracle and MSAccess
+        Oracle Optimisation: this datatype should be INTEGER
+
+        Andes is unaware of this field, and will need to be populated manually
 
         """
 
-        raise NotImplementedError
-
+        # hard-code this? Not a seq-type, but similar
+        self._seq_result()
+        to_return = self._hard_coded_result(None)
+        return to_return
 
 if __name__ == "__main__":
     andes_db = AndesHelper()

@@ -777,19 +777,15 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @validate_int(not_null=False)
     @log_results
-    def get_no_chargement(self) -> float | None:
+    def get_no_chargement(self) -> float | int | None:
         """NO_CHARGEMENT DOUBLE / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
-        Oracle Optimisation: this datatype should be INTEGER
-
-        Andes is unaware of this field, and will need to be populated manually
+        Use Projet, self.proj.get_no_chargement
         """
-        # hard-code this? Not a seq-type, but similar
-        self._seq_result()
-        to_return = self._hard_coded_result(None)
-        return to_return
+        return self.proj.get_no_chargement()
 
     @validate_string(max_len=19, not_null=False)
     @log_results

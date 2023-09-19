@@ -32,13 +32,13 @@ class EnginMollusque(TablePecheSentinelle):
         self.data["NO_ENGIN"] = self.get_no_engin()
         self.data["CODE_NBPC"] = self.get_code_nbpc()
         self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
-        # self.data["NO_CHARGEMENT"] = self.get_()
-        # self.data["LONG_FUNE"] = self.get_()
-        # self.data["LONG_FUNE_P"] = self.get_()
-        # self.data["NB_PANIER"] = self.get_()
-        # self.data["REMPLISSAGE"] = self.get_()
-        # self.data["REMPLISSAGE_P"] = self.get_()
-        # self.data["REM_ENGIN_MOLL"] = self.get_()
+        self.data["NO_CHARGEMENT"] = self.get_no_chargement()
+        self.data["LONG_FUNE"] = self.get_long_fune()
+        self.data["LONG_FUNE_P"] = self.get_long_fune_p()
+        self.data["NB_PANIER"] = self.get_nb_panier()
+        self.data["REMPLISSAGE"] = self.get_remplissage()
+        self.data["REMPLISSAGE_P"] = self.get_remplissage_p()
+        self.data["REM_ENGIN_MOLL"] = self.get_rem_engin_moll()
 
     @validate_int()
     def get_cod_source_info(self) -> int:
@@ -115,6 +115,7 @@ class EnginMollusque(TablePecheSentinelle):
         """
         return self.trait.get_cod_nbpc()
 
+    @validate_int()
     @log_results
     def get_cod_type_panier(self) -> int:
         """COD_TYP_PANIER INTEGER / NUMBER(5,0)
@@ -201,3 +202,97 @@ class EnginMollusque(TablePecheSentinelle):
 
         to_return = key_result
         return to_return
+
+    @validate_int(not_null=False)
+    @log_results
+    def get_no_chargement(self) -> float | int | None:
+        """NO_CHARGEMENT DOUBLE / NUMBER
+        Numéro de l'activité de chargement de données dans la base Oracle
+
+        Use Projet, self.proj.get_no_chargement (via trait member)
+
+        """
+        return self.trait.get_no_chargement()
+
+    @log_results
+    def get_long_fune(self) -> float | None:
+        """LONG_FUNE DOUBLE / NUMBER
+        Longueur des funes lors de la réalisation du trait; unité mètre
+
+        For scallops, it is assumed to be 2x depth unless specified in set comments
+
+        The Andes associated field is shared_models_set.trawl_cable_length
+        """
+        set_pk = self.trait._get_current_set_pk()
+        query = f"SELECT shared_models_set.trawl_cable_length \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={set_pk};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
+    @log_results
+    def get_long_fune_p(self) -> float | None:
+        """LONG_FUNE_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Long_Fune"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        For the moment, Andes does not log this data.
+        """
+        return self._hard_coded_result(None)
+
+    @validate_int(not_null=False)
+    @log_results
+    def get_nb_panier(self) -> int | None:
+        """NB_PANIER INTEGER / NUMBER(5,0)
+        Nombre total de paniers dans la drague
+
+        For the moment, Andes does not log this data.
+        It is assumed to be 4 unless specified in set comments
+        """
+        # HACK what to do here?
+        return self._hard_coded_result(4)
+
+    @log_results
+    def get_remplissage(self) -> float | None:
+        """REMPLISSAGE DOUBLE / NUMBER
+        Indique, en valeur de %, le remplissage de la drague
+
+        The Andes associated field is shared_models_set.fill_percent
+
+        """
+        set_pk = self.trait._get_current_set_pk()
+        query = f"SELECT shared_models_set.fill_percent \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={set_pk};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
+    @log_results
+    def get_remplissage_p(self) -> float | None:
+        """ REMPLISSAGE_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée "Remplissage"
+
+        N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        For the moment, Andes does not log this data (there is an implied uncertainty of about 5%).
+
+        """
+
+        return self._hard_coded_result(None)
+
+    @validate_string(max_len=255, not_null=False)
+    @log_results
+    def get_rem_engin_moll(self) -> str | None:
+        """ REM_ENGIN_MOLL VARCHAR(255) / VARCHAR2(255)
+        Remarque sur les opérations au niveau de l''engin
+
+        All historical values are null except for a dozen in relevé 16.
+        These comment can easily be moved to Set comment and the col can be removed.
+        
+        """
+        
+        return self._hard_coded_result(None)
+
