@@ -57,7 +57,7 @@ class EnginMollusque(TablePecheSentinelle):
 
         Andes: shared_models_set.gear_type_id-> shared_models.geartype.code
         """
-        set_pk = self.trait._get_current_set_pk()
+        set_pk = self.trait._get_current_row_pk()
 
         query = f"SELECT shared_models_geartype.code \
                 FROM shared_models_set \
@@ -96,7 +96,7 @@ class EnginMollusque(TablePecheSentinelle):
 
         Andes: shared_models_set.gear_type_id-> shared_models.geartype.code
         """
-        set_pk = self.trait._get_current_set_pk()
+        set_pk = self.trait._get_current_row_pk()
         query = f"SELECT shared_models_set.winch_code \
                 FROM shared_models_set \
                 WHERE shared_models_set.id={set_pk};"
@@ -222,7 +222,7 @@ class EnginMollusque(TablePecheSentinelle):
 
         The Andes associated field is shared_models_set.trawl_cable_length
         """
-        set_pk = self.trait._get_current_set_pk()
+        set_pk = self.trait._get_current_row_pk()
         query = f"SELECT shared_models_set.trawl_cable_length \
                 FROM shared_models_set \
                 WHERE shared_models_set.id={set_pk};"
@@ -261,7 +261,7 @@ class EnginMollusque(TablePecheSentinelle):
         The Andes associated field is shared_models_set.fill_percent
 
         """
-        set_pk = self.trait._get_current_set_pk()
+        set_pk = self.trait._get_current_row_pk()
         query = f"SELECT shared_models_set.fill_percent \
                 FROM shared_models_set \
                 WHERE shared_models_set.id={set_pk};"

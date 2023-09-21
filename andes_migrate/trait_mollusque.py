@@ -27,17 +27,18 @@ class TraitMollusque(TablePecheSentinelle):
         self.proj_pk = proj.pk
         self.data = {}
 
-        self.list_set_pk = []
-        self.set_pk_idx: int | None = None
-        self.set_pk: int | None = None
 
-        self._init_set_list()
+        self._init_rows()
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
-    def _init_set_list(self):
-        """init a list of sets (just pKeys) from Andes"""
+    def _init_rows(self):
+        """init a list of sets (just pKeys) from Andes
 
+        use _get_current_row_pk() to get the current Andes Set.id
+        use _get_current_row_pk() to get the current Andes Set.id
+
+        """
         query = f"SELECT shared_models_set.id \
                 FROM shared_models_set \
                 WHERE shared_models_set.cruise_id={self.proj_pk} \
@@ -46,26 +47,11 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
 
-        self.list_set_pk: list = result
-        self.set_pk_idx = 0
-        self.set_pk = self.list_set_pk[self.set_pk_idx][0]
+        # a list of all the set_pk's
+        self._row_list: list = result
+        # start at zero index (not to be confused with pk)
+        self._row_idx = 0
 
-    def _get_current_set_pk(self) -> int:
-        """
-        Return the Andes primary key of the current set
-        """
-        if self.set_pk_idx is not None and self.list_set_pk:
-            return self.list_set_pk[self.set_pk_idx][0]
-        else:
-            raise ValueError
-
-    def _increment_current_set(self):
-        """focus on next set"""
-        if self.set_pk_idx and self.list_set_pk:
-            if self.set_pk_idx < len(self.list_set_pk) - 1:
-                self.set_pk_idx += 1
-            else:
-                raise StopIteration
 
     def populate_data(self):
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
@@ -146,7 +132,7 @@ class TraitMollusque(TablePecheSentinelle):
         -----
         shared_models.set.set_number
         """
-        set_pk = self._get_current_set_pk()
+        set_pk = self._get_current_row_pk()
         query = f"SELECT shared_models_set.set_number \
                 FROM shared_models_set \
                 WHERE shared_models_set.id={set_pk};"
@@ -225,7 +211,7 @@ class TraitMollusque(TablePecheSentinelle):
                 FROM shared_models_set \
                 LEFT JOIN shared_models_newstation \
                     ON shared_models_set.new_station_id = shared_models_newstation.id \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
 
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
@@ -304,7 +290,7 @@ class TraitMollusque(TablePecheSentinelle):
                 FROM shared_models_set \
                 LEFT JOIN shared_models_setresult \
                     ON shared_models_set.set_result_id = shared_models_setresult.id \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -492,7 +478,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.start_latitude \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -514,7 +500,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.end_latitude \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -535,7 +521,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.start_longitude \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -558,7 +544,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.end_longitude \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -713,7 +699,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.start_depth_m \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -744,7 +730,7 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.start_depth_m \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -775,12 +761,18 @@ class TraitMollusque(TablePecheSentinelle):
         """
         query = f"SELECT shared_models_set.remarks \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-        return to_return
 
+        if type(to_return)==datetime.datetime:
+            to_return = datetime.datetime.strftime(to_return, strfmt)
+            return to_return
+        else:
+            self.logger.warn("Expected a datetime object , received None")
+            return None
+        
     @validate_int(not_null=False)
     @log_results
     def get_no_chargement(self) -> float | int | None:
@@ -809,13 +801,17 @@ class TraitMollusque(TablePecheSentinelle):
 
         query = f"SELECT shared_models_set.start_date \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         strfmt = "%Y-%m-%d %H:%M:%S"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
-        return to_return
+        if type(to_return)==datetime.datetime:
+            to_return = datetime.datetime.strftime(to_return, strfmt)
+            return to_return
+        else:
+            self.logger.warn("Expected a datetime object , received None")
+            return None
 
     @validate_string(max_len=19, not_null=False)
     @log_results
@@ -835,13 +831,17 @@ class TraitMollusque(TablePecheSentinelle):
 
         query = f"SELECT shared_models_set.end_date \
                 FROM shared_models_set \
-                WHERE shared_models_set.id={self._get_current_set_pk()};"
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         strfmt = "%Y-%m-%d %H:%M:%S"
-        to_return = datetime.datetime.strftime(to_return, strfmt)
-        return to_return
+        if type(to_return)==datetime.datetime:
+            to_return = datetime.datetime.strftime(to_return, strfmt)
+            return to_return
+        else:
+            self.logger.warn("Expected a datetime object , received None")
+            return None
 
     @deprecate
     @log_results

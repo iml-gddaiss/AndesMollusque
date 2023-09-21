@@ -17,6 +17,45 @@ class TablePecheSentinelle:
         # )
         self.reference_data = OracleHelper()
 
+
+        self._row_list = []
+        self._row_idx: int | None = None
+
+    def _init_rows(self):
+        """ Initialistion method 
+        This queries the Andes DB and creaters a list of row entries to be added to the current table
+
+        After running this methods initialises the following attribute:
+        self._row_list
+        self._row_idx (hopefully to self._row_idx=0)
+
+        Need to override by child class
+        """
+        raise NotImplementedError
+
+    def _get_current_row_pk(self) -> int:
+        """
+        Return the Andes primary key of the current row
+        """
+        if self._row_idx is not None and self._row_list:
+            return self._row_list[self._row_idx][0]
+        else:
+            raise ValueError
+
+    def _increment_row(self):
+        """
+        Increment to focus on next row
+        """
+        if self._row_idx and self._row_list:
+            if self._row_idx < len(self._row_list) - 1:
+                self._row_idx += 1
+            else:
+                raise StopIteration
+        else:
+            self.logger.error("Row data not initialise, did you run _init_rows()?")
+            raise ValueError
+
+
     def _assert_one(self, result):
         """ asserts that the query returns only one result.
         raises ValueError otherwise
