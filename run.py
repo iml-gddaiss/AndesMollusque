@@ -18,4 +18,4 @@ engin = EnginMollusque(trait)
 # engin.populate_data()
 
 capture = CaptureMollusque(engin)
-# capture.populate_data()
+capture.populate_data()

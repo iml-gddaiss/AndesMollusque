@@ -3,6 +3,8 @@ import pyodbc
 import logging
 import oracledb
 
+from oracledb.exceptions import DatabaseError
+
 from dotenv import load_dotenv
 
 from andes_migrate.db_helper import DBHelper
@@ -51,8 +53,16 @@ class OracleHelper(DBHelper):
             res = self.cur.execute(query)
             return res.fetchall()
         else:
-            self.cur.execute(query)
-            return self.cur.fetchall()
+            try:
+                self.cur.execute(query)
+            except DatabaseError as exc:
+                self.logger.error("Error to executing query: %s", query)
+                raise exc
+
+            else:
+                return self.cur.fetchall()
+
+
 
     def _to_oracle_coord(self, coord: float | None) -> float | None:
         """convert to the unique coordinate encoding scheme

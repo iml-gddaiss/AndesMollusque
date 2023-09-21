@@ -114,24 +114,79 @@ class CaptureMollusque(TablePecheSentinelle):
         """ COD_ESP_GEN INTEGER / NUMBER(5,0)
         Identification de l'espèce capturée tel que défini dans la table ESPECE_GENERAL
 
+        Associating this code to the andes species will require jumping through a number
+        of hoops.
+        On the Andes side, the mission has a `code_collection` that defines the regional
+        code vernacular (eg., `STRAP` vs `RVAN`). Extracting a code will necessitate going
+        throught the mapping table (unless we assume vernacular was already applied).
+
+        On the Oracle side there is a similar challenge: Species are internally stored with
+        `COD_ESP_GEN` that is eventually mapped to a species code using the NORM (again,
+        typically `IML_STRAP` or `RVAN`).
+
+        The link is initially made with the mapped values (ex., Andes.id->-strap = 
+        Oracle.id->strap) but then reversed to extract the needed `COD_ESP_GEN`.
+        
+        If a species cannot be mapped to a pre-existing `COD_ESP_GEN`, an item is added to
+        the tasks that need to be made prior to commiting the data.
+
+
         """
-        query = f"SELECT shared_models_stratificationtype.description_fra \
-                FROM shared_models_cruise \
-                LEFT JOIN shared_models_stratificationtype \
-                    ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
-                WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_species.id, shared_models_species.aphia_id, shared_models_species.code "
+                 "FROM ecosystem_survey_catch "
+                 "LEFT JOIN shared_models_species "
+                 "ON shared_models_species.id=ecosystem_survey_catch.species_id "
+                f"WHERE ecosystem_survey_catch.id={self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        desc = result[0][0]
 
-        key = self.reference_data.get_ref_key(
-            table="TYPE_TRAIT",
-            pkey_col="COD_TYP_TRAIT",
-            col="DESC_TYP_TRAIT_F",
-            val=andes_2_oracle_map[desc],
-        )
-        to_return = 0
-        return to_return
+        andes_id = result[0][0]
+        andes_aphia_id = result[0][1]
+        andes_code = result[0][2]
+        # print( andes_id, andes_aphia_id, andes_code)
+
+        # try to match an aphia_id
+        self.logger.info("Will try to match to Oracle using aphia_id=%s", andes_aphia_id)
+        norme_name_str = "AphiaId"
+        query = ("SELECT ESPECE_NORME.COD_ESP_GEN "
+                 "FROM ESPECE_NORME "
+                 "LEFT JOIN NORME "
+                 "ON ESPECE_NORME.COD_NORME=NORME.COD_NORME "
+                f"WHERE NORME.NOM_NORME='{norme_name_str}' "
+                f"AND ESPECE_NORME.COD_ESPECE={andes_aphia_id}")
+
+        result = self.reference_data.execute_query(query)
+        try:
+            self._assert_one(result)
+        except ValueError:
+                self.logger.warn("did not match to Oracle using aphia_id=%s", andes_aphia_id)
+        else:
+            to_return = result[0][0]
+            self.logger.info("Found matching aphia id, returning COD_ESP_GEN=%s", to_return)
+            # return to_return
+        
+        # try to match with (assumed) strap code
+        self.logger.info("Will try to match to Oracle assuming strap=%s", andes_code)
+        norme_name_str = "STRAP_IML"
+        query = ("SELECT ESPECE_NORME.COD_ESP_GEN "
+                 "FROM ESPECE_NORME "
+                 "LEFT JOIN NORME "
+                 "ON ESPECE_NORME.COD_NORME=NORME.COD_NORME "
+                f"WHERE NORME.NOM_NORME='{norme_name_str}' "
+                f"AND ESPECE_NORME.COD_ESPECE={andes_code}")
+
+        result = self.reference_data.execute_query(query)
+        try:
+            self._assert_one(result)
+        except ValueError:
+            self.logger.warn("did not match to Oracle using code=%s (assuming strap)", andes_code)
+            raise(ValueError)
+        else:
+            to_return = result[0][0]
+            self.logger.info("Found matching strap code, returning COD_ESP_GEN=%s", to_return)
+            return to_return
+
+
 
     @validate_int()
     @log_results
