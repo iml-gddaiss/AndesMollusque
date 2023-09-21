@@ -44,7 +44,8 @@ class EnginMollusque(TablePecheSentinelle):
         """COD_SOURCE_INFO INTEGER / NUMBER(5,0)
         Identification de la source d'information tel que défini dans la table SOURCE_INFO
 
-        Extrait du trait
+        Extrait du trait::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_cod_source_info`
+
         """
 
         return self.trait.get_cod_source_info()
@@ -74,7 +75,8 @@ class EnginMollusque(TablePecheSentinelle):
         """NO_RELEVE INTEGER / NUMBER(5,0)
         Numéro séquentiel du relevé
 
-        Extrait du trait
+        Extrait du trait::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_no_releve`
+
         """
         return self.trait.get_no_releve()
 
@@ -84,7 +86,7 @@ class EnginMollusque(TablePecheSentinelle):
         """IDENT_NO_TRAIT INTEGER / NUMBER(5,0)
         Numéro séquentiel d'identification du trait
 
-        Extrait du trait
+        Extrait du trait::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_ident_no_trait`
         """
         return self.trait.get_ident_no_trait()
 
@@ -110,7 +112,7 @@ class EnginMollusque(TablePecheSentinelle):
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 
-        Extrait du trait
+        Extrait du trait::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_cod_nbpc`
         """
         return self.trait.get_cod_nbpc()
 

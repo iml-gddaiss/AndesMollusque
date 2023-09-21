@@ -107,7 +107,7 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_SOURCE_INFO INTEGER / NUMBER(5,0)
         Identification de la source d'information tel que défini dans la table SOURCE_INFO
 
-        Extrait du projet.
+        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_cod_source_info`
         """
 
         return self.proj.get_cod_source_info()
@@ -117,7 +117,7 @@ class TraitMollusque(TablePecheSentinelle):
         """NO_RELEVE INTEGER / NUMBER(5,0)
         Numéro séquentiel du relevé
 
-        Extrait du projet.
+        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_no_releve`
         """
         return self.proj.get_no_releve()
 
@@ -126,7 +126,7 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 
-        Extrait du projet.
+        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_cod_nbpc`
         """
         return self.proj.get_cod_nbpc()
 

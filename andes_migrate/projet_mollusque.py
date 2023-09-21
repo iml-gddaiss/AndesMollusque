@@ -140,6 +140,8 @@ class ProjetMollusque(TablePecheSentinelle):
         """COD_SOURCE_INFO INTEGER / NUMBER(5,0),
         Identification de la source d'information tel que défini dans la table SOURCE_INFO
 
+        Andes: `shared_models_cruise.description`
+
         CONTRAINTE
         La valeur du champ shared_models_cruise.description (FR: Description)
         doit absolument correspondres avec la description présente dans la table SOURCE_INFO:
@@ -186,6 +188,8 @@ class ProjetMollusque(TablePecheSentinelle):
         """NO_RELEVE INTEGER / NUMBER(5,0)
         Numéro séquentiel du relevé
 
+        Andes: Pas dans Andes, doit être spécifié à l'initialisation.
+
         """
         # this has to be supplied as input using self.init_input
         return int(self.no_releve)
@@ -196,6 +200,8 @@ class ProjetMollusque(TablePecheSentinelle):
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 
+        Andes: `shared_models_vessel.nbpc`
+
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
 
@@ -204,7 +210,7 @@ class ProjetMollusque(TablePecheSentinelle):
                  "FROM shared_models_cruise "
                  "LEFT JOIN shared_models_vessel "
                  "ON shared_models_cruise.vessel_id=shared_models_vessel.id "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()};")
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -228,15 +234,16 @@ class ProjetMollusque(TablePecheSentinelle):
         """ANNEE INTEGER / NUMBER(4,0)
         Année de réalisation du projet
 
+        Andes: `shared_models_cruise.season`
+
         """
-        query = f"SELECT season FROM shared_models_cruise where shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_cruise.season " 
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-
         to_return = result[0][0]
 
-        # typecast val
-        to_return = int(to_return)
         return to_return
 
     @validate_int()
@@ -244,6 +251,8 @@ class ProjetMollusque(TablePecheSentinelle):
     def get_cod_serie_hist(self) -> int:
         """COD_SERIE_HIST INTEGER /NUMBER(5,0) NOT NULL,
         Identification du type de série auquel les données sont liées tel que défini dans la table INDICE_SUIVI_ABONDANCE
+
+        Andes: Pas dans Andes, doit être spécifié à l'initialisation.
 
         15 -> Indice d'abondance zone 16E - pétoncle
         16 -> Indice d'abondance zone 16F - pétoncle
@@ -283,8 +292,9 @@ class ProjetMollusque(TablePecheSentinelle):
     @log_results
     def get_cod_type_stratif(self) -> int:
         """COD_TYP_STRATIF INTEGER / NUMBER(5,0)NOT NULL,
-
         Identification du type de stratification utilisé durant l'activité tel que défini dans la table TYPE_STRATIFICATION
+
+        Andes: `shared_models_stratificationtype.code`
 
         7 -> Station fixe
         8 -> Échantillonnage aléatoire simple
@@ -295,12 +305,13 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # res = self.cur.execute(f"SELECT shared_models_stratificationtype.code FROM shared_models_stratificationtype ;")
 
-        query = f"SELECT \
-                    shared_models_stratificationtype.code, \
-                    shared_models_stratificationtype.description_fra \
-                FROM shared_models_cruise \
-                LEFT JOIN shared_models_stratificationtype ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id \
-                WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT "
+                    "shared_models_stratificationtype.code, "
+                    "shared_models_stratificationtype.description_fra "
+                "FROM shared_models_cruise "
+                "LEFT JOIN shared_models_stratificationtype "
+                "ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id "
+               f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -318,10 +329,13 @@ class ProjetMollusque(TablePecheSentinelle):
         """DATE_DEB_PROJET TIMESTAMP / DATE
         Date de début du projet format AAAA-MM-JJ
 
-        TODO: verify datetime format
+        Andes: `shared_models_cruise.start_date`
+
         """
 
-        query = f"SELECT start_date FROM shared_models_cruise where id = {self._get_current_row_pk()}"
+        query = ("SELECT shared_models_cruise.start_date "
+                 "FROM shared_models_cruise "
+                f"WHERE id = {self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -335,10 +349,14 @@ class ProjetMollusque(TablePecheSentinelle):
         """DATE_FIN_PROJET TIMESTAMP / DATE
         Date de début du projet format AAAA-MM-JJ
 
+        Andes: `shared_models_cruise.end_date`
+
         TODO: verify datetime format
         """
 
-        query = f"SELECT end_date FROM shared_models_cruise where id = {self._get_current_row_pk()}"
+        query = ("SELECT shared_models_cruise.end_date "
+                 "FROM shared_models_cruise "
+                f"WHERE id = {self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -354,8 +372,13 @@ class ProjetMollusque(TablePecheSentinelle):
         """NO_NOTIF_IML VARCHAR(12) / VARCHAR2(12)
         Numéro de notification de recherche émis par l'Institut Maurice-Lamontagne
 
+        Andes: `shared_models_cruise.mission_number`
+
         """
-        query = f"SELECT mission_number FROM shared_models_cruise where id = {self._get_current_row_pk()}"
+
+        query = ("SELECT shared_models_cruise.mission_number "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -367,8 +390,12 @@ class ProjetMollusque(TablePecheSentinelle):
         """CHEF_MISSION VARCHAR(50) / VARCHAR2(50)
         Nom du chef de mission
 
+        Andes: `shared_models_cruise.chief_scientist`
+
         """
-        query = f"SELECT chief_scientist FROM shared_models_cruise where id = {self._get_current_row_pk()}"
+        query = ("SELECT shared_models_cruise.chief_scientist "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -379,6 +406,8 @@ class ProjetMollusque(TablePecheSentinelle):
     def get_seq_pecheur(self) -> int | None:
         """SEQ_PECHEUR INTEGER / NUMBER(10,0)
         Numéro unique pour l'identification du pêcheur tel que défini dans la table PECHEUR
+
+        Andes: Pas dans Andes
 
         Champ de type SEQ
 
@@ -406,19 +435,19 @@ class ProjetMollusque(TablePecheSentinelle):
         """DUREE_TRAIT_VISEE DOUBLE / NUMBER
         Durée anticipée pour la réalisation d'un trait, unité minute
 
+        Andes: `shared_models_cruise.targeted_trawl_duration`
+
         descript: targeted set duration
         units: minutes
 
         """
 
-        query = f"SELECT shared_models_cruise.targeted_trawl_duration \
-                  FROM shared_models_cruise \
-                  WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_cruise.targeted_trawl_duration "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-
-        to_return = float(to_return)
         return to_return
 
     @log_results
@@ -426,12 +455,12 @@ class ProjetMollusque(TablePecheSentinelle):
         """DUREE_TRAIT_VISEE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Durée_Trait_Visee"
 
-        units: minutes
+        Andes: Pas dans Andes
+
+        This function always returns a hard-coded value of 0.1
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
         """
-        # hard-code this
         to_return = self._hard_coded_result(0.1)
-        to_return = float(to_return)
         return to_return
 
     @log_results
@@ -439,23 +468,28 @@ class ProjetMollusque(TablePecheSentinelle):
         """VIT_TOUAGE_VISEE DOUBLE / NUMBER
         Vitesse anticipée du navire pour la réalisation d'un trait, unité noeud (mille marin)
 
+        Andes: `shared_models_cruise.targeted_trawl_speed`
+
         units: knots
 
         """
 
-        query = f"SELECT shared_models_cruise.targeted_trawl_speed \
-                  FROM shared_models_cruise \
-                  WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_cruise.targeted_trawl_speed "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-        to_return = float(to_return)
         return to_return
 
     @log_results
     def get_vit_touage_visee_p(self) -> float | None:
         """VIT_TOUAGE_VISEE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Vit_Touage_Visee"
+        
+        Andes: Pas dans Andes
+
+        This function always returns a hard-coded value of 0.1
 
         units: knots
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -463,13 +497,14 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # hard-code this
         to_return = self._hard_coded_result(0.1)
-        to_return = float(to_return)
         return to_return
 
     @log_results
     def get_dist_chalute_visee(self) -> float | None:
         """DIST_CHALUTE_VISEE DOUBLE / NUMBER
         Distance anticipée parcourue par l'engin de pêche, unité mètre
+
+        Andes: `shared_models_cruise.targeted_trawl_duration`
 
         units: meters
 
@@ -481,9 +516,9 @@ class ProjetMollusque(TablePecheSentinelle):
         # time_h = self.get_duree_trait_visee() / 60.0
         # dist_m = speed_kph * time_h * 1000
 
-        query = f"SELECT shared_models_cruise.targeted_trawl_duration \
-                  FROM shared_models_cruise \
-                  WHERE shared_models_cruise.id={self.pk};"
+        query = ("SELECT shared_models_cruise.targeted_trawl_duration "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -495,13 +530,16 @@ class ProjetMollusque(TablePecheSentinelle):
         """DIST_CHALUTE_VISEE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Dsitance_Chalute_Visee"
 
+        Andes: Pas dans Andes
+
+        This function always returns a hard-coded value of 1.0
+
         units: meters
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
 
         """
         # hard-code this
         to_return = self._hard_coded_result(1.0)
-        to_return = float(to_return)
         return to_return
 
     @log_results
@@ -509,11 +547,12 @@ class ProjetMollusque(TablePecheSentinelle):
         """RAPPORT_FUNE_VISEE DOUBLE / NUMBER
         Rapport de longueur de fune sur profondeur visée
 
-        """
+        Andes: Pas dans Andes
 
-        # hard-code this
+        This function always returns a hard-coded value of 2.0
+
+        """
         to_return = self._hard_coded_result(2.0)
-        to_return = float(to_return)
         return to_return
 
     @log_results
@@ -521,12 +560,14 @@ class ProjetMollusque(TablePecheSentinelle):
         """RAPPORT_FUNE_VISEE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Rappport_Fune_Visee"
 
+        Andes: Pas dans Andes
+
+        This function always returns a hard-coded value of 0.1
+
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
 
         """
-        # hard-code this
         to_return = self._hard_coded_result(0.1)
-        to_return = float(to_return)
         return to_return
 
     @validate_string(max_len=250, not_null=False)
@@ -534,6 +575,8 @@ class ProjetMollusque(TablePecheSentinelle):
     def get_nom_equip_navire(self) -> str | None:
         """NOM_EQUIPE_NAVIRE VARCHAR(250) / VARCHAR2(250)
         Noms des membres d'équipage
+
+        Andes: Pas dans Andes
 
         """
         raise NotImplementedError
@@ -544,15 +587,15 @@ class ProjetMollusque(TablePecheSentinelle):
         """NOM_SCIENCE_NAVIRE VARCHAR(250) / VARCHAR2(250)
         Noms des membres de ''équipe scientifique
 
+        Andes: `shared_models_cruise.samplers`
+
         """
-        query = f"SELECT shared_models_cruise.samplers \
-                  FROM shared_models_cruise \
-                  WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_cruise.samplers "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-
-        to_return = str(to_return)
         return to_return
 
     @validate_string(max_len=255, not_null=False)
@@ -561,17 +604,17 @@ class ProjetMollusque(TablePecheSentinelle):
         """REM_PROJET_MOLL VARCHAR(255) / VARCHAR2(500)
         Remarque sur le projet
 
+        Andes: `shared_models_cruise.notes`
+        
         N.B. max length mistmatch between Orale and MSAccess
 
         """
-        query = f"SELECT shared_models_cruise.notes \
-                  FROM shared_models_cruise \
-                  WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        query = ("SELECT shared_models_cruise.notes "
+                 "FROM shared_models_cruise "
+                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
-
-        to_return = str(to_return)
         return to_return
 
     @validate_int(not_null=False)
@@ -579,6 +622,8 @@ class ProjetMollusque(TablePecheSentinelle):
     def get_no_chargement(self) -> int | float | None:
         """NO_CHARGEMENT INTEGER / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
+
+        Andes: Pas dans Andes
 
         N.B. Datatype mistmatch between Oracle and MSAccess
         Oracle Optimisation: this datatype should be INTEGER
@@ -592,30 +637,3 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-if __name__ == "__main__":
-    andes_db = AndesHelper()
-
-    proj = ProjetMollusque(andes_db)
-    proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
-
-    proj.get_cod_source_info()
-    proj.get_cod_nbpc()
-    proj.get_annee()
-    proj.get_cod_serie_hist()
-    proj.get_cod_type_stratif()
-    proj.get_date_deb_project()
-    proj.get_date_fin_project()
-    proj.get_no_notif_iml()
-    proj.get_chef_mission()
-    # proj.get_seq_pecheur()
-    proj.get_duree_trait_visee()
-    proj.get_duree_trait_visee_p()
-    proj.get_vit_touage_visee()
-    proj.get_vit_touage_visee_p()
-    proj.get_dist_chalute_visee()
-    proj.get_dist_chalute_visee_p()
-    # proj.get_nom_equip_navire()
-    proj.get_nom_science_navire()
-    proj.get_rem_projet_moll()
-    # proj.get_no_chargement()
-    # proj.validate()
