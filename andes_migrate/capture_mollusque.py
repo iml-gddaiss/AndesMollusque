@@ -60,7 +60,7 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data['IDENT_NO_TRAIT'] = self.get_ident_no_trait()
         self.data['COD_TYP_PANIER'] = self.get_cod_type_panier()
         self.data['COD_NBPC'] = self.get_cod_nbpc()
-        # self.data['FRACTION_PECH'] = self.get_
+        self.data['FRACTION_PECH'] = self.get_fraction_peche()
         # self.data['NO_ENGIN'] = self.get_
         # self.data['FRACTION_ECH'] = self.get_
         # self.data['COD_DESCRIP_CAPT'] = self.get_
@@ -84,7 +84,8 @@ class CaptureMollusque(TablePecheSentinelle):
         """COD_SOURCE_INFO INTEGER / NUMBER(5,0)
         Identification de la source d'information tel que défini dans la table SOURCE_INFO
 
-        Extrait du trait
+        Extrait du trait::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_cod_source_info`
+
         """
 
         return self.engin.get_cod_source_info()
@@ -187,7 +188,6 @@ class CaptureMollusque(TablePecheSentinelle):
             return to_return
 
 
-
     @validate_int()
     @log_results
     def get_ident_no_trait(self) -> int:
@@ -198,14 +198,6 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self.engin.get_ident_no_trait()
 
-    @log_results
-    def get_cod_nbpc(self) -> str:
-        """COD_NBPC VARCHAR(6) / VARCHAR2(6)
-        Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
-
-        Extrait du trait
-        """
-        return self.engin.get_cod_nbpc()
 
     @validate_int()
     @log_results
@@ -215,3 +207,26 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self.engin.get_cod_type_panier()
 
+    @log_results
+    def get_cod_nbpc(self) -> str:
+        """COD_NBPC VARCHAR(6) / VARCHAR2(6)
+        Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
+
+        Extrait du trait
+        """
+        return self.engin.get_cod_nbpc()
+
+    @log_results
+    def get_fraction_peche(self) -> float:
+        """ FRACTION_PECH DOUBLE / NUMBER
+        Fraction de panier qui a effectivement pêché. Nb paniers qui ont pêché sur nb paniers installés
+
+        N.B. the description seems wrong, it's not the fraction baskets, rather the number of baskets
+        Oracle Optimisation: this datatype should be INTEGER
+
+        Andes
+        This is currently not recorded in Andes.
+
+        """
+        to_return = 4
+        return to_return
