@@ -2,6 +2,8 @@ import os
 import logging
 import sqlite3
 import mysql.connector
+
+from mysql.connector.errors import ProgrammingError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -33,12 +35,20 @@ class AndesHelper:
         self.cur = self.con.cursor()
 
     def execute_query(self, query:str):
+        
         if self.sqlite:
             res = self.cur.execute(query)
             return res.fetchall()
         else:
-            self.cur.execute(query)
-            return self.cur.fetchall() 
+            try:
+                self.cur.execute(query)
+            except ProgrammingError as exc:
+                self.logger.error("Error to executing query: %s", query)
+                raise exc
+
+            else:
+                return self.cur.fetchall()
+             
 
 
 if __name__ == "__main__":

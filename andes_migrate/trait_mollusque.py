@@ -21,10 +21,10 @@ class TraitMollusque(TablePecheSentinelle):
     """
 
     def __init__(self, andes_db: AndesHelper, proj: ProjetMollusque):
-        super().__init__()
+        super().__init__(ref=proj.reference_data)
+
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
-        self.proj_pk = proj.pk
         self.data = {}
 
 
@@ -33,22 +33,30 @@ class TraitMollusque(TablePecheSentinelle):
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_rows(self):
-        """init a list of sets (just pKeys) from Andes
 
-        use _get_current_row_pk() to get the current Andes Set.id
-        use _get_current_row_pk() to get the current Andes Set.id
+        """ Initialisation method 
+        This queries the Andes DB and creaters a list of row entries to be added to the current table
+
+        After running this methods initialises the following attribute:
+        self._row_list
+        self._row_idx (hopefully to self._row_idx=0)
+
+        self._row_list will be populated with the associated Andes set ids for the current mission
+        self._row_idx will start at 0
 
         """
         query = f"SELECT shared_models_set.id \
                 FROM shared_models_set \
-                WHERE shared_models_set.cruise_id={self.proj_pk} \
+                WHERE shared_models_set.cruise_id={self.proj._get_current_row_pk()} \
                 ORDER BY shared_models_set.id ASC;"
 
         result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
 
-        # a list of all the set_pk's
-        self._row_list: list = result
+        # a list of all the Set pk's (need to unpack a bit)
+        self._row_list = [set[0] for set in result]
+        self._row_idx = 0
+
         # start at zero index (not to be confused with pk)
         self._row_idx = 0
 
@@ -181,7 +189,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         query = f"SELECT shared_models_cruise.area_of_operation \
                 FROM shared_models_cruise \
-                WHERE shared_models_cruise.id={self.proj.pk};"
+                WHERE shared_models_cruise.id={self.proj._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         secteur: str = result[0][0]
@@ -255,7 +263,7 @@ class TraitMollusque(TablePecheSentinelle):
                 FROM shared_models_cruise \
                 LEFT JOIN shared_models_stratificationtype \
                     ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
-                WHERE shared_models_cruise.id={self.proj.pk};"
+                WHERE shared_models_cruise.id={self.proj._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         desc = result[0][0]
@@ -894,7 +902,6 @@ if __name__ == "__main__":
     andes_db = AndesHelper()
 
     proj = ProjetMollusque(andes_db)
-    proj.init_mission_pk("IML-2023-011")
     proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
 
     trait = TraitMollusque(andes_db, proj)

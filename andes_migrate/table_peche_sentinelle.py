@@ -10,19 +10,23 @@ class TablePecheSentinelle:
 
   
     """
-    def __init__(self):
+    def __init__(self, ref:OracleHelper|None=None):
         self.logger = logging.getLogger(__name__)
         # self.reference_data = OracleHelper(
         #     access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
         # )
-        self.reference_data = OracleHelper()
+        if ref:
+            self.reference_data = ref
+        else:
+            self.reference_data = OracleHelper()
+
 
 
         self._row_list = []
         self._row_idx: int | None = None
 
     def _init_rows(self):
-        """ Initialistion method 
+        """ Initialisation method 
         This queries the Andes DB and creaters a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
@@ -38,7 +42,7 @@ class TablePecheSentinelle:
         Return the Andes primary key of the current row
         """
         if self._row_idx is not None and self._row_list:
-            return self._row_list[self._row_idx][0]
+            return self._row_list[self._row_idx]
         else:
             raise ValueError
 

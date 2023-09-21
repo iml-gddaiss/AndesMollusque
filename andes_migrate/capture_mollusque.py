@@ -17,11 +17,38 @@ class CaptureMollusque(TablePecheSentinelle):
     """
 
     def __init__(self, engin: EnginMollusque):
-        super().__init__()
-        self.engin: EnginMollusque = engin
+        super().__init__(ref=engin.reference_data)
 
+        self.engin: EnginMollusque = engin
         self.andes_db = engin.andes_db
         self.data = {}
+
+        self._init_rows()
+
+    def _init_rows(self):
+        """ Initialisation method 
+        This queries the Andes DB and creaters a list of row entries to be added to the current table
+
+        After running this methods initialises the following attribute:
+        self._row_list
+        self._row_idx (hopefully to self._row_idx=0)
+
+        self._row_list will be populated with the associated Andes catch ids for the current set
+        self._row_idx will start at 0
+
+        """
+        query = ("SELECT ecosystem_survey_catch.id "
+                "FROM ecosystem_survey_catch "
+               f"WHERE ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
+                "ORDER BY ecosystem_survey_catch.id ASC;")
+
+        result = self.andes_db.execute_query(query)
+        self._assert_not_empty(result)
+
+        # a list of all the catch pk's (need to unpack a bit)
+        self._row_list = [catch[0] for catch in result]
+        self._row_idx = 0
+
 
     def populate_data(self):
         """_summary_
@@ -88,6 +115,22 @@ class CaptureMollusque(TablePecheSentinelle):
         Identification de l'espèce capturée tel que défini dans la table ESPECE_GENERAL
 
         """
+        query = f"SELECT shared_models_stratificationtype.description_fra \
+                FROM shared_models_cruise \
+                LEFT JOIN shared_models_stratificationtype \
+                    ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
+                WHERE shared_models_cruise.id={self._get_current_row_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        desc = result[0][0]
+
+        key = self.reference_data.get_ref_key(
+            table="TYPE_TRAIT",
+            pkey_col="COD_TYP_TRAIT",
+            col="DESC_TYP_TRAIT_F",
+            val=andes_2_oracle_map[desc],
+        )
+        to_return = 0
         return to_return
 
     @validate_int()

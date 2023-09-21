@@ -17,7 +17,7 @@ class EnginMollusque(TablePecheSentinelle):
     """
 
     def __init__(self, trait: TraitMollusque):
-        super().__init__()
+        super().__init__(ref=trait.reference_data)
         self.trait: TraitMollusque = trait
 
         self.andes_db = trait.andes_db

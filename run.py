@@ -8,12 +8,14 @@ from andes_migrate.andes_helper import AndesHelper
 andes_db = AndesHelper()
 
 proj = ProjetMollusque(andes_db)
-proj.init_mission_pk("IML-2023-011")
 proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
+# proj.populate_data()
+
 trait = TraitMollusque(andes_db, proj)
+# trait.populate_data()
 
 engin = EnginMollusque(trait)
 # engin.populate_data()
 
 capture = CaptureMollusque(engin)
-capture.populate_data()
+# capture.populate_data()
