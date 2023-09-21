@@ -1,13 +1,8 @@
 import logging
-import datetime
-from unidecode import unidecode
 
-from andes_migrate.projet_mollusque import ProjetMollusque
 from andes_migrate.trait_mollusque import TraitMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
-from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.decorators import (
-    deprecate,
     log_results,
     validate_string,
     validate_int,
@@ -34,7 +29,7 @@ class EnginMollusque(TablePecheSentinelle):
         self.data["NO_RELEVE"] = self.get_no_releve()
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["NO_ENGIN"] = self.get_no_engin()
-        self.data["CODE_NBPC"] = self.get_code_nbpc()
+        self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
         self.data["NO_CHARGEMENT"] = self.get_no_chargement()
         self.data["LONG_FUNE"] = self.get_long_fune()
@@ -111,7 +106,7 @@ class EnginMollusque(TablePecheSentinelle):
         return to_return
 
     @log_results
-    def get_code_nbpc(self) -> str:
+    def get_cod_nbpc(self) -> str:
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
         Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE
 

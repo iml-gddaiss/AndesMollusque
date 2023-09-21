@@ -1,3 +1,4 @@
+from andes_migrate.capture_mollusque import CaptureMollusque
 from andes_migrate.projet_mollusque import ProjetMollusque
 from andes_migrate.trait_mollusque import TraitMollusque
 from andes_migrate.engin_mollusque import EnginMollusque
@@ -12,5 +13,7 @@ proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="péton
 trait = TraitMollusque(andes_db, proj)
 
 engin = EnginMollusque(trait)
+# engin.populate_data()
 
-engin.populate_data()
+capture = CaptureMollusque(engin)
+capture.populate_data()
