@@ -3,6 +3,8 @@ from andes_migrate.engin_mollusque import EnginMollusque
 
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
+    Deprecated,
+    NotAndes,
     tag,
     log_results,
     validate_string,
@@ -69,11 +71,11 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
         self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
         self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
-        # self.data['NBR_CAPT'] = self.get_
-        # self.data['FRACTION_PECH_P'] = self.get_
-        # self.data['NBR_ECH'] = self.get_
-        # self.data['PDS_CAPT'] = self.get_
-        # self.data['PDS_CAPT_P'] = self.get_
+        self.data['NBR_CAPT'] = self.get_nbr_capt()
+        self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
+        self.data['NBR_ECH'] = self.get_nbr_ech()
+        self.data['PDS_CAPT'] = self.get_pds_capt()
+        self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
         # self.data['PDS_ECH'] = self.get_
         # self.data['PDS_ECH_P'] = self.get_
         # self.data['NO_CHARGEMENT'] = self.get_
@@ -413,3 +415,110 @@ class CaptureMollusque(TablePecheSentinelle):
             self.logger.error("Cannot determine cod_type_mesure for catch %s", self._get_current_row_pk())
             raise ValueError
 
+    @tag(Computed, HardCoded, NotAndes)
+    @log_results
+    def get_nbr_capt(self) ->float | None:
+        """NBR_CAPT DOUBLE / NUMBER 
+        Nombre d'individus dans la capture
+
+        Oracle Optimisation: Sounds like it should be an INTEGER, but fractional counts can arised from extrpolations. It depends on the source.
+
+        This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
+        There may be ambiguities whether this is derived or measured.
+        
+        For scallops (inputed from the scallop team), the number of individuals specimens the specimens table can be counted.
+        For scallops (inputed from biodiversity team), the number of individuals can be extrapolated from their sample basket to the catch (i.e., x4).
+
+        In order to prevent confusion, no choice is implemented. This may change in the future. 
+
+        Hard-coded: This function always returns None
+ 
+        """
+        return self._hard_coded_result(None)
+
+    @tag(HardCoded, NotAndes)
+    @log_results
+    def get_fraction_peche_p(self) -> float | None:
+        """FRACTION_PECH_P DOUBLE / NUMBER
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Fraction_Pech"
+
+        In order to prevent confusion, no choice is implemented. This may change in the future. 
+
+        Hard-coded: This function always returns None
+        """
+        return self._hard_coded_result(None)
+    
+    @tag(HardCoded)
+    @log_results
+    def get_nbr_ech(self) -> float | None:
+        """NBR_ECH DOUBLE / NUMBER
+        Dénombrement d'individus dans l'échantillon
+
+        This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
+        There may be ambiguities depending upon what exaclty is meant with "sample"
+        
+        For scallops (inputed from the scallop team), there is typically no sample.
+        For scallops (inputed from biodiversity team), the sample can be their own dredge basket (1/4)
+        For scallops (inputed from biodiversity team), the sample can be a sub-sample from their dredge basket
+
+        In order to prevent confusion, no choice is implemented. This may change in the future. 
+
+        Hard-coded: This function always returns None
+
+        """
+        return self._hard_coded_result(None)
+
+    @tag(HardCoded, Deprecated)
+    @log_results
+    def get_pds_capt(self) -> float | None:
+        """PDS_CAPT DOUBLE / NUMBER 
+        Poids de la capture, unité kg
+        a ne pas confondre avec le poids du capitaine :)
+
+        This is a tricky field, as full catches are not typically weighed.
+        Some metric may be derived using more than one approach.
+
+        Historically, this column was NEVER populated.
+        Should be deprecated?
+        Hard-coded: This function always returns None
+
+        """
+    
+        return self._hard_coded_result(None)
+
+    @tag(HardCoded, Deprecated)
+    @log_results
+    def get_pds_capt_p(self) -> float | None:
+        """PDS_CAPT_P DOUBLE / NUMBER 
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Pds_Capt"
+
+        Historically, this column was NEVER populated.
+        Should be deprecated?
+        Hard-coded: This function always returns None
+
+        """
+
+    @tag(HardCoded, Deprecated)
+    @log_results
+    def get_pds_ech(self) -> float | None:
+        """PDS_ECH DOUBLE / NUMBER 
+        Poids de l'échantillon, unité kg
+
+        This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
+        There may be ambiguities depending upon what exaclty is meant with "sample"
+
+        Hard-coded: This function always returns None
+
+        """
+    
+        return self._hard_coded_result(None)
+
+    @tag(HardCoded, Deprecated)
+    @log_results
+    def get_pds_ech_p(self) -> float | None:
+        """PDS_ECH_P DOUBLE / NUMBER 
+        Nombre de chiffre après la décimale pour la précision d'affichage associée à "Pds_Ech"
+
+        Hard-coded: This function always returns None
+
+        """
