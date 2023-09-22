@@ -3,9 +3,11 @@ from andes_migrate.engin_mollusque import EnginMollusque
 
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
+    tag,
     log_results,
     validate_string,
     validate_int,
+    Computed, HardCoded, AndesCodeLookup
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -66,7 +68,7 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data["FRACTION_ECH"] = self.get_fraction_ech()
         self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
         self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
-        # self.data['COD_TYP_MESURE'] = self.get_
+        self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
         # self.data['NBR_CAPT'] = self.get_
         # self.data['FRACTION_PECH_P'] = self.get_
         # self.data['NBR_ECH'] = self.get_
@@ -264,6 +266,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
         return self.engin.get_no_engin()
 
+    @tag(HardCoded)
     @log_results
     def get_fraction_ech(self)-> float:
         """FRACTION_ECH DOUBLE / NUMBER
@@ -279,6 +282,7 @@ class CaptureMollusque(TablePecheSentinelle):
         return to_return
 
     @validate_int(not_null=False)
+    @tag(AndesCodeLookup)
     @log_results
     def get_cod_descrip_capt(self) -> int| None:
         """COD_DESCRIP_CAPT INTEGER / NUMBER(5,0)
@@ -312,6 +316,7 @@ class CaptureMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_fraction_ech_p(self) -> float | None:
         """FRACTION_ECH_P DOUBLE / NUMBER 
@@ -323,5 +328,88 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self._hard_coded_result(None)
     
+    @tag(Computed)
+    @log_results
+    def get_cod_type_mesure(self) -> int:
+        """COD_TYP_MESURE INTEGER / NUMBER(5,0) 
+        Spécification du type d'information recueillie tel que défini dans la table TYPE_MESURE_MOLL
 
-    
+        1 -> Données qualitatives
+        2 -> Données quantitatives
+
+        It's tempting to skip this field, but it is not nullable.
+        Consequently, it will be computed from andes data: 
+        2 -> if catch has weighted baskets (with nonzero values) or a legit specimen 
+        (a specimen that has a specimen id is assumed to contain a quantitative observation).
+        else:
+        1 -> if catch has abundance category or photo
+        else:
+        raise error
+
+        (2) trumps (1)
+
+        """
+        # first, confirm TYPE_MESURE_MOLL keys
+        qualitative_code = self.reference_data.get_ref_key(
+            table="TYPE_MESURE_MOLL",
+            pkey_col="COD_TYP_MESURE",
+            col="DESC_TYP_MESURE_F",
+            val="Données qualitatives",
+        )
+        quantitative_code = self.reference_data.get_ref_key(
+            table="TYPE_MESURE_MOLL",
+            pkey_col="COD_TYP_MESURE",
+            col="DESC_TYP_MESURE_F",
+            val="Données quantitatives",
+        )
+        # note, ecosystem_survey_catch.specimen_count is the count for unmeasured specimens
+        # we need an actual specimen (with a specimen id)
+        # see if there is a nonzero specimen count 
+
+
+        query = (
+            "SELECT ecosystem_survey_specimen.id "
+            "FROM ecosystem_survey_catch "
+            "JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_basket.catch_id=ecosystem_survey_catch.id "
+            "JOIN ecosystem_survey_specimen "
+            "ON ecosystem_survey_specimen.basket_id=ecosystem_survey_basket.id "
+            f"WHERE ecosystem_survey_catch.id={self._get_current_row_pk()}"
+        )
+        result = self.andes_db.execute_query(query)
+        # any rspecimens means it's a quantitive catch (assuming quantitative specimen observations)
+        if len(result)>0:
+            self.logger.info("Existence of specimen detailing infers a quantitative catch.")
+            return quantitative_code
+        
+        # else, see if there is a weighted basket
+        query = (
+            "SELECT ecosystem_survey_basket.basket_wt_kg "
+            "FROM ecosystem_survey_basket "
+            f"WHERE ecosystem_survey_basket.catch_id={self._get_current_row_pk()}"
+        )
+        result = self.andes_db.execute_query(query)
+        nonzero_weights = [basket[0] for basket in result if not basket[0]==0]
+
+        # any weighted baskets means a quantitaive catch
+        if len(nonzero_weights)>0:
+            self.logger.info("Existence of weighted baskets infers a quantitative catch.")
+
+            return quantitative_code
+        
+        # may be a qualitative if a relative abundance is given (with no specimens or weights).
+        query = (
+            "SELECT ecosystem_survey_catch.relative_abundance_category_id "
+            "FROM ecosystem_survey_catch "
+            f"WHERE ecosystem_survey_catch.id={self._get_current_row_pk()}"
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        rel_abundance: int|None = result[0][0] 
+        if rel_abundance:
+            self.logger.info("Abundance category with no weights or specimens infers a qualitative catch.")
+            return qualitative_code
+        else:
+            self.logger.error("Cannot determine cod_type_mesure for catch %s", self._get_current_row_pk())
+            raise ValueError
+

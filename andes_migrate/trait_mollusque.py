@@ -6,10 +6,12 @@ from andes_migrate.projet_mollusque import ProjetMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.decorators import (
+    tag,
     deprecate,
     log_results,
     validate_string,
     validate_int,
+    AndesCodeLookup
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -152,6 +154,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+
     @validate_int(not_null=False)
     @log_results
     def get_cod_zone_gest_moll(self) -> int | None:
@@ -232,6 +235,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = "".join(c for c in to_return if c.isnumeric())
         return to_return
 
+    @tag(AndesCodeLookup)
     @validate_int()
     @log_results
     def get_cod_type_trait(self) -> int:
@@ -281,6 +285,7 @@ class TraitMollusque(TablePecheSentinelle):
         )
         return key
 
+    @tag('codelookup')
     @validate_int()
     @log_results
     def get_cod_result_oper(self) -> int:
@@ -322,6 +327,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = andes_2_oracle_map[str(to_return)]
         return to_return
 
+    @tag('hardcoded')
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -345,6 +351,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -368,6 +375,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -391,6 +399,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -413,6 +422,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @validate_int(not_null=False)
     @log_results
     def get_cod_type_heure(self) -> int | None:
@@ -431,6 +441,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(2)
         return to_return
 
+    @tag('hardcoded')
     @validate_int(not_null=False)
     @log_results
     def get_cod_fuseau_horaire(self) -> int | None:
@@ -450,6 +461,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(0)
         return to_return
 
+    @tag('hardcoded', 'codelookup')
     @validate_int(not_null=False)
     @log_results
     def get_cod_method_pos(self) -> int | None:
@@ -556,6 +568,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return *= -1
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_latlong_p(self) -> float | None:
         """LATLONG_P DOUBLE / NUMBER
@@ -572,6 +585,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_distance_pos(self) -> float | None:
         """DISTANCE_POS DOUBLE / NUMBER
@@ -592,7 +606,8 @@ class TraitMollusque(TablePecheSentinelle):
         # hard-code this
         to_return = self._hard_coded_result(None)
         return to_return
-
+    
+    @tag('hardcoded')
     @log_results
     def get_distance_pos_p(self) -> float | None:
         """DISTANCE_POS_P DOUBLE / NUMBER
@@ -607,6 +622,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_vit_touage(self) -> float | None:
         """VIT_TOUAGE DOUBLE / NUMBER
@@ -622,6 +638,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_vit_touage_p(self) -> float | None:
         """VIT_TOUAGE_P DOUBLE / NUMBER
@@ -635,6 +652,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_duree_trait(self) -> float | None:
         """DUREE_TRAIT DOUBLE / NUMBER
@@ -650,6 +668,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_duree_trait_p(self) -> float | None:
         """DUREE_TRAIT_P DOUBLE / NUMBER
@@ -663,6 +682,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_temp_fond(self) -> float | None:
         """TEMP_FOND DOUBLE / NUMBER
@@ -677,6 +697,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_temp_fond_p(self) -> float | None:
         """TEMP_FOND_P DOUBLE / NUMBER
@@ -711,6 +732,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_prof_deb_p(self) -> float | None:
         """PROF_DEB_P DOUBLE / NUMBER
@@ -743,6 +765,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag('hardcoded')
     @log_results
     def get_prof_fin_p(self) -> float | None:
         """PROF_FIN_P DOUBLE / NUMBER
@@ -847,6 +870,7 @@ class TraitMollusque(TablePecheSentinelle):
             self.logger.warn("Expected a datetime object , received None")
             return None
 
+    @tag('hardcoded')
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
@@ -863,6 +887,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
@@ -877,6 +902,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
+    @tag('hardcoded')
     @deprecate
     @log_results
     def get_cod_type_ech_trait(self) -> float | None:
@@ -886,7 +912,7 @@ class TraitMollusque(TablePecheSentinelle):
         Oracle Optimisation: this datatype should be INTEGER
         Oracle Optimisation: seems to be relational, but not setup that way
         Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?
-        
+
         This function always returns None
 
         """

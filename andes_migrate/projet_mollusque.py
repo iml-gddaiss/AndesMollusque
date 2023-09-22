@@ -3,7 +3,7 @@ import datetime
 
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
-from andes_migrate.decorators import log_results, validate_string, validate_int
+from andes_migrate.decorators import AndesCodeLookup, HardCoded, NotAndes, Seq, tag, log_results, validate_string, validate_int
 
 logging.basicConfig(level=logging.INFO)
 
@@ -196,6 +196,7 @@ class ProjetMollusque(TablePecheSentinelle):
         return int(self.no_releve)
 
     @validate_string(max_len=6)
+    @tag(AndesCodeLookup)
     @log_results
     def get_cod_nbpc(self) -> str:
         """COD_NBPC VARCHAR(6) / VARCHAR2(6)
@@ -206,7 +207,7 @@ class ProjetMollusque(TablePecheSentinelle):
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
 
-        #Code lookup
+        Code lookup
 
         """
         query = ("SELECT shared_models_vessel.nbpc, shared_models_vessel.name "
@@ -292,6 +293,7 @@ class ProjetMollusque(TablePecheSentinelle):
             raise ValueError
 
     @validate_int()
+    @tag(AndesCodeLookup)
     @log_results
     def get_cod_type_stratif(self) -> int:
         """COD_TYP_STRATIF INTEGER / NUMBER(5,0)NOT NULL,
@@ -405,8 +407,9 @@ class ProjetMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         return to_return
-
+    
     @validate_int(not_null=False)
+    @tag(Seq)
     @log_results
     def get_seq_pecheur(self) -> int | None:
         """SEQ_PECHEUR INTEGER / NUMBER(10,0)
@@ -455,6 +458,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_duree_trait_visee_p(self) -> float | None:
         """DUREE_TRAIT_VISEE_P DOUBLE / NUMBER
@@ -487,6 +491,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_vit_touage_visee_p(self) -> float | None:
         """VIT_TOUAGE_VISEE_P DOUBLE / NUMBER
@@ -530,6 +535,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = float(to_return)
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_dist_chalute_visee_p(self) -> float | None:
         """DIST_CHALUTE_VISEE_P DOUBLE / NUMBER
@@ -547,6 +553,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(1.0)
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_rapport_fune_visee(self) -> float | None:
         """RAPPORT_FUNE_VISEE DOUBLE / NUMBER
@@ -560,6 +567,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(2.0)
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_rapport_fune_visee_p(self) -> float | None:
         """RAPPORT_FUNE_VISEE_P DOUBLE / NUMBER
@@ -576,6 +584,7 @@ class ProjetMollusque(TablePecheSentinelle):
         return to_return
 
     @validate_string(max_len=250, not_null=False)
+    @tag(NotAndes)
     @log_results
     def get_nom_equip_navire(self) -> str | None:
         """NOM_EQUIPE_NAVIRE VARCHAR(250) / VARCHAR2(250)
@@ -622,6 +631,7 @@ class ProjetMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded, NotAndes)
     @validate_int(not_null=False)
     @log_results
     def get_no_chargement(self) -> int | float | None:

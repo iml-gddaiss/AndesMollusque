@@ -3,6 +3,9 @@ import logging
 from andes_migrate.trait_mollusque import TraitMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
+    AndesCodeLookup,
+    HardCoded,
+    tag,
     log_results,
     validate_string,
     validate_int,
@@ -53,6 +56,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self.trait.get_cod_source_info()
 
     @validate_int()
+    @tag(AndesCodeLookup)
     @log_results
     def get_cod_eng_gen(self) -> int:
         """COD_ENG_GEN INTEGER / NUMBER(5,0)
@@ -99,6 +103,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self.trait.get_ident_no_trait()
 
     @validate_int()
+    @tag(AndesCodeLookup)
     @log_results
     def get_no_engin(self) -> int:
         """COD_ENG_GEN INTEGER / NUMBER(5,0)
@@ -131,6 +136,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self.trait.get_cod_nbpc()
 
     @validate_int()
+    @tag(AndesCodeLookup)
     @log_results
     def get_cod_type_panier(self) -> int:
         """COD_TYP_PANIER INTEGER / NUMBER(5,0)
@@ -247,6 +253,7 @@ class EnginMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_long_fune_p(self) -> float | None:
         """LONG_FUNE_P DOUBLE / NUMBER
@@ -258,6 +265,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self._hard_coded_result(None)
 
     @validate_int(not_null=False)
+    @tag(HardCoded)
     @log_results
     def get_nb_panier(self) -> int | None:
         """NB_PANIER INTEGER / NUMBER(5,0)
@@ -286,6 +294,7 @@ class EnginMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
+    @tag(HardCoded)
     @log_results
     def get_remplissage_p(self) -> float | None:
         """ REMPLISSAGE_P DOUBLE / NUMBER
@@ -299,6 +308,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self._hard_coded_result(None)
 
     @validate_string(max_len=255, not_null=False)
+    @tag(HardCoded)
     @log_results
     def get_rem_engin_moll(self) -> str | None:
         """ REM_ENGIN_MOLL VARCHAR(255) / VARCHAR2(255)
