@@ -24,6 +24,8 @@ class EnginMollusque(TablePecheSentinelle):
         self.data = {}
 
     def populate_data(self):
+        """Populate data: run all getters"""
+
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
         self.data["COD_ENG_GEN"] = self.get_cod_eng_gen()
         self.data["NO_RELEVE"] = self.get_no_releve()
@@ -57,6 +59,12 @@ class EnginMollusque(TablePecheSentinelle):
         Identification de l'engin de pêche utilisé tel que défini dans la table ENGIN_GENERAL
 
         Andes: shared_models_set.gear_type_id-> shared_models.geartype.code
+
+        This one would be good to have linked with a regional code lookup
+        https://github.com/dfo-gulf-science/andes/issues/988
+
+        Code lookup
+
         """
         set_pk = self.trait._get_current_row_pk()
 
@@ -97,6 +105,12 @@ class EnginMollusque(TablePecheSentinelle):
         Numéro identifiant l'engin utilisé tel que défini dans la table NO_ENGIN
 
         Andes: shared_models_set.gear_type_id-> shared_models.geartype.code
+
+        This one would be good to have linked with a regional code lookup
+        https://github.com/dfo-gulf-science/andes/issues/988
+
+        Code lookup
+
         """
         set_pk = self.trait._get_current_row_pk()
         query = f"SELECT shared_models_set.winch_code \

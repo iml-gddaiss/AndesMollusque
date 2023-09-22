@@ -62,6 +62,8 @@ class TraitMollusque(TablePecheSentinelle):
 
 
     def populate_data(self):
+        """Populate data: run all getters"""
+
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
         self.data["NO_RELEVE"] = self.get_no_releve()
         self.data["CODE_NBPC"] = self.get_cod_nbpc()
@@ -214,7 +216,9 @@ class TraitMollusque(TablePecheSentinelle):
         ANDES: shared_models_newstation.name
         The station name is stripped of non-numerical characters
         to generate no_station(i.e., NR524 -> 524)
+        
         """
+
         query = f"SELECT shared_models_newstation.name \
                 FROM shared_models_set \
                 LEFT JOIN shared_models_newstation \
@@ -242,6 +246,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
+        Code lookup
 
         """
         # this query does not work because of a mistmatch between reference tables
@@ -292,6 +297,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
+        Code lookup
 
         """
         query = f"SELECT shared_models_setresult.code \
@@ -413,11 +419,9 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_TYP_HEURE INTEGER / NUMBER(5,0)
         Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
 
-        Table: TYPE_HEURE:
-        |---|---------|-----------------|
-        |0	| Normale | Standard        |
-        |1	| Avancée | Daylight saving |
-        |2	| GMT     | GMT             |
+        0 -> Normale Standard
+        1 -> Avancée Daylight saving 
+        2 -> GMT GMT 
 
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
         This function always returns 2.
@@ -433,11 +437,10 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
         Fuseau horaire utilisé pour déterminer l'heure de réalisation du trait tel que décrit dans la table FUSEAU_HORAIRE
 
-        |----|------------|-------------|
-        |0   |GMT         |GMT          |
-        |1   |Québec      |Quebec       |
-        |2   |Maritimes   |Atlantic     |
-        |3   |Terre-Neuve |Newfoundland |
+        0 -> GMT         GMT         
+        1 -> Québec      Quebec      
+        2 -> Maritimes   Atlantic    
+        3 -> Terre-Neuve Newfoundland
 
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
         This function always returns 0.
@@ -453,14 +456,13 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_METHOD_POS INTEGER / NUMBER(5,0)
         Identification de la méthode utilisée pour déterminer les coordonnées de l''emplacement d''échantillonnage tel que défini dans la table METHODE_POSITION
 
-        |----|--------------------|-----------------|
-        |0   |Inconnue            |Unknown          |
-        |1   |Estimation          |Estimated        |
-        |2   |Radar               |Radar            |
-        |3   |Decca               |Decca            |
-        |4   |Loran               |Loran            |
-        |5   |Satellite (GPS)     |Satellite (GPS)  |
-        |6   |Satellite (DGPS)    |Satellite (DGPS) |
+        0 -> Inconnue        
+        1 -> Estimation      
+        2 -> Radar           
+        3 -> Decca           
+        4 -> Loran           
+        5 -> Satellite (GPS) 
+        6 -> Satellite (DGPS)
 
         Andes uses the vessel GPS, which may or may not have DGPS data.
         This is specified via the GPS Quality indicator (6th field) of the $GPGGA NMEA message.
@@ -479,9 +481,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         This uses a unique encoding scheme for the coordinates.
 
-        Andes
-        -----
-        shared_models_set.start_latitude
+        Andes: shared_models_set.start_latitude
 
         """
         query = f"SELECT shared_models_set.start_latitude \
@@ -501,9 +501,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         This uses a unique encoding scheme for the coordinates.
 
-        Andes
-        -----
-        shared_models_set.end_latitude
+        Andes: shared_models_set.end_latitude
 
         """
         query = f"SELECT shared_models_set.end_latitude \
@@ -522,9 +520,7 @@ class TraitMollusque(TablePecheSentinelle):
         Position de longitude du début du trait, unité ddmm.%%%% W
         This uses a unique encoding scheme for the coordinates.
 
-        Andes
-        -----
-        shared_models_set.start_longitude
+        Andes: shared_models_set.start_longitude
 
         """
         query = f"SELECT shared_models_set.start_longitude \
@@ -545,9 +541,7 @@ class TraitMollusque(TablePecheSentinelle):
         Position de longitude de la fin du trait, unité ddmm.%%%% W
         This uses a unique encoding scheme for the coordinates.
 
-        Andes
-        -----
-        shared_models_set.end_longitude
+        Andes: shared_models_set.end_longitude
 
         """
         query = f"SELECT shared_models_set.end_longitude \
@@ -591,6 +585,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
         It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
+        
         This function always returns None
 
         """
@@ -604,6 +599,7 @@ class TraitMollusque(TablePecheSentinelle):
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Distance_Pos"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        
         This function always returns None
 
         """
@@ -672,7 +668,8 @@ class TraitMollusque(TablePecheSentinelle):
         """TEMP_FOND DOUBLE / NUMBER
         Température de l'eau sur le fond, unité ° C
 
-        Andes does not log temperature data.
+        Andes: does not log temperature data.
+
         This function always returns None
 
         """
@@ -686,7 +683,9 @@ class TraitMollusque(TablePecheSentinelle):
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
-        Andes does not log temperature data.
+        
+        Andes:  does not log temperature data.
+        
         This function always returns None
 
         """
@@ -698,11 +697,10 @@ class TraitMollusque(TablePecheSentinelle):
     def get_prof_deb(self) -> float | None:
         """PROF_DEB DOUBLE / NUMBER
         Profondeur au début du trait, unité mètre
+
         units: metre
 
-        Andes
-        -----
-        shared_models_set.start_depth_m
+        Andes: shared_models_set.start_depth_m
 
         """
         query = f"SELECT shared_models_set.start_depth_m \
@@ -719,7 +717,9 @@ class TraitMollusque(TablePecheSentinelle):
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        
         This function always returns None
+
         """
         # hard-code this
         to_return = self._hard_coded_result(None)
@@ -729,11 +729,10 @@ class TraitMollusque(TablePecheSentinelle):
     def get_prof_fin(self) -> float | None:
         """PROF_FIN DOUBLE / NUMBER
         Profondeur au début du trait, unité mètre
+
         units: metre
 
-        Andes
-        -----
-        shared_models_set.start_depth_m
+        Andes: shared_models_set.start_depth_m
 
         """
         query = f"SELECT shared_models_set.start_depth_m \
@@ -750,7 +749,9 @@ class TraitMollusque(TablePecheSentinelle):
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
+        
         This function always returns None
+
         """
         # hard-code this
         to_return = self._hard_coded_result(None)
@@ -762,9 +763,7 @@ class TraitMollusque(TablePecheSentinelle):
         """REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)
         Remarque sur la réalisation du trait
 
-        Andes
-        -----
-        shared_models_set.remarks
+        Andes: shared_models_set.remarks
 
         """
         query = f"SELECT shared_models_set.remarks \
@@ -787,7 +786,8 @@ class TraitMollusque(TablePecheSentinelle):
         """NO_CHARGEMENT DOUBLE / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
-        Use Projet, self.proj.get_no_chargement
+        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_no_chargement`
+
         """
         return self.proj.get_no_chargement()
 
@@ -797,9 +797,7 @@ class TraitMollusque(TablePecheSentinelle):
         """DATE_HEURE_DEB_TRAIT
         Date et heure du début du trait, format AAAA-MM-JJ HH:MI:SS
 
-        Andes
-        -----
-        shared_models_set.end_date
+        Andes: shared_models_set.end_date
 
         Best practices dictate the use of UTC to store datetimes.
         The convention is followed by andes, and thus all imported andes datetimes
@@ -827,9 +825,7 @@ class TraitMollusque(TablePecheSentinelle):
         """DATE_HEURE_FIN_TRAIT
         Date et heure de la fin du trait, format AAAA-MM-JJ HH:MI:SS
 
-        Andes
-        -----
-        shared_models_set.end_date
+        Andes: shared_models_set.end_date
 
         Best practices dictate the use of UTC to store datetimes.
         The convention is followed by andes, and thus all imported andes datetimes
@@ -890,6 +886,7 @@ class TraitMollusque(TablePecheSentinelle):
         Oracle Optimisation: this datatype should be INTEGER
         Oracle Optimisation: seems to be relational, but not setup that way
         Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?
+        
         This function always returns None
 
         """

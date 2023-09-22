@@ -112,6 +112,7 @@ class ProjetMollusque(TablePecheSentinelle):
         self._init_rows()
 
     def populate_data(self):
+        """Populate data: run all getters"""
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
         self.data["NO_RELEVE"] = self.no_releve
         self.data["COD_NBPC"] = self.get_cod_nbpc()
@@ -204,6 +205,8 @@ class ProjetMollusque(TablePecheSentinelle):
 
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
+
+        #Code lookup
 
         """
         query = ("SELECT shared_models_vessel.nbpc, shared_models_vessel.name "
@@ -301,6 +304,8 @@ class ProjetMollusque(TablePecheSentinelle):
 
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
+
+        Code lookup
 
         """
         # res = self.cur.execute(f"SELECT shared_models_stratificationtype.code FROM shared_models_stratificationtype ;")
@@ -605,7 +610,7 @@ class ProjetMollusque(TablePecheSentinelle):
         Remarque sur le projet
 
         Andes: `shared_models_cruise.notes`
-        
+
         N.B. max length mistmatch between Orale and MSAccess
 
         """
