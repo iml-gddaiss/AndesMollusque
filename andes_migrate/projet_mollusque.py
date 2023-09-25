@@ -514,7 +514,7 @@ class ProjetMollusque(TablePecheSentinelle):
         """DIST_CHALUTE_VISEE DOUBLE / NUMBER
         Distance anticipée parcourue par l'engin de pêche, unité mètre
 
-        Andes: `shared_models_cruise.targeted_trawl_duration`
+        Andes: `shared_models_cruise.targeted_trawl_distance`
 
         units: meters
 
@@ -526,7 +526,7 @@ class ProjetMollusque(TablePecheSentinelle):
         # time_h = self.get_duree_trait_visee() / 60.0
         # dist_m = speed_kph * time_h * 1000
 
-        query = ("SELECT shared_models_cruise.targeted_trawl_duration "
+        query = ("SELECT shared_models_cruise.targeted_trawl_distance "
                  "FROM shared_models_cruise "
                 f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
         result = self.andes_db.execute_query(query)
