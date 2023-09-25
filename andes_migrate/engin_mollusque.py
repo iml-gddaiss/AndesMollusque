@@ -230,7 +230,7 @@ class EnginMollusque(TablePecheSentinelle):
         """NO_CHARGEMENT DOUBLE / NUMBER
         Numéro de l'activité de chargement de données dans la base Oracle
 
-        Use Projet, self.proj.get_no_chargement (via trait member)
+        Uses Projet, self.proj.get_no_chargement (via trait member)
 
         """
         return self.trait.get_no_chargement()

@@ -76,10 +76,10 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data['NBR_ECH'] = self.get_nbr_ech()
         self.data['PDS_CAPT'] = self.get_pds_capt()
         self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
-        # self.data['PDS_ECH'] = self.get_
-        # self.data['PDS_ECH_P'] = self.get_
-        # self.data['NO_CHARGEMENT'] = self.get_
-        # self.data['COD_ABONDANCE_EPIBIONT'] = self.get_
+        self.data['PDS_ECH'] = self.get_pds_ech()
+        self.data['PDS_ECH_P'] = self.get_pds_ech()
+        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+        self.data['COD_ABONDANCE_EPIBIONT'] = self.get_cod_abondance_epibiont()
         # self.data['COD_COUVERTURE_EPIBIONT'] = self.get_
         # self.data['REM_CAPT_MOLL'] = self.get_
 
@@ -158,45 +158,24 @@ class CaptureMollusque(TablePecheSentinelle):
         self.logger.info(
             "Will try to match to Oracle using aphia_id=%s", andes_aphia_id
         )
-        norme_name_str = "AphiaId"
-        query = (
-            "SELECT ESPECE_NORME.COD_ESP_GEN "
-            "FROM ESPECE_NORME "
-            "LEFT JOIN NORME "
-            "ON ESPECE_NORME.COD_NORME=NORME.COD_NORME "
-            f"WHERE NORME.NOM_NORME='{norme_name_str}' "
-            f"AND ESPECE_NORME.COD_ESPECE={andes_aphia_id}"
-        )
 
-        result = self.reference_data.execute_query(query)
         try:
-            self._assert_one(result)
+            to_return = self.reference_data._aphia_id_2_cod_esp_gen(andes_aphia_id)
         except ValueError:
             self.logger.warn(
                 "did not match to Oracle using aphia_id=%s", andes_aphia_id
             )
         else:
-            to_return = result[0][0]
             self.logger.info(
                 "Found matching aphia id, returning COD_ESP_GEN=%s", to_return
             )
-            # return to_return
+            return to_return
 
         # try to match with (assumed) strap code
         self.logger.info("Will try to match to Oracle assuming strap=%s", andes_code)
-        norme_name_str = "STRAP_IML"
-        query = (
-            "SELECT ESPECE_NORME.COD_ESP_GEN "
-            "FROM ESPECE_NORME "
-            "LEFT JOIN NORME "
-            "ON ESPECE_NORME.COD_NORME=NORME.COD_NORME "
-            f"WHERE NORME.NOM_NORME='{norme_name_str}' "
-            f"AND ESPECE_NORME.COD_ESPECE={andes_code}"
-        )
 
-        result = self.reference_data.execute_query(query)
         try:
-            self._assert_one(result)
+            to_return = self.reference_data._strap_2_cod_esp_gen(andes_code)
         except ValueError:
             self.logger.warn(
                 "did not match to Oracle using code=%s (assuming strap)", andes_code
@@ -318,7 +297,7 @@ class CaptureMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @tag(HardCoded)
+    @tag(HardCoded, Deprecated)
     @log_results
     def get_fraction_ech_p(self) -> float | None:
         """FRACTION_ECH_P DOUBLE / NUMBER 
@@ -330,7 +309,7 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self._hard_coded_result(None)
     
-    @tag(Computed)
+    @tag(Computed, Deprecated)
     @log_results
     def get_cod_type_mesure(self) -> int:
         """COD_TYP_MESURE INTEGER / NUMBER(5,0) 
@@ -338,6 +317,8 @@ class CaptureMollusque(TablePecheSentinelle):
 
         1 -> Données qualitatives
         2 -> Données quantitatives
+
+        Should this be deprecated?
 
         It's tempting to skip this field, but it is not nullable.
         Consequently, it will be computed from andes data: 
@@ -436,7 +417,7 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self._hard_coded_result(None)
 
-    @tag(HardCoded, NotAndes)
+    @tag(HardCoded, NotAndes, Deprecated)
     @log_results
     def get_fraction_peche_p(self) -> float | None:
         """FRACTION_PECH_P DOUBLE / NUMBER
@@ -497,8 +478,9 @@ class CaptureMollusque(TablePecheSentinelle):
         Hard-coded: This function always returns None
 
         """
+        return self._hard_coded_result(None)
 
-    @tag(HardCoded, Deprecated)
+    @tag(HardCoded)
     @log_results
     def get_pds_ech(self) -> float | None:
         """PDS_ECH DOUBLE / NUMBER 
@@ -522,3 +504,46 @@ class CaptureMollusque(TablePecheSentinelle):
         Hard-coded: This function always returns None
 
         """
+        return self._hard_coded_result(None)
+
+    @log_results
+    def get_no_chargement(self):
+        """NO_CHARGEMENT DOUBLE / NUMBER
+        Numéro de l'activité de chargement de données dans la base Oracle
+
+        Extrait de l'engin ::func:`~andes_migrate.engin_mollusque.EnginMollusque.get_no_engin`
+
+        """
+        return self.engin.get_no_chargement()
+    
+    @log_results
+    def get_cod_abondance_epibiont(self) -> int | None:
+        """ COD_ABONDANCE_EPIBIONT INTEGER / NUMBER(5,0)
+        Description de l'abondance des épibionts sur la coquille tel que défini dans la table ABONDANCE_EPIBIONT
+        
+        0 -> Aucun des pétoncles ne porte de balane
+        1 -> 1% à 20% des pétoncles portent des balanes
+        2 -> 21% à 40% des pétoncles portent des balanes
+        3 -> 41% à 60% des pétonlces portent des balanes
+        4 -> 61% à 80% despétoncles portent des balanes
+        5 -> 81% à 100% des pétonlces portent des balanes
+
+        Andes does not explicitly log this, but it can be computed for some species where a barnacle coverage observable exists.
+        (typicaly for scallops).
+
+        A None is automatically returned if the specie's aphia_id is not one of following:
+        140692 (Pétoncle d' Islande) 
+        156972 (Pétoncle géant)
+
+        """
+
+        # list of aphia id's for species that cold contain a barnacle coverge observation 
+        candidate_species_aphia_id = [140692, 156972]
+
+        current_aphia_id =  self.reference_data._cod_esp_gen_2_aphia_id(self.get_cod_esp_gen())
+        if current_aphia_id not in candidate_species_aphia_id:
+            self.logger.warn("Current species not a EPIBIONT candidate, returning null")
+            return None
+        print("need to do more")
+        return None
+

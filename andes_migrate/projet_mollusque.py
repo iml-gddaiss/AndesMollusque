@@ -522,7 +522,7 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
 
-        # speed_kph = self.convert_knots_to_kph(self.get_vit_touage_visee())
+        # speed_kph = OracleHelper.convert_knots_to_kph(self.get_vit_touage_visee())
         # time_h = self.get_duree_trait_visee() / 60.0
         # dist_m = speed_kph * time_h * 1000
 

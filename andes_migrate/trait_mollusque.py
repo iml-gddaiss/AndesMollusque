@@ -1,6 +1,7 @@
 import logging
 import datetime
 from unidecode import unidecode
+from andes_migrate.oracle_helper import OracleHelper
 
 from andes_migrate.projet_mollusque import ProjetMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
@@ -503,7 +504,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         # convert to Oracle coord encoding
-        to_return = self.reference_data._to_oracle_coord(to_return)
+        to_return = OracleHelper._to_oracle_coord(to_return)
         return to_return
 
     @log_results
@@ -523,7 +524,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         # convert to Oracle coord encoding
-        to_return = self.reference_data._to_oracle_coord(to_return)
+        to_return = OracleHelper._to_oracle_coord(to_return)
         return to_return
 
     @log_results
@@ -542,7 +543,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         # convert to Oracle coord encoding
-        to_return = self.reference_data._to_oracle_coord(to_return)
+        to_return = OracleHelper._to_oracle_coord(to_return)
         # strip negative from longitudes
         to_return *= -1
         return to_return
@@ -563,7 +564,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         # convert to Oracle coord encoding
-        to_return = self.reference_data._to_oracle_coord(to_return)
+        to_return = OracleHelper._to_oracle_coord(to_return)
         # strip negative from longitudes
         to_return *= -1
         return to_return

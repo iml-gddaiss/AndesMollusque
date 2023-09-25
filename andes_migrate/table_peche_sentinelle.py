@@ -10,6 +10,7 @@ class TablePecheSentinelle:
 
   
     """
+
     def __init__(self, ref:OracleHelper|None=None):
         self.logger = logging.getLogger(__name__)
         # self.reference_data = OracleHelper(
@@ -111,26 +112,9 @@ class TablePecheSentinelle:
         )
         return result
 
-    def convert_nm_2_km(self, val: float) -> float:
-        """convert nautical miles to kilometers
 
-        :param val: value (in nautical miles) to convert
-        :type val: float
-        :return: converted value (in kilometers)
-        :rtype: float
-        """
-        return val * 1.852
 
-    def convert_knots_to_kph(self, val: float) -> float:
-        """convert knots to kilometers per hour
-
-        :param val: value (in knots) to convert
-        :type val: float
-        :return: converted value (in km/h)
-        :rtype: float
-        """
-        return self.convert_nm_2_km(val)
-
+ 
     def validate(self):
         """
         This executes a battery of validation tests to help 
