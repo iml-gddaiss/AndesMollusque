@@ -1,4 +1,5 @@
 import logging
+
 from andes_migrate.engin_mollusque import EnginMollusque
 
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
@@ -516,6 +517,103 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self.engin.get_no_chargement()
     
+
+    def _compute_abondance_epibiont(self, catch_id:int):
+        """
+        This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
+
+        of the catch refered by catch_id 
+        This can probably be written as one query, but it's easier to follow in small steps
+        """
+        print(f"catch id: {catch_id}")
+
+        # get andes sampling protocol id        
+        query = (
+            "SELECT shared_models_cruise.sampling_protocol_id "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id='{self.engin.trait.proj._get_current_row_pk()}'"
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        sampling_protocol_id = int(result[0][0])
+
+        # only a certain class, "Vivant, intacte" qualifies for epiboint measurements 
+        class_desc = "Vivant, intacte"
+        # need to filter with class id
+        query = (
+            "SELECT shared_models_sizeclass.code "
+            "FROM shared_models_sizeclass "
+            f"WHERE shared_models_sizeclass.description_fra='{class_desc}'"
+            f"AND shared_models_sizeclass.sampling_protocol_id='{sampling_protocol_id}'"
+        )
+
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        class_code = int(result[0][0])
+
+        # now get the basket of that size-class
+        query = (
+            "SELECT ecosystem_survey_basket.id "
+            "FROM ecosystem_survey_basket "
+            f"WHERE ecosystem_survey_basket.size_class='{class_code}' "
+            f"AND ecosystem_survey_basket.catch_id={catch_id} "
+        )
+        result = self.andes_db.execute_query(query)
+        # perhaps allow for multiple baskets?
+        self._assert_one(result)
+        basket_id = result[0][0]
+
+        # observation 
+        # get the observation_type_id for barnacle coverage
+        observation_type_name = "Couverture Balanes"
+        query = (
+            "SELECT shared_models_observationtype.id "
+            "FROM shared_models_observationtype "
+            f"WHERE shared_models_observationtype.nom='{observation_type_name}'"
+        )
+        result = self.andes_db.execute_query(query)
+        # perhaps allow for multiple baskets?
+        self._assert_one(result)
+        observation_type_id = result[0][0]
+
+        description_no_barnacles = "Aucune balanes"
+        query = (
+            "SELECT shared_models_observationtypecategory.code "
+            "FROM shared_models_observationtypecategory "
+            f"WHERE shared_models_observationtypecategory.description_fra='{description_no_barnacles}'"
+        )
+        result = self.andes_db.execute_query(query)
+        # perhaps allow for multiple baskets?
+        self._assert_one(result)
+        observation_value_no_barnacles = result[0][0]
+
+
+        # get specimens with some barnacles
+
+        query = (
+            "SELECT ecosystem_survey_specimen.id "
+            "FROM ecosystem_survey_catch "
+            "LEFT JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_catch.id=ecosystem_survey_basket.catch_id "
+            "LEFT JOIN ecosystem_survey_specimen "
+            "ON ecosystem_survey_specimen.basket_id = ecosystem_survey_basket.id "
+            "LEFT JOIN ecosystem_survey_observation "
+            "ON ecosystem_survey_observation.specimen_id=ecosystem_survey_specimen.id  "
+            "LEFT JOIN shared_models_observationtypecategory "
+            "ON shared_models_observationtypecategory.observation_type_id=ecosystem_survey_observation.id  "
+            f"WHERE ecosystem_survey_observation.observation_type_id='{observation_type_id}' "
+            f"AND ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
+            f"AND ecosystem_survey_catch.id={catch_id} "    
+        )
+        result = self.andes_db.execute_query(query)
+        print("specimens without barnacles: ")
+        print(result)
+        num_specimens_with_barnacles = len(result)
+
+
+
+        pass
+
     @log_results
     def get_cod_abondance_epibiont(self) -> int | None:
         """ COD_ABONDANCE_EPIBIONT INTEGER / NUMBER(5,0)
@@ -545,5 +643,7 @@ class CaptureMollusque(TablePecheSentinelle):
             self.logger.warn("Current species not a EPIBIONT candidate, returning null")
             return None
         print("need to do more")
+
+        self._compute_abondance_epibiont(self._get_current_row_pk())
         return None
 

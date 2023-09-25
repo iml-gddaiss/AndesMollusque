@@ -1,6 +1,7 @@
 import os
 import logging
 import sqlite3
+from typing import List
 import mysql.connector
 
 from mysql.connector.errors import ProgrammingError
@@ -48,7 +49,27 @@ class AndesHelper:
 
             else:
                 return self.cur.fetchall()
+    
+    def get_basket_specimens(self, basket_id:int) -> List[int]:
+        """ get a list of specimen_id in a basket
+
+        :param basket_id: The andes basket id
+        :type basket_id: int
+        :return: a list of andes specimen id's
+        :rtype: List [ int]
+        """
+        query = (
+            "SELECT ecosystem_survey_specimen.id "
+            "FROM ecosystem_survey_specimen "
+            f"WHERE ecosystem_survey_specimen.basket_id={basket_id}"
+        )
+        result = self.execute_query(query)
+        to_return = [s[0] for s in result]
+        return to_return
+
              
+
+
 
 
 if __name__ == "__main__":
