@@ -56,8 +56,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
         # a list of all the catch pk's (need to unpack a bit)
         self._row_list = [catch[0] for catch in result]
-        # hack!
-        self._row_idx = 1
+        self._row_idx = 0
 
     def populate_data(self):
         """Populate data: run all getters"""
