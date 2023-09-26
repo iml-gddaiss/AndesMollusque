@@ -11,12 +11,11 @@ load_dotenv()
 
 
 class AndesHelper:
-
     def __init__(self, sqlite_file=None):
         self.logger = logging.getLogger(__name__)
         # datime format on MS access DB
-        self.datetime_strfmt='%Y-%m-%d %H:%M:%S'
-        self.sqlite:bool
+        self.datetime_strfmt = "%Y-%m-%d %H:%M:%S"
+        self.sqlite: bool
 
         if sqlite_file:
             self.sqlite = True
@@ -26,17 +25,18 @@ class AndesHelper:
 
         else:
             self.sqlite = False
-            self.con = mysql.connector.connect(host=os.getenv('ANDES_HOST', 'la-tele-du-samedi.ent.dfo-mpo.ca'),
-                                               port=int(os.getenv('ANDES_PORT', 4321)),
-                                               database=os.getenv('ANDES_DB_NAME', 'BD de BikiniBottom'),
-                                               user=os.getenv('ANDES_DB_USERNAME','Bob Eponge'),
-                                               password=os.getenv('ANDES_DB_USERPASS', 'SQUIDWARD'))
+            self.con = mysql.connector.connect(
+                host=os.getenv("ANDES_HOST", "la-tele-du-samedi.ent.dfo-mpo.ca"),
+                port=int(os.getenv("ANDES_PORT", 4321)),
+                database=os.getenv("ANDES_DB_NAME", "BD de BikiniBottom"),
+                user=os.getenv("ANDES_DB_USERNAME", "Bob Eponge"),
+                password=os.getenv("ANDES_DB_USERPASS", "SQUIDWARD"),
+            )
             print("Successfully connected to MySQL Database")
 
         self.cur = self.con.cursor()
 
-    def execute_query(self, query:str):
-        
+    def execute_query(self, query: str):
         if self.sqlite:
             res = self.cur.execute(query)
             return res.fetchall()
@@ -49,9 +49,9 @@ class AndesHelper:
 
             else:
                 return self.cur.fetchall()
-    
-    def get_basket_specimens(self, basket_id:int) -> List[int]:
-        """ get a list of specimen_id in a basket
+
+    def get_basket_specimens(self, basket_id: int) -> List[int]:
+        """get a list of specimen_id in a basket
 
         :param basket_id: The andes basket id
         :type basket_id: int
@@ -67,11 +67,6 @@ class AndesHelper:
         to_return = [s[0] for s in result]
         return to_return
 
-             
-
-
-
 
 if __name__ == "__main__":
     andes_db = AndesHelper()
-    

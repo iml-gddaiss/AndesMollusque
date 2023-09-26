@@ -1,31 +1,45 @@
 from functools import wraps
 
+
 class Tag:
     pass
 
+
 class AndesCodeLookup(Tag):
     """used to tag as a code lookup match (from andes)"""
+
     pass
+
 
 class HardCoded(Tag):
     """used to tag as a returning a hard-coded value"""
+
     pass
+
 
 class Computed(Tag):
     """used to tag as a computed value"""
+
     pass
+
 
 class NotAndes(Tag):
     """used to tag as not recorded in Andes"""
+
     pass
+
 
 class Deprecated(Tag):
     """used to tag as deprecated"""
+
     pass
+
 
 class Seq(Tag):
     """used to tag as a SEQ-type"""
+
     pass
+
 
 def tag(*tags):
     """Decorator to add tags to a method."""
@@ -41,7 +55,8 @@ def tag(*tags):
 
 
 def deprecate(successor=None):
-    """Decorator to deprecate methods. """
+    """Decorator to deprecate methods."""
+
     def decorator(f):
         # apply deprecated tag
         if hasattr(f, "tags"):
@@ -67,7 +82,8 @@ def deprecate(successor=None):
 
 
 def log_results(f):
-    """ Decorator to log activity."""
+    """Decorator to log activity."""
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         res = f(*args, **kwargs)
@@ -78,7 +94,7 @@ def log_results(f):
 
 
 def validate_string(max_len: int = 255, not_null: bool = True):
-    """ Decorator to validate string length and type.
+    """Decorator to validate string length and type.
     :param max_len: max string length (inclusive), defaults to 255
     :type min_val: int, optional
     :param not_null: test if value is forbidden from being null/None
@@ -86,6 +102,7 @@ def validate_string(max_len: int = 255, not_null: bool = True):
     :raises ValueError: If the test fails
 
     """
+
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):

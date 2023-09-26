@@ -61,9 +61,9 @@ class OracleHelper(DBHelper):
 
             else:
                 return self.cur.fetchall()
-            
-    def _cod_esp_gen_2_aphia_id(self, code_esp:int) -> int:
-        """ convert code espece general to aphia id
+
+    def _cod_esp_gen_2_aphia_id(self, code_esp: int) -> int:
+        """convert code espece general to aphia id
         returns mapped aphia
 
         :param code_esp: code espece general
@@ -88,8 +88,8 @@ class OracleHelper(DBHelper):
         else:
             return int(result[0][0])
 
-    def _aphia_id_2_cod_esp_gen(self, aphia_id:int) -> int:
-        """ convert code aphia id to espece general
+    def _aphia_id_2_cod_esp_gen(self, aphia_id: int) -> int:
+        """convert code aphia id to espece general
 
         :param code_esp: aphia id
         :type code_esp: int
@@ -113,9 +113,8 @@ class OracleHelper(DBHelper):
         else:
             return int(result[0][0])
 
-
-    def _strap_2_cod_esp_gen(self, strap_code:int) -> int:
-        """ convert STRAP code to code espece general
+    def _strap_2_cod_esp_gen(self, strap_code: int) -> int:
+        """convert STRAP code to code espece general
 
         :param code_esp: strap code
         :type code_esp: int
@@ -139,7 +138,6 @@ class OracleHelper(DBHelper):
         else:
             return int(result[0][0])
 
-
     @staticmethod
     def convert_nm_2_km(val: float) -> float:
         """convert nautical miles to kilometers
@@ -150,7 +148,7 @@ class OracleHelper(DBHelper):
         :rtype: float
         """
         return val * 1.852
-    
+
     @staticmethod
     def convert_knots_to_kph(val: float) -> float:
         """convert knots to kilometers per hour
@@ -161,7 +159,6 @@ class OracleHelper(DBHelper):
         :rtype: float
         """
         return OracleHelper.convert_nm_2_km(val)
-
 
     @staticmethod
     def _to_oracle_coord(coord: float | None) -> float | None:
@@ -190,7 +187,7 @@ class OracleHelper(DBHelper):
             return None
 
     @staticmethod
-    def _from_oracle_coord( coord: float | None) -> float | None:
+    def _from_oracle_coord(coord: float | None) -> float | None:
         """convert from the unique coordinate encoding scheme
 
         The input coord in the oracle encoding of
@@ -214,7 +211,6 @@ class OracleHelper(DBHelper):
             return to_return
         else:
             return None
-
 
 
 if __name__ == "__main__":

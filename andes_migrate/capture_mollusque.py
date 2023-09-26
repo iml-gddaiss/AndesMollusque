@@ -4,13 +4,15 @@ import numpy as np
 from andes_migrate.engin_mollusque import EnginMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
-    Deprecated,
     NotAndes,
+    Computed,
+    HardCoded,
+    Deprecated,
+    AndesCodeLookup,
     tag,
     log_results,
     validate_string,
     validate_int,
-    Computed, HardCoded, AndesCodeLookup
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -70,20 +72,20 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data["FRACTION_PECH"] = self.get_fraction_peche()
         self.data["NO_ENGIN"] = self.get_no_engin()
         self.data["FRACTION_ECH"] = self.get_fraction_ech()
-        self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
-        self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
-        self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
-        self.data['NBR_CAPT'] = self.get_nbr_capt()
-        self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
-        self.data['NBR_ECH'] = self.get_nbr_ech()
-        self.data['PDS_CAPT'] = self.get_pds_capt()
-        self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
-        self.data['PDS_ECH'] = self.get_pds_ech()
-        self.data['PDS_ECH_P'] = self.get_pds_ech()
-        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
-        self.data['COD_ABONDANCE_EPIBIONT'] = self.get_cod_abondance_epibiont()
-        self.data['COD_COUVERTURE_EPIBIONT'] = self.get_couverture_epibiont()
-        self.data['REM_CAPT_MOLL'] = self.get_rem_capt_moll()
+        self.data["COD_DESCRIP_CAPT"] = self.get_cod_descrip_capt()
+        self.data["FRACTION_ECH_P"] = self.get_fraction_ech_p()
+        self.data["COD_TYP_MESURE"] = self.get_cod_type_mesure()
+        self.data["NBR_CAPT"] = self.get_nbr_capt()
+        self.data["FRACTION_PECH_P"] = self.get_fraction_peche_p()
+        self.data["NBR_ECH"] = self.get_nbr_ech()
+        self.data["PDS_CAPT"] = self.get_pds_capt()
+        self.data["PDS_CAPT_P"] = self.get_pds_capt_p()
+        self.data["PDS_ECH"] = self.get_pds_ech()
+        self.data["PDS_ECH_P"] = self.get_pds_ech()
+        self.data["NO_CHARGEMENT"] = self.get_no_chargement()
+        self.data["COD_ABONDANCE_EPIBIONT"] = self.get_cod_abondance_epibiont()
+        self.data["COD_COUVERTURE_EPIBIONT"] = self.get_couverture_epibiont()
+        self.data["REM_CAPT_MOLL"] = self.get_rem_capt_moll()
 
     @validate_int()
     @log_results
@@ -114,7 +116,7 @@ class CaptureMollusque(TablePecheSentinelle):
         Numéro séquentiel du relevé
 
         Extrait de l'engin ::func:`~andes_migrate.engin_mollusque.EnginMollusque.get_no_releve`
-    """
+        """
         return self.engin.get_no_releve()
 
     @validate_int()
@@ -251,7 +253,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
     @tag(HardCoded)
     @log_results
-    def get_fraction_ech(self)-> float:
+    def get_fraction_ech(self) -> float:
         """FRACTION_ECH DOUBLE / NUMBER
         Fraction échantillonné. Nb paniers échantillonnés sur Nb paniers total de l'engin de pêche
 
@@ -267,7 +269,7 @@ class CaptureMollusque(TablePecheSentinelle):
     @validate_int(not_null=False)
     @tag(AndesCodeLookup)
     @log_results
-    def get_cod_descrip_capt(self) -> int| None:
+    def get_cod_descrip_capt(self) -> int | None:
         """COD_DESCRIP_CAPT INTEGER / NUMBER(5,0)
         Description qualitative de la capture tel que définie dans la table DESCRIP_CAPT_MOLL
 
@@ -277,7 +279,7 @@ class CaptureMollusque(TablePecheSentinelle):
         3 -> Espèce très abondante dans la capture
 
         Andes: shared_models_relativeabundancecategory.code
-         via ecosystem_survey_catch.relative_abundance_category_id 
+         via ecosystem_survey_catch.relative_abundance_category_id
 
         N.B. An effort has to be made to ensure the categories match between Andes and Oracle
 
@@ -302,7 +304,7 @@ class CaptureMollusque(TablePecheSentinelle):
     @tag(HardCoded, Deprecated)
     @log_results
     def get_fraction_ech_p(self) -> float | None:
-        """FRACTION_ECH_P DOUBLE / NUMBER 
+        """FRACTION_ECH_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Fraction_Ech"
 
         Andes: This is currently not recorded in Andes.
@@ -310,11 +312,11 @@ class CaptureMollusque(TablePecheSentinelle):
         Hard-coded: This function always returns None
         """
         return self._hard_coded_result(None)
-    
+
     @tag(Computed, Deprecated)
     @log_results
     def get_cod_type_mesure(self) -> int:
-        """COD_TYP_MESURE INTEGER / NUMBER(5,0) 
+        """COD_TYP_MESURE INTEGER / NUMBER(5,0)
         Spécification du type d'information recueillie tel que défini dans la table TYPE_MESURE_MOLL
 
         1 -> Données qualitatives
@@ -323,8 +325,8 @@ class CaptureMollusque(TablePecheSentinelle):
         Should this be deprecated?
 
         It's tempting to skip this field, but it is not nullable.
-        Consequently, it will be computed from andes data: 
-        2 -> if catch has weighted baskets (with nonzero values) or a legit specimen 
+        Consequently, it will be computed from andes data:
+        2 -> if catch has weighted baskets (with nonzero values) or a legit specimen
         (a specimen that has a specimen id is assumed to contain a quantitative observation).
         else:
         1 -> if catch has abundance category or photo
@@ -349,8 +351,7 @@ class CaptureMollusque(TablePecheSentinelle):
         )
         # note, ecosystem_survey_catch.specimen_count is the count for unmeasured specimens
         # we need an actual specimen (with a specimen id)
-        # see if there is a nonzero specimen count 
-
+        # see if there is a nonzero specimen count
 
         query = (
             "SELECT ecosystem_survey_specimen.id "
@@ -363,10 +364,12 @@ class CaptureMollusque(TablePecheSentinelle):
         )
         result = self.andes_db.execute_query(query)
         # any rspecimens means it's a quantitive catch (assuming quantitative specimen observations)
-        if len(result)>0:
-            self.logger.info("Existence of specimen detailing infers a quantitative catch.")
+        if len(result) > 0:
+            self.logger.info(
+                "Existence of specimen detailing infers a quantitative catch."
+            )
             return quantitative_code
-        
+
         # else, see if there is a weighted basket
         query = (
             "SELECT ecosystem_survey_basket.basket_wt_kg "
@@ -374,14 +377,16 @@ class CaptureMollusque(TablePecheSentinelle):
             f"WHERE ecosystem_survey_basket.catch_id={self._get_current_row_pk()}"
         )
         result = self.andes_db.execute_query(query)
-        nonzero_weights = [basket[0] for basket in result if not basket[0]==0]
+        nonzero_weights = [basket[0] for basket in result if not basket[0] == 0]
 
         # any weighted baskets means a quantitaive catch
-        if len(nonzero_weights)>0:
-            self.logger.info("Existence of weighted baskets infers a quantitative catch.")
+        if len(nonzero_weights) > 0:
+            self.logger.info(
+                "Existence of weighted baskets infers a quantitative catch."
+            )
 
             return quantitative_code
-        
+
         # may be a qualitative if a relative abundance is given (with no specimens or weights).
         query = (
             "SELECT ecosystem_survey_catch.relative_abundance_category_id "
@@ -390,32 +395,37 @@ class CaptureMollusque(TablePecheSentinelle):
         )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        rel_abundance: int|None = result[0][0] 
+        rel_abundance: int | None = result[0][0]
         if rel_abundance:
-            self.logger.info("Abundance category with no weights or specimens infers a qualitative catch.")
+            self.logger.info(
+                "Abundance category with no weights or specimens infers a qualitative catch."
+            )
             return qualitative_code
         else:
-            self.logger.error("Cannot determine cod_type_mesure for catch %s", self._get_current_row_pk())
+            self.logger.error(
+                "Cannot determine cod_type_mesure for catch %s",
+                self._get_current_row_pk(),
+            )
             raise ValueError
 
     @tag(Computed, HardCoded, NotAndes)
     @log_results
-    def get_nbr_capt(self) ->float | None:
-        """NBR_CAPT DOUBLE / NUMBER 
+    def get_nbr_capt(self) -> float | None:
+        """NBR_CAPT DOUBLE / NUMBER
         Nombre d'individus dans la capture
 
         Oracle Optimisation: Sounds like it should be an INTEGER, but fractional counts can arised from extrpolations. It depends on the source.
 
         This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
         There may be ambiguities whether this is derived or measured.
-        
+
         For scallops (inputed from the scallop team), the number of individuals specimens the specimens table can be counted.
         For scallops (inputed from biodiversity team), the number of individuals can be extrapolated from their sample basket to the catch (i.e., x4).
 
-        In order to prevent confusion, no choice is implemented. This may change in the future. 
+        In order to prevent confusion, no choice is implemented. This may change in the future.
 
         Hard-coded: This function always returns None
- 
+
         """
         return self._hard_coded_result(None)
 
@@ -425,12 +435,12 @@ class CaptureMollusque(TablePecheSentinelle):
         """FRACTION_PECH_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Fraction_Pech"
 
-        In order to prevent confusion, no choice is implemented. This may change in the future. 
+        In order to prevent confusion, no choice is implemented. This may change in the future.
 
         Hard-coded: This function always returns None
         """
         return self._hard_coded_result(None)
-    
+
     @tag(HardCoded)
     @log_results
     def get_nbr_ech(self) -> float | None:
@@ -439,12 +449,12 @@ class CaptureMollusque(TablePecheSentinelle):
 
         This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
         There may be ambiguities depending upon what exaclty is meant with "sample"
-        
+
         For scallops (inputed from the scallop team), there is typically no sample.
         For scallops (inputed from biodiversity team), the sample can be their own dredge basket (1/4)
         For scallops (inputed from biodiversity team), the sample can be a sub-sample from their dredge basket
 
-        In order to prevent confusion, no choice is implemented. This may change in the future. 
+        In order to prevent confusion, no choice is implemented. This may change in the future.
 
         Hard-coded: This function always returns None
 
@@ -454,7 +464,7 @@ class CaptureMollusque(TablePecheSentinelle):
     @tag(HardCoded, Deprecated)
     @log_results
     def get_pds_capt(self) -> float | None:
-        """PDS_CAPT DOUBLE / NUMBER 
+        """PDS_CAPT DOUBLE / NUMBER
         Poids de la capture, unité kg
         a ne pas confondre avec le poids du capitaine :)
 
@@ -466,13 +476,13 @@ class CaptureMollusque(TablePecheSentinelle):
         Hard-coded: This function always returns None
 
         """
-    
+
         return self._hard_coded_result(None)
 
     @tag(HardCoded, Deprecated)
     @log_results
     def get_pds_capt_p(self) -> float | None:
-        """PDS_CAPT_P DOUBLE / NUMBER 
+        """PDS_CAPT_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Pds_Capt"
 
         Historically, this column was NEVER populated.
@@ -485,7 +495,7 @@ class CaptureMollusque(TablePecheSentinelle):
     @tag(HardCoded)
     @log_results
     def get_pds_ech(self) -> float | None:
-        """PDS_ECH DOUBLE / NUMBER 
+        """PDS_ECH DOUBLE / NUMBER
         Poids de l'échantillon, unité kg
 
         This is a tricky field if Biodiversity data are combined with commercial stock assessment data.
@@ -494,13 +504,13 @@ class CaptureMollusque(TablePecheSentinelle):
         Hard-coded: This function always returns None
 
         """
-    
+
         return self._hard_coded_result(None)
 
     @tag(HardCoded, Deprecated)
     @log_results
     def get_pds_ech_p(self) -> float | None:
-        """PDS_ECH_P DOUBLE / NUMBER 
+        """PDS_ECH_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Pds_Ech"
 
         Hard-coded: This function always returns None
@@ -517,9 +527,9 @@ class CaptureMollusque(TablePecheSentinelle):
 
         """
         return self.engin.get_no_chargement()
-    
+
     def _get_coverage_codes(self):
-        # # get andes sampling protocol id        
+        # # get andes sampling protocol id
         # query = (
         #     "SELECT shared_models_cruise.sampling_protocol_id "
         #     "FROM shared_models_cruise "
@@ -529,7 +539,7 @@ class CaptureMollusque(TablePecheSentinelle):
         # self._assert_one(result)
         # sampling_protocol_id = int(result[0][0])
 
-        # # only a certain class, "Vivant, intacte" qualifies for epiboint measurements 
+        # # only a certain class, "Vivant, intacte" qualifies for epiboint measurements
         # class_desc = "Vivant, intacte"
         # # need to filter with class id
         # query = (
@@ -554,8 +564,7 @@ class CaptureMollusque(TablePecheSentinelle):
         # self._assert_one(result)
         # basket_id = result[0][0]
 
-
-        # observation 
+        # observation
         # get the observation_type_id for barnacle coverage
         observation_type_name = "Couverture Balanes"
         query = (
@@ -581,20 +590,18 @@ class CaptureMollusque(TablePecheSentinelle):
 
         return observation_value_no_barnacles, observation_type_id
 
-
-
-    def _compute_abondance_epibiont(self, catch_id:int) -> int | None:
+    def _compute_abondance_epibiont(self, catch_id: int) -> int | None:
         """
         This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
 
-        of the catch refered by catch_id 
+        of the catch refered by catch_id
         This can probably be written as one query, but it's easier to follow in small steps
         This only considers specimens with valid values for the barncalce coverage.
 
         Only a barnacle coverage of 0 counts as having no barnacles.
         Returns None if num_specimens_with_barnacles + num_specimens_without_barnacles == 0
 
-        
+
         Returns The code (0-5) according to the following bins:
         0 -> Aucun des pétoncles ne porte de balane
         1 -> 1% à 20% des pétoncles portent des balanes
@@ -605,8 +612,10 @@ class CaptureMollusque(TablePecheSentinelle):
 
         """
 
-
-        observation_value_no_barnacles, observation_coverage_type_id = self._get_coverage_codes()
+        (
+            observation_value_no_barnacles,
+            observation_coverage_type_id,
+        ) = self._get_coverage_codes()
 
         # get specimens with no barnacle observation
         query = (
@@ -627,7 +636,10 @@ class CaptureMollusque(TablePecheSentinelle):
         )
         result = self.andes_db.execute_query(query)
         num_specimens_without_barnacles = len(result)
-        self.logger.info("Found %s specimens identified without barnacles", num_specimens_without_barnacles)
+        self.logger.info(
+            "Found %s specimens identified without barnacles",
+            num_specimens_without_barnacles,
+        )
 
         query = (
             "SELECT ecosystem_survey_specimen.id "
@@ -647,24 +659,28 @@ class CaptureMollusque(TablePecheSentinelle):
         )
         result = self.andes_db.execute_query(query)
         num_specimens_with_barnacles = len(result)
-        self.logger.info("Found %s specimens identified with barnacles", num_specimens_with_barnacles)
-        if (num_specimens_with_barnacles+num_specimens_with_barnacles) == 0:
+        self.logger.info(
+            "Found %s specimens identified with barnacles", num_specimens_with_barnacles
+        )
+        if (num_specimens_with_barnacles + num_specimens_with_barnacles) == 0:
             self.logger.warning("No valid barnacle coverage code, null coverage")
             return None
-        
-        barnacle_ratio = (num_specimens_with_barnacles) / (num_specimens_with_barnacles+num_specimens_without_barnacles)
+
+        barnacle_ratio = (num_specimens_with_barnacles) / (
+            num_specimens_with_barnacles + num_specimens_without_barnacles
+        )
         # now check for bins
-        if barnacle_ratio==0:
+        if barnacle_ratio == 0:
             return 0
-        elif (0.0 < barnacle_ratio <= 0.20):
+        elif 0.0 < barnacle_ratio <= 0.20:
             return 1
-        elif (0.20 < barnacle_ratio <= 0.40):
+        elif 0.20 < barnacle_ratio <= 0.40:
             return 2
-        elif (0.40 < barnacle_ratio <= 0.60):
+        elif 0.40 < barnacle_ratio <= 0.60:
             return 3
-        elif (0.60 < barnacle_ratio <= 0.80):
+        elif 0.60 < barnacle_ratio <= 0.80:
             return 4
-        elif (0.80 < barnacle_ratio <= 1.0):
+        elif 0.80 < barnacle_ratio <= 1.0:
             return 5
         else:
             self.logger.error("Barnacle ratio is above 100%")
@@ -673,9 +689,9 @@ class CaptureMollusque(TablePecheSentinelle):
     @validate_int(min_val=0, max_val=5, not_null=False)
     @log_results
     def get_cod_abondance_epibiont(self) -> int | None:
-        """ COD_ABONDANCE_EPIBIONT INTEGER / NUMBER(5,0)
+        """COD_ABONDANCE_EPIBIONT INTEGER / NUMBER(5,0)
         Description de l'abondance des épibionts sur la coquille tel que défini dans la table ABONDANCE_EPIBIONT
-        
+
         0 -> Aucun des pétoncles ne porte de balane
         1 -> 1% à 20%% des pétoncles portent des balanes
         2 -> 21% à 40%% des pétoncles portent des balanes
@@ -687,26 +703,28 @@ class CaptureMollusque(TablePecheSentinelle):
         (typicaly for scallops).
 
         A None is automatically returned if the species' aphia_id is not one of following:
-        140692 (Pétoncle d' Islande) 
+        140692 (Pétoncle d' Islande)
         156972 (Pétoncle géant)
 
         """
 
-        # list of aphia id's for species that cold contain a barnacle coverge observation 
+        # list of aphia id's for species that cold contain a barnacle coverge observation
         candidate_species_aphia_id = [140692, 156972]
 
-        current_aphia_id =  self.reference_data._cod_esp_gen_2_aphia_id(self.get_cod_esp_gen())
+        current_aphia_id = self.reference_data._cod_esp_gen_2_aphia_id(
+            self.get_cod_esp_gen()
+        )
         if current_aphia_id not in candidate_species_aphia_id:
             self.logger.warn("Current species not a EPIBIONT candidate, returning null")
             return None
 
         return self._compute_abondance_epibiont(self._get_current_row_pk())
 
-    def _compute_couverture_epibiont(self, catch_id:int) -> int| None:
-        """ helper method to separate computation mechanics
+    def _compute_couverture_epibiont(self, catch_id: int) -> int | None:
+        """helper method to separate computation mechanics
         This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
         of the catch refered by catch_id.
-        
+
         For the specimens have have barnacles,the mean coverge is computed.
 
         Only valid nonzero coverage codesare considered, null values are ignored.
@@ -714,7 +732,10 @@ class CaptureMollusque(TablePecheSentinelle):
         Returns None if no valid coverage codes are found.
 
         """
-        observation_value_no_barnacles, observation_coverage_type_id = self._get_coverage_codes()
+        (
+            observation_value_no_barnacles,
+            observation_coverage_type_id,
+        ) = self._get_coverage_codes()
 
         query = (
             "SELECT ecosystem_survey_observation.observation_value "
@@ -737,27 +758,26 @@ class CaptureMollusque(TablePecheSentinelle):
         if not result:
             # return None or zero?
             return None
-        
+
         # these specimens results have no null or 0
         # use midpoints of range
         coverage_code_2_percent = {
-            '1': 0.5*(0. + 1./3.),
-            '2': 0.5*(1./3. + 2./3.),
-            '3': 0.5*(2./3. + 1),
+            "1": 0.5 * (0.0 + 1.0 / 3.0),
+            "2": 0.5 * (1.0 / 3.0 + 2.0 / 3.0),
+            "3": 0.5 * (2.0 / 3.0 + 1),
         }
         coverage_values = [coverage_code_2_percent[cov[0]] for cov in result]
         average_cov = np.mean(np.array(coverage_values))
-        if (0< average_cov <=1./3.):
+        if 0 < average_cov <= 1.0 / 3.0:
             cov_code = 1
-        elif (1./3.< average_cov <=2./3.):
+        elif 1.0 / 3.0 < average_cov <= 2.0 / 3.0:
             cov_code = 2
-        elif (2./3.< average_cov <=1.):
+        elif 2.0 / 3.0 < average_cov <= 1.0:
             cov_code = 3
         else:
             self.logger.error("over 100% mean coverage")
             raise ValueError
         return cov_code
-
 
     @log_results
     def get_couverture_epibiont(self) -> int | None:
@@ -781,13 +801,13 @@ class CaptureMollusque(TablePecheSentinelle):
         :rtype: int | None
         """
         barnacle_abundance = self.get_cod_abondance_epibiont()
-        if barnacle_abundance is None or barnacle_abundance==0:
+        if barnacle_abundance is None or barnacle_abundance == 0:
             return None
         return self._compute_couverture_epibiont(self._get_current_row_pk())
-    
+
     @log_results
     def get_rem_capt_moll(self) -> str | None:
-        """ REM_CAPT_MOLL VARCHAR(255) / VARCHAR2(255)
+        """REM_CAPT_MOLL VARCHAR(255) / VARCHAR2(255)
         Remarque au niveau de la capture
 
         Andes: ecosystem_survey_catch.notes
@@ -802,4 +822,3 @@ class CaptureMollusque(TablePecheSentinelle):
         to_return = result[0][0]
 
         return to_return
-    

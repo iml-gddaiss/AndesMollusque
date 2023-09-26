@@ -7,19 +7,19 @@ from andes_migrate.projet_mollusque import ProjetMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.decorators import (
+    AndesCodeLookup,
     tag,
     deprecate,
     log_results,
     validate_string,
     validate_int,
-    AndesCodeLookup
 )
 
 logging.basicConfig(level=logging.INFO)
 
 
 class TraitMollusque(TablePecheSentinelle):
-    """ 
+    """
     Object model representing the TRAIT_MOLLUSQUE table
     """
 
@@ -30,14 +30,12 @@ class TraitMollusque(TablePecheSentinelle):
         self.proj: ProjetMollusque = proj
         self.data = {}
 
-
         self._init_rows()
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_rows(self):
-
-        """ Initialisation method 
+        """Initialisation method
         This queries the Andes DB and creaters a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
@@ -62,7 +60,6 @@ class TraitMollusque(TablePecheSentinelle):
 
         # start at zero index (not to be confused with pk)
         self._row_idx = 0
-
 
     def populate_data(self):
         """Populate data: run all getters"""
@@ -155,7 +152,6 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-
     @validate_int(not_null=False)
     @log_results
     def get_cod_zone_gest_moll(self) -> int | None:
@@ -220,7 +216,7 @@ class TraitMollusque(TablePecheSentinelle):
         ANDES: shared_models_newstation.name
         The station name is stripped of non-numerical characters
         to generate no_station(i.e., NR524 -> 524)
-        
+
         """
 
         query = f"SELECT shared_models_newstation.name \
@@ -286,7 +282,7 @@ class TraitMollusque(TablePecheSentinelle):
         )
         return key
 
-    @tag('codelookup')
+    @tag("codelookup")
     @validate_int()
     @log_results
     def get_cod_result_oper(self) -> int:
@@ -328,7 +324,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = andes_2_oracle_map[str(to_return)]
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -352,7 +348,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -376,7 +372,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -400,7 +396,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
     @validate_string(max_len=10, not_null=False)
     @log_results
@@ -423,7 +419,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @validate_int(not_null=False)
     @log_results
     def get_cod_type_heure(self) -> int | None:
@@ -431,8 +427,8 @@ class TraitMollusque(TablePecheSentinelle):
         Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
 
         0 -> Normale Standard
-        1 -> Avancée Daylight saving 
-        2 -> GMT GMT 
+        1 -> Avancée Daylight saving
+        2 -> GMT GMT
 
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
         This function always returns 2.
@@ -442,16 +438,16 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(2)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @validate_int(not_null=False)
     @log_results
     def get_cod_fuseau_horaire(self) -> int | None:
         """COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
         Fuseau horaire utilisé pour déterminer l'heure de réalisation du trait tel que décrit dans la table FUSEAU_HORAIRE
 
-        0 -> GMT         GMT         
-        1 -> Québec      Quebec      
-        2 -> Maritimes   Atlantic    
+        0 -> GMT         GMT
+        1 -> Québec      Quebec
+        2 -> Maritimes   Atlantic
         3 -> Terre-Neuve Newfoundland
 
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
@@ -462,19 +458,19 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(0)
         return to_return
 
-    @tag('hardcoded', 'codelookup')
+    @tag("hardcoded", "codelookup")
     @validate_int(not_null=False)
     @log_results
     def get_cod_method_pos(self) -> int | None:
         """COD_METHOD_POS INTEGER / NUMBER(5,0)
         Identification de la méthode utilisée pour déterminer les coordonnées de l''emplacement d''échantillonnage tel que défini dans la table METHODE_POSITION
 
-        0 -> Inconnue        
-        1 -> Estimation      
-        2 -> Radar           
-        3 -> Decca           
-        4 -> Loran           
-        5 -> Satellite (GPS) 
+        0 -> Inconnue
+        1 -> Estimation
+        2 -> Radar
+        3 -> Decca
+        4 -> Loran
+        5 -> Satellite (GPS)
         6 -> Satellite (DGPS)
 
         Andes uses the vessel GPS, which may or may not have DGPS data.
@@ -569,7 +565,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return *= -1
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_latlong_p(self) -> float | None:
         """LATLONG_P DOUBLE / NUMBER
@@ -586,7 +582,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_distance_pos(self) -> float | None:
         """DISTANCE_POS DOUBLE / NUMBER
@@ -600,22 +596,22 @@ class TraitMollusque(TablePecheSentinelle):
 
         This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).
         It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.
-        
+
         This function always returns None
 
         """
         # hard-code this
         to_return = self._hard_coded_result(None)
         return to_return
-    
-    @tag('hardcoded')
+
+    @tag("hardcoded")
     @log_results
     def get_distance_pos_p(self) -> float | None:
         """DISTANCE_POS_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Distance_Pos"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
-        
+
         This function always returns None
 
         """
@@ -623,7 +619,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_vit_touage(self) -> float | None:
         """VIT_TOUAGE DOUBLE / NUMBER
@@ -639,7 +635,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_vit_touage_p(self) -> float | None:
         """VIT_TOUAGE_P DOUBLE / NUMBER
@@ -653,7 +649,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_duree_trait(self) -> float | None:
         """DUREE_TRAIT DOUBLE / NUMBER
@@ -669,7 +665,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_duree_trait_p(self) -> float | None:
         """DUREE_TRAIT_P DOUBLE / NUMBER
@@ -683,7 +679,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_temp_fond(self) -> float | None:
         """TEMP_FOND DOUBLE / NUMBER
@@ -698,16 +694,16 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_temp_fond_p(self) -> float | None:
         """TEMP_FOND_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
-        
+
         Andes:  does not log temperature data.
-        
+
         This function always returns None
 
         """
@@ -733,14 +729,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_prof_deb_p(self) -> float | None:
         """PROF_DEB_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
-        
+
         This function always returns None
 
         """
@@ -766,14 +762,14 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @log_results
     def get_prof_fin_p(self) -> float | None:
         """PROF_FIN_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Temp_Eau_Fond"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
-        
+
         This function always returns None
 
         """
@@ -797,13 +793,13 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
 
-        if type(to_return)==datetime.datetime:
+        if type(to_return) == datetime.datetime:
             to_return = datetime.datetime.strftime(to_return, strfmt)
             return to_return
         else:
             self.logger.warn("Expected a datetime object , received None")
             return None
-        
+
     @validate_int(not_null=False)
     @log_results
     def get_no_chargement(self) -> float | int | None:
@@ -836,7 +832,7 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         strfmt = "%Y-%m-%d %H:%M:%S"
-        if type(to_return)==datetime.datetime:
+        if type(to_return) == datetime.datetime:
             to_return = datetime.datetime.strftime(to_return, strfmt)
             return to_return
         else:
@@ -864,18 +860,18 @@ class TraitMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         strfmt = "%Y-%m-%d %H:%M:%S"
-        if type(to_return)==datetime.datetime:
+        if type(to_return) == datetime.datetime:
             to_return = datetime.datetime.strftime(to_return, strfmt)
             return to_return
         else:
             self.logger.warn("Expected a datetime object , received None")
             return None
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
-        """ SALINITE_FOND DOUBLE / NUMBER
+        """SALINITE_FOND DOUBLE / NUMBER
         Salinité de l'eau au fond, unité psu
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
@@ -888,11 +884,11 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
-        """ SALINITE_FOND_P DOUBLE / NUMBER
+        """SALINITE_FOND_P DOUBLE / NUMBER
         Précision d'affichage associée à '' Salinite_Fond''
 
         Oracle Optimisation: column not in MSACCESS, is deprecated?
@@ -903,11 +899,11 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag('hardcoded')
+    @tag("hardcoded")
     @deprecate
     @log_results
     def get_cod_type_ech_trait(self) -> float | None:
-        """ COD_TYP_ECH_TRAIT DOUBLE / NUMBER
+        """COD_TYP_ECH_TRAIT DOUBLE / NUMBER
         Identification du type d'activité d'échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT
 
         Oracle Optimisation: this datatype should be INTEGER

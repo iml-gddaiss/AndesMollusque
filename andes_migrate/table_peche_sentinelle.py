@@ -4,14 +4,14 @@ from andes_migrate.oracle_helper import OracleHelper
 
 
 class TablePecheSentinelle:
-    """ Abstract Class
+    """Abstract Class
     This acts like a parent class to provide basic functionality
     for objects representing a Peche Sentinelle table.
 
-  
+
     """
 
-    def __init__(self, ref:OracleHelper|None=None):
+    def __init__(self, ref: OracleHelper | None = None):
         self.logger = logging.getLogger(__name__)
         # self.reference_data = OracleHelper(
         #     access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
@@ -21,13 +21,11 @@ class TablePecheSentinelle:
         else:
             self.reference_data = OracleHelper()
 
-
-
         self._row_list = []
         self._row_idx: int | None = None
 
     def _init_rows(self):
-        """ Initialisation method 
+        """Initialisation method
         This queries the Andes DB and creaters a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
@@ -60,9 +58,8 @@ class TablePecheSentinelle:
             self.logger.error("Row data not initialise, did you run _init_rows()?")
             raise ValueError
 
-
     def _assert_one(self, result):
-        """ asserts that the query returns only one result.
+        """asserts that the query returns only one result.
         raises ValueError otherwise
         """
         if len(result) == 0:
@@ -75,7 +72,7 @@ class TablePecheSentinelle:
             raise ValueError("Expected only one result.")
 
     def _assert_not_empty(self, result):
-        """ asserts that the query result is not empty,
+        """asserts that the query result is not empty,
         raises ValueError otherwise
         """
         if len(result) == 0:
@@ -94,7 +91,7 @@ class TablePecheSentinelle:
         # (df[0] ==df)
 
     def _hard_coded_result(self, result):
-        """ returns a value hard-coded value
+        """returns a value hard-coded value
         Some values cannot be looked up and have to be hard-coded into the module.
         This function simply returns back the input value, but also prints
         a logging warning.
@@ -103,7 +100,7 @@ class TablePecheSentinelle:
         return result
 
     def _seq_result(self, result=-1):
-        """ returns a value meant to be a sequential value
+        """returns a value meant to be a sequential value
         As SEQ values are not meant to be populated, this function
         simply prints a warning before returning the input.
         """
@@ -112,12 +109,9 @@ class TablePecheSentinelle:
         )
         return result
 
-
-
- 
     def validate(self):
         """
-        This executes a battery of validation tests to help 
+        This executes a battery of validation tests to help
         find errors.
 
         Need to override by child class

@@ -3,18 +3,27 @@ import datetime
 
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
-from andes_migrate.decorators import AndesCodeLookup, HardCoded, NotAndes, Seq, tag, log_results, validate_string, validate_int
+from andes_migrate.decorators import (
+    AndesCodeLookup,
+    HardCoded,
+    NotAndes,
+    Seq,
+    tag,
+    log_results,
+    validate_string,
+    validate_int,
+)
 
 logging.basicConfig(level=logging.INFO)
 
 
 class ProjetMollusque(TablePecheSentinelle):
-    """ 
+    """
     Object model representing the PROJET_MOLLUSQUE table
     """
+
     def __init__(self, andes_db):
         super().__init__()
-        
 
         self.andes_db = andes_db
 
@@ -66,9 +75,11 @@ class ProjetMollusque(TablePecheSentinelle):
         mission_number (str)
         """
 
-        query = ("SELECT shared_models_cruise.id "
-                "FROM shared_models_cruise "
-               f"WHERE shared_models_cruise.mission_number='{self.no_notification}'")
+        query = (
+            "SELECT shared_models_cruise.id "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.mission_number='{self.no_notification}'"
+        )
 
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
@@ -77,7 +88,6 @@ class ProjetMollusque(TablePecheSentinelle):
         # should only be one, but use list comprehension still
         self._row_list = [cruise[0] for cruise in result]
         self._row_idx = 0
-
 
     def init_input(
         self,
@@ -151,9 +161,11 @@ class ProjetMollusque(TablePecheSentinelle):
         19 -> Évaluation de stocks IML - Pétoncle I de M (Access)
         19 -> Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine (Oracle)
         """
-        query = (f"SELECT shared_models_cruise.description "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}")
+        query = (
+            f"SELECT shared_models_cruise.description "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -210,11 +222,13 @@ class ProjetMollusque(TablePecheSentinelle):
         Code lookup
 
         """
-        query = ("SELECT shared_models_vessel.nbpc, shared_models_vessel.name "
-                 "FROM shared_models_cruise "
-                 "LEFT JOIN shared_models_vessel "
-                 "ON shared_models_cruise.vessel_id=shared_models_vessel.id "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_vessel.nbpc, shared_models_vessel.name "
+            "FROM shared_models_cruise "
+            "LEFT JOIN shared_models_vessel "
+            "ON shared_models_cruise.vessel_id=shared_models_vessel.id "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -241,9 +255,11 @@ class ProjetMollusque(TablePecheSentinelle):
         Andes: `shared_models_cruise.season`
 
         """
-        query = ("SELECT shared_models_cruise.season " 
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_cruise.season "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -312,13 +328,15 @@ class ProjetMollusque(TablePecheSentinelle):
         """
         # res = self.cur.execute(f"SELECT shared_models_stratificationtype.code FROM shared_models_stratificationtype ;")
 
-        query = ("SELECT "
-                    "shared_models_stratificationtype.code, "
-                    "shared_models_stratificationtype.description_fra "
-                "FROM shared_models_cruise "
-                "LEFT JOIN shared_models_stratificationtype "
-                "ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id "
-               f"WHERE shared_models_cruise.id={self._get_current_row_pk()}")
+        query = (
+            "SELECT "
+            "shared_models_stratificationtype.code, "
+            "shared_models_stratificationtype.description_fra "
+            "FROM shared_models_cruise "
+            "LEFT JOIN shared_models_stratificationtype "
+            "ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -340,9 +358,11 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
 
-        query = ("SELECT shared_models_cruise.start_date "
-                 "FROM shared_models_cruise "
-                f"WHERE id = {self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_cruise.start_date "
+            "FROM shared_models_cruise "
+            f"WHERE id = {self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -361,9 +381,11 @@ class ProjetMollusque(TablePecheSentinelle):
         TODO: verify datetime format
         """
 
-        query = ("SELECT shared_models_cruise.end_date "
-                 "FROM shared_models_cruise "
-                f"WHERE id = {self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_cruise.end_date "
+            "FROM shared_models_cruise "
+            f"WHERE id = {self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
 
@@ -383,9 +405,11 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
 
-        query = ("SELECT shared_models_cruise.mission_number "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_cruise.mission_number "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -400,14 +424,16 @@ class ProjetMollusque(TablePecheSentinelle):
         Andes: `shared_models_cruise.chief_scientist`
 
         """
-        query = ("SELECT shared_models_cruise.chief_scientist "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}")
+        query = (
+            "SELECT shared_models_cruise.chief_scientist "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id = {self._get_current_row_pk()}"
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
         return to_return
-    
+
     @validate_int(not_null=False)
     @tag(Seq)
     @log_results
@@ -450,9 +476,11 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
 
-        query = ("SELECT shared_models_cruise.targeted_trawl_duration "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
+        query = (
+            "SELECT shared_models_cruise.targeted_trawl_duration "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -483,9 +511,11 @@ class ProjetMollusque(TablePecheSentinelle):
 
         """
 
-        query = ("SELECT shared_models_cruise.targeted_trawl_speed "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
+        query = (
+            "SELECT shared_models_cruise.targeted_trawl_speed "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -496,7 +526,7 @@ class ProjetMollusque(TablePecheSentinelle):
     def get_vit_touage_visee_p(self) -> float | None:
         """VIT_TOUAGE_VISEE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée à "Vit_Touage_Visee"
-        
+
         Andes: Pas dans Andes
 
         This function always returns a hard-coded value of 0.1
@@ -526,9 +556,11 @@ class ProjetMollusque(TablePecheSentinelle):
         # time_h = self.get_duree_trait_visee() / 60.0
         # dist_m = speed_kph * time_h * 1000
 
-        query = ("SELECT shared_models_cruise.targeted_trawl_distance "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
+        query = (
+            "SELECT shared_models_cruise.targeted_trawl_distance "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -604,9 +636,11 @@ class ProjetMollusque(TablePecheSentinelle):
         Andes: `shared_models_cruise.samplers`
 
         """
-        query = ("SELECT shared_models_cruise.samplers "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
+        query = (
+            "SELECT shared_models_cruise.samplers "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -623,9 +657,11 @@ class ProjetMollusque(TablePecheSentinelle):
         N.B. max length mistmatch between Orale and MSAccess
 
         """
-        query = ("SELECT shared_models_cruise.notes "
-                 "FROM shared_models_cruise "
-                f"WHERE shared_models_cruise.id={self._get_current_row_pk()} ")
+        query = (
+            "SELECT shared_models_cruise.notes "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -651,4 +687,3 @@ class ProjetMollusque(TablePecheSentinelle):
         self._seq_result()
         to_return = self._hard_coded_result(None)
         return to_return
-

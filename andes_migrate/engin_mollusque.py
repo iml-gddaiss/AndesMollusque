@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class EnginMollusque(TablePecheSentinelle):
-    """ 
+    """
     Object model representing the ENGIN_MOLLUSQUE table
     """
 
@@ -297,7 +297,7 @@ class EnginMollusque(TablePecheSentinelle):
     @tag(HardCoded)
     @log_results
     def get_remplissage_p(self) -> float | None:
-        """ REMPLISSAGE_P DOUBLE / NUMBER
+        """REMPLISSAGE_P DOUBLE / NUMBER
         Nombre de chiffre après la décimale pour la précision d'affichage associée "Remplissage"
 
         N.B. the description seems wrong, it's not the number of digits after the decimal, but rather the uncertainty
@@ -311,13 +311,12 @@ class EnginMollusque(TablePecheSentinelle):
     @tag(HardCoded)
     @log_results
     def get_rem_engin_moll(self) -> str | None:
-        """ REM_ENGIN_MOLL VARCHAR(255) / VARCHAR2(255)
+        """REM_ENGIN_MOLL VARCHAR(255) / VARCHAR2(255)
         Remarque sur les opérations au niveau de l''engin
 
         All historical values are null except for a dozen in relevé 16.
         These comment can easily be moved to Set comment and the col can be removed.
-        
+
         """
 
         return self._hard_coded_result(None)
-
