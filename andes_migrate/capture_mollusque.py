@@ -1,7 +1,7 @@
 import logging
+import numpy as np
 
 from andes_migrate.engin_mollusque import EnginMollusque
-
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
     Deprecated,
@@ -54,34 +54,35 @@ class CaptureMollusque(TablePecheSentinelle):
 
         # a list of all the catch pk's (need to unpack a bit)
         self._row_list = [catch[0] for catch in result]
-        self._row_idx = 0
+        # hack!
+        self._row_idx = 1
 
     def populate_data(self):
         """Populate data: run all getters"""
 
-        self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
-        self.data["COD_ENG_GEN"] = self.get_cod_eng_gen()
-        self.data["NO_RELEVE"] = self.get_no_releve()
-        self.data["COD_ESP_GEN"] = self.get_cod_esp_gen()
-        self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
-        self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
-        self.data["COD_NBPC"] = self.get_cod_nbpc()
-        self.data["FRACTION_PECH"] = self.get_fraction_peche()
-        self.data["NO_ENGIN"] = self.get_no_engin()
-        self.data["FRACTION_ECH"] = self.get_fraction_ech()
-        self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
-        self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
-        self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
-        self.data['NBR_CAPT'] = self.get_nbr_capt()
-        self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
-        self.data['NBR_ECH'] = self.get_nbr_ech()
-        self.data['PDS_CAPT'] = self.get_pds_capt()
-        self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
-        self.data['PDS_ECH'] = self.get_pds_ech()
-        self.data['PDS_ECH_P'] = self.get_pds_ech()
-        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+        # self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
+        # self.data["COD_ENG_GEN"] = self.get_cod_eng_gen()
+        # self.data["NO_RELEVE"] = self.get_no_releve()
+        # self.data["COD_ESP_GEN"] = self.get_cod_esp_gen()
+        # self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
+        # self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
+        # self.data["COD_NBPC"] = self.get_cod_nbpc()
+        # self.data["FRACTION_PECH"] = self.get_fraction_peche()
+        # self.data["NO_ENGIN"] = self.get_no_engin()
+        # self.data["FRACTION_ECH"] = self.get_fraction_ech()
+        # self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
+        # self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
+        # self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
+        # self.data['NBR_CAPT'] = self.get_nbr_capt()
+        # self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
+        # self.data['NBR_ECH'] = self.get_nbr_ech()
+        # self.data['PDS_CAPT'] = self.get_pds_capt()
+        # self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
+        # self.data['PDS_ECH'] = self.get_pds_ech()
+        # self.data['PDS_ECH_P'] = self.get_pds_ech()
+        # self.data['NO_CHARGEMENT'] = self.get_no_chargement()
         self.data['COD_ABONDANCE_EPIBIONT'] = self.get_cod_abondance_epibiont()
-        # self.data['COD_COUVERTURE_EPIBIONT'] = self.get_
+        self.data['COD_COUVERTURE_EPIBIONT'] = self.get_couverture_epibiont()
         # self.data['REM_CAPT_MOLL'] = self.get_
 
     @validate_int()
@@ -517,51 +518,42 @@ class CaptureMollusque(TablePecheSentinelle):
         """
         return self.engin.get_no_chargement()
     
+    def _get_coverage_codes(self):
+        # # get andes sampling protocol id        
+        # query = (
+        #     "SELECT shared_models_cruise.sampling_protocol_id "
+        #     "FROM shared_models_cruise "
+        #     f"WHERE shared_models_cruise.id='{self.engin.trait.proj._get_current_row_pk()}'"
+        # )
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # sampling_protocol_id = int(result[0][0])
 
-    def _compute_abondance_epibiont(self, catch_id:int):
-        """
-        This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
+        # # only a certain class, "Vivant, intacte" qualifies for epiboint measurements 
+        # class_desc = "Vivant, intacte"
+        # # need to filter with class id
+        # query = (
+        #     "SELECT shared_models_sizeclass.code "
+        #     "FROM shared_models_sizeclass "
+        #     f"WHERE shared_models_sizeclass.description_fra='{class_desc}'"
+        #     f"AND shared_models_sizeclass.sampling_protocol_id='{sampling_protocol_id}'"
+        # )
 
-        of the catch refered by catch_id 
-        This can probably be written as one query, but it's easier to follow in small steps
-        """
-        print(f"catch id: {catch_id}")
+        # result = self.andes_db.execute_query(query)
+        # self._assert_one(result)
+        # class_code = int(result[0][0])
+        #     # now get the basket of that size-class
+        # query = (
+        #     "SELECT ecosystem_survey_basket.id "
+        #     "FROM ecosystem_survey_basket "
+        #     f"WHERE ecosystem_survey_basket.size_class='{class_code}' "
+        #     f"AND ecosystem_survey_basket.catch_id={catch_id} "
+        # )
+        # result = self.andes_db.execute_query(query)
+        # # perhaps allow for multiple baskets?
+        # self._assert_one(result)
+        # basket_id = result[0][0]
 
-        # get andes sampling protocol id        
-        query = (
-            "SELECT shared_models_cruise.sampling_protocol_id "
-            "FROM shared_models_cruise "
-            f"WHERE shared_models_cruise.id='{self.engin.trait.proj._get_current_row_pk()}'"
-        )
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        sampling_protocol_id = int(result[0][0])
-
-        # only a certain class, "Vivant, intacte" qualifies for epiboint measurements 
-        class_desc = "Vivant, intacte"
-        # need to filter with class id
-        query = (
-            "SELECT shared_models_sizeclass.code "
-            "FROM shared_models_sizeclass "
-            f"WHERE shared_models_sizeclass.description_fra='{class_desc}'"
-            f"AND shared_models_sizeclass.sampling_protocol_id='{sampling_protocol_id}'"
-        )
-
-        result = self.andes_db.execute_query(query)
-        self._assert_one(result)
-        class_code = int(result[0][0])
-
-        # now get the basket of that size-class
-        query = (
-            "SELECT ecosystem_survey_basket.id "
-            "FROM ecosystem_survey_basket "
-            f"WHERE ecosystem_survey_basket.size_class='{class_code}' "
-            f"AND ecosystem_survey_basket.catch_id={catch_id} "
-        )
-        result = self.andes_db.execute_query(query)
-        # perhaps allow for multiple baskets?
-        self._assert_one(result)
-        basket_id = result[0][0]
 
         # observation 
         # get the observation_type_id for barnacle coverage
@@ -587,8 +579,55 @@ class CaptureMollusque(TablePecheSentinelle):
         self._assert_one(result)
         observation_value_no_barnacles = result[0][0]
 
+        return observation_value_no_barnacles, observation_type_id
 
-        # get specimens with some barnacles
+
+
+    def _compute_abondance_epibiont(self, catch_id:int) -> int | None:
+        """
+        This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
+
+        of the catch refered by catch_id 
+        This can probably be written as one query, but it's easier to follow in small steps
+        This only considers specimens with valid values for the barncalce coverage.
+
+        Only a barnacle coverage of 0 counts as having no barnacles.
+        Returns None if num_specimens_with_barnacles + num_specimens_without_barnacles == 0
+
+        
+        Returns The code (0-5) according to the following bins:
+        0 -> Aucun des pétoncles ne porte de balane
+        1 -> 1% à 20% des pétoncles portent des balanes
+        2 -> 21% à 40% des pétoncles portent des balanes
+        3 -> 41% à 60% des pétonlces portent des balanes
+        4 -> 61% à 80% despétoncles portent des balanes
+        5 -> 81% à 100% des pétonlces portent des balanes
+
+        """
+
+
+        observation_value_no_barnacles, observation_coverage_type_id = self._get_coverage_codes()
+
+        # get specimens with no barnacle observation
+        query = (
+            "SELECT ecosystem_survey_specimen.id "
+            "FROM ecosystem_survey_catch "
+            "LEFT JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_catch.id=ecosystem_survey_basket.catch_id "
+            "LEFT JOIN ecosystem_survey_specimen "
+            "ON ecosystem_survey_specimen.basket_id = ecosystem_survey_basket.id "
+            "LEFT JOIN ecosystem_survey_observation "
+            "ON ecosystem_survey_observation.specimen_id=ecosystem_survey_specimen.id  "
+            "LEFT JOIN shared_models_observationtypecategory "
+            "ON shared_models_observationtypecategory.observation_type_id=ecosystem_survey_observation.id  "
+            f"WHERE ecosystem_survey_catch.id={catch_id} "
+            f"AND ecosystem_survey_observation.observation_type_id='{observation_coverage_type_id}' "
+            f"AND ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
+            "AND ecosystem_survey_observation.observation_value IS NOT NULL "
+        )
+        result = self.andes_db.execute_query(query)
+        num_specimens_without_barnacles = len(result)
+        self.logger.info("Found %s specimens identified without barnacles", num_specimens_without_barnacles)
 
         query = (
             "SELECT ecosystem_survey_specimen.id "
@@ -601,35 +640,53 @@ class CaptureMollusque(TablePecheSentinelle):
             "ON ecosystem_survey_observation.specimen_id=ecosystem_survey_specimen.id  "
             "LEFT JOIN shared_models_observationtypecategory "
             "ON shared_models_observationtypecategory.observation_type_id=ecosystem_survey_observation.id  "
-            f"WHERE ecosystem_survey_observation.observation_type_id='{observation_type_id}' "
-            f"AND ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
-            f"AND ecosystem_survey_catch.id={catch_id} "    
+            f"WHERE ecosystem_survey_catch.id={catch_id} "
+            f"AND ecosystem_survey_observation.observation_type_id='{observation_coverage_type_id}' "
+            f"AND NOT ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
+            "AND ecosystem_survey_observation.observation_value IS NOT NULL "
         )
         result = self.andes_db.execute_query(query)
-        print("specimens without barnacles: ")
-        print(result)
         num_specimens_with_barnacles = len(result)
+        self.logger.info("Found %s specimens identified with barnacles", num_specimens_with_barnacles)
+        if (num_specimens_with_barnacles+num_specimens_with_barnacles) == 0:
+            self.logger.warning("No valid barnacle coverage code, null coverage")
+            return None
+        
+        barnacle_ratio = (num_specimens_with_barnacles) / (num_specimens_with_barnacles+num_specimens_without_barnacles)
+        # now check for bins
+        if barnacle_ratio==0:
+            return 0
+        elif (0.0 < barnacle_ratio <= 0.20):
+            return 1
+        elif (0.20 < barnacle_ratio <= 0.40):
+            return 2
+        elif (0.40 < barnacle_ratio <= 0.60):
+            return 3
+        elif (0.60 < barnacle_ratio <= 0.80):
+            return 4
+        elif (0.80 < barnacle_ratio <= 1.0):
+            return 5
+        else:
+            self.logger.error("Barnacle ratio is above 100%")
+            raise ValueError
 
-
-
-        pass
-
+    @validate_int(min_val=0, max_val=5, not_null=False)
     @log_results
     def get_cod_abondance_epibiont(self) -> int | None:
         """ COD_ABONDANCE_EPIBIONT INTEGER / NUMBER(5,0)
         Description de l'abondance des épibionts sur la coquille tel que défini dans la table ABONDANCE_EPIBIONT
         
         0 -> Aucun des pétoncles ne porte de balane
-        1 -> 1% à 20% des pétoncles portent des balanes
-        2 -> 21% à 40% des pétoncles portent des balanes
-        3 -> 41% à 60% des pétonlces portent des balanes
-        4 -> 61% à 80% despétoncles portent des balanes
-        5 -> 81% à 100% des pétonlces portent des balanes
+        1 -> 1% à 20%% des pétoncles portent des balanes
+        2 -> 21% à 40%% des pétoncles portent des balanes
+        3 -> 41% à 60%% des pétonlces portent des balanes
+        4 -> 61% à 80%% despétoncles portent des balanes
+        5 -> 81% à 100%% des pétonlces portent des balanes
 
         Andes does not explicitly log this, but it can be computed for some species where a barnacle coverage observable exists.
         (typicaly for scallops).
 
-        A None is automatically returned if the specie's aphia_id is not one of following:
+        A None is automatically returned if the species' aphia_id is not one of following:
         140692 (Pétoncle d' Islande) 
         156972 (Pétoncle géant)
 
@@ -642,8 +699,86 @@ class CaptureMollusque(TablePecheSentinelle):
         if current_aphia_id not in candidate_species_aphia_id:
             self.logger.warn("Current species not a EPIBIONT candidate, returning null")
             return None
-        print("need to do more")
 
-        self._compute_abondance_epibiont(self._get_current_row_pk())
-        return None
+        return self._compute_abondance_epibiont(self._get_current_row_pk())
 
+    def _compute_couverture_epibiont(self, catch_id:int) -> int| None:
+        """ helper method to separate computation mechanics
+        This looks for the observable "couverture balanes" for "Vivant, intacte" specimens
+        of the catch refered by catch_id.
+        
+        For the specimens have have barnacles,the mean coverge is computed.
+
+        Only valid nonzero coverage codesare considered, null values are ignored.
+
+        Returns None if no valid coverage codes are found.
+
+        """
+        observation_value_no_barnacles, observation_coverage_type_id = self._get_coverage_codes()
+
+        query = (
+            "SELECT ecosystem_survey_observation.observation_value "
+            "FROM ecosystem_survey_catch "
+            "LEFT JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_catch.id=ecosystem_survey_basket.catch_id "
+            "LEFT JOIN ecosystem_survey_specimen "
+            "ON ecosystem_survey_specimen.basket_id = ecosystem_survey_basket.id "
+            "LEFT JOIN ecosystem_survey_observation "
+            "ON ecosystem_survey_observation.specimen_id=ecosystem_survey_specimen.id  "
+            "LEFT JOIN shared_models_observationtypecategory "
+            "ON shared_models_observationtypecategory.observation_type_id=ecosystem_survey_observation.id  "
+            f"WHERE ecosystem_survey_catch.id={catch_id} "
+            f"AND ecosystem_survey_observation.observation_type_id='{observation_coverage_type_id}' "
+            f"AND NOT ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
+            "AND ecosystem_survey_observation.observation_value IS NOT NULL "
+        )
+        result = self.andes_db.execute_query(query)
+
+        if not result:
+            # return None or zero?
+            return None
+        
+        # these specimens results have no null or 0
+        # use midpoints of range
+        coverage_code_2_percent = {
+            '1': 0.5*(0. + 1./3.),
+            '2': 0.5*(1./3. + 2./3.),
+            '3': 0.5*(2./3. + 1),
+        }
+        coverage_values = [coverage_code_2_percent[cov[0]] for cov in result]
+        average_cov = np.mean(np.array(coverage_values))
+        if (0< average_cov <=1./3.):
+            cov_code = 1
+        elif (1./3.< average_cov <=2./3.):
+            cov_code = 2
+        elif (2./3.< average_cov <=1.):
+            cov_code = 3
+        else:
+            self.logger.error("over 100% mean coverage")
+            raise ValueError
+        return cov_code
+
+
+    @log_results
+    def get_couverture_epibiont(self) -> int | None:
+        """_summary_
+
+        0 -> Aucune balane
+        1 -> 1/3 et moins surface colonisée
+        2 -> 1/3 à 2/3 surface colonisée
+        3 -> 2/3 et plus surface colonisée
+        4 -> Présence algue encroutante
+
+        N.B. Of those observations that are not 0 o null, the mean coverage is computed.
+        N.B. Présence algue encroutante (4) is unused
+
+        A None is automatically returned if get_cod_abondance_epibiont is 0 or None
+
+        :return: coverage code
+        :rtype: int | None
+        """
+        barnacle_abundance = self.get_cod_abondance_epibiont()
+        if barnacle_abundance is None or barnacle_abundance==0:
+            return None
+        return self._compute_couverture_epibiont(self._get_current_row_pk())
+    
