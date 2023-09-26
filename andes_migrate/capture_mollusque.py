@@ -60,30 +60,30 @@ class CaptureMollusque(TablePecheSentinelle):
     def populate_data(self):
         """Populate data: run all getters"""
 
-        # self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
-        # self.data["COD_ENG_GEN"] = self.get_cod_eng_gen()
-        # self.data["NO_RELEVE"] = self.get_no_releve()
-        # self.data["COD_ESP_GEN"] = self.get_cod_esp_gen()
-        # self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
-        # self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
-        # self.data["COD_NBPC"] = self.get_cod_nbpc()
-        # self.data["FRACTION_PECH"] = self.get_fraction_peche()
-        # self.data["NO_ENGIN"] = self.get_no_engin()
-        # self.data["FRACTION_ECH"] = self.get_fraction_ech()
-        # self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
-        # self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
-        # self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
-        # self.data['NBR_CAPT'] = self.get_nbr_capt()
-        # self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
-        # self.data['NBR_ECH'] = self.get_nbr_ech()
-        # self.data['PDS_CAPT'] = self.get_pds_capt()
-        # self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
-        # self.data['PDS_ECH'] = self.get_pds_ech()
-        # self.data['PDS_ECH_P'] = self.get_pds_ech()
-        # self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+        self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
+        self.data["COD_ENG_GEN"] = self.get_cod_eng_gen()
+        self.data["NO_RELEVE"] = self.get_no_releve()
+        self.data["COD_ESP_GEN"] = self.get_cod_esp_gen()
+        self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
+        self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
+        self.data["COD_NBPC"] = self.get_cod_nbpc()
+        self.data["FRACTION_PECH"] = self.get_fraction_peche()
+        self.data["NO_ENGIN"] = self.get_no_engin()
+        self.data["FRACTION_ECH"] = self.get_fraction_ech()
+        self.data['COD_DESCRIP_CAPT'] = self.get_cod_descrip_capt()
+        self.data['FRACTION_ECH_P'] = self.get_fraction_ech_p()
+        self.data['COD_TYP_MESURE'] = self.get_cod_type_mesure()
+        self.data['NBR_CAPT'] = self.get_nbr_capt()
+        self.data['FRACTION_PECH_P'] = self.get_fraction_peche_p()
+        self.data['NBR_ECH'] = self.get_nbr_ech()
+        self.data['PDS_CAPT'] = self.get_pds_capt()
+        self.data['PDS_CAPT_P'] = self.get_pds_capt_p()
+        self.data['PDS_ECH'] = self.get_pds_ech()
+        self.data['PDS_ECH_P'] = self.get_pds_ech()
+        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
         self.data['COD_ABONDANCE_EPIBIONT'] = self.get_cod_abondance_epibiont()
         self.data['COD_COUVERTURE_EPIBIONT'] = self.get_couverture_epibiont()
-        # self.data['REM_CAPT_MOLL'] = self.get_
+        self.data['REM_CAPT_MOLL'] = self.get_rem_capt_moll()
 
     @validate_int()
     @log_results
@@ -761,7 +761,8 @@ class CaptureMollusque(TablePecheSentinelle):
 
     @log_results
     def get_couverture_epibiont(self) -> int | None:
-        """_summary_
+        """COD_COUVERTURE_EPIBIONT INTEGER / NUMBER(5,0)
+        Description du degré de colonisation des épibionts sur la coquille tel que défini dans la table COUVERTURE_EPIBIONT
 
         0 -> Aucune balane
         1 -> 1/3 et moins surface colonisée
@@ -769,8 +770,10 @@ class CaptureMollusque(TablePecheSentinelle):
         3 -> 2/3 et plus surface colonisée
         4 -> Présence algue encroutante
 
-        N.B. Of those observations that are not 0 o null, the mean coverage is computed.
-        N.B. Présence algue encroutante (4) is unused
+        N.B.
+        This used to be at the catch level, but now individual specimens are given a score.
+        Of those observations that are not 0 o null, the mean coverage is computed.
+        result 4 -> Présence algue encroutante is unused
 
         A None is automatically returned if get_cod_abondance_epibiont is 0 or None
 
@@ -781,4 +784,22 @@ class CaptureMollusque(TablePecheSentinelle):
         if barnacle_abundance is None or barnacle_abundance==0:
             return None
         return self._compute_couverture_epibiont(self._get_current_row_pk())
+    
+    @log_results
+    def get_rem_capt_moll(self) -> str | None:
+        """ REM_CAPT_MOLL VARCHAR(255) / VARCHAR2(255)
+        Remarque au niveau de la capture
+
+        Andes: ecosystem_survey_catch.notes
+        """
+        query = (
+            "SELECT ecosystem_survey_catch.notes "
+            "FROM ecosystem_survey_catch "
+            f"WHERE ecosystem_survey_catch.id={self._get_current_row_pk()} "
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+
+        return to_return
     
