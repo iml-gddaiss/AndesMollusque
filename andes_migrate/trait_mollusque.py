@@ -36,7 +36,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     def _init_rows(self):
         """Initialisation method
-        This queries the Andes DB and creaters a list of row entries to be added to the current table
+        This queries the Andes DB and creates a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
         self._row_list

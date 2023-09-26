@@ -34,7 +34,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
     def _init_rows(self):
         """Initialisation method
-        This queries the Andes DB and creaters a list of row entries to be added to the current table
+        This queries the Andes DB and creates a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
         self._row_list
@@ -66,7 +66,7 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data["NO_RELEVE"] = self.get_no_releve()
         self.data["COD_ESP_GEN"] = self.get_cod_esp_gen()
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
-        self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
+        self.data["COD_TYP_PANIER"] = self.get_cod_typ_panier()
         self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["FRACTION_PECH"] = self.get_fraction_peche()
         self.data["NO_ENGIN"] = self.get_no_engin()
@@ -203,7 +203,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
     @validate_int()
     @log_results
-    def get_cod_type_panier(self) -> int:
+    def get_cod_typ_panier(self) -> int:
         """COD_TYP_PANIER INTEGER / NUMBER(5,0)
         Identification du type de panier utilisé tel que défini dans la table TYPE_PANIER
 
@@ -211,7 +211,7 @@ class CaptureMollusque(TablePecheSentinelle):
 
         """
 
-        return self.engin.get_cod_type_panier()
+        return self.engin.get_cod_typ_panier()
 
     @log_results
     def get_cod_nbpc(self) -> str:

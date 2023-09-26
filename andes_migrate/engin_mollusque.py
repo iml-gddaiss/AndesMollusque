@@ -35,7 +35,7 @@ class EnginMollusque(TablePecheSentinelle):
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["NO_ENGIN"] = self.get_no_engin()
         self.data["COD_NBPC"] = self.get_cod_nbpc()
-        self.data["COD_TYP_PANIER"] = self.get_cod_type_panier()
+        self.data["COD_TYP_PANIER"] = self.get_cod_typ_panier()
         self.data["NO_CHARGEMENT"] = self.get_no_chargement()
         self.data["LONG_FUNE"] = self.get_long_fune()
         self.data["LONG_FUNE_P"] = self.get_long_fune_p()
@@ -138,7 +138,7 @@ class EnginMollusque(TablePecheSentinelle):
     @validate_int()
     @tag(AndesCodeLookup)
     @log_results
-    def get_cod_type_panier(self) -> int:
+    def get_cod_typ_panier(self) -> int:
         """COD_TYP_PANIER INTEGER / NUMBER(5,0)
         Identification du type de panier utilisé tel que défini dans la table TYPE_PANIER
 
