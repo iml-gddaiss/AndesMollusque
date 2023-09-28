@@ -49,7 +49,7 @@ class TablePecheSentinelle:
         """
         Increment to focus on next row
         """
-        if self._row_idx and self._row_list:
+        if self._row_idx is not None and self._row_list:
             if self._row_idx < len(self._row_list) - 1:
                 self._row_idx += 1
             else:
