@@ -7,6 +7,7 @@ from andes_migrate.decorators import (
     AndesCodeLookup,
     HardCoded,
     NotAndes,
+    FixMe,
     Seq,
     tag,
     log_results,
@@ -22,8 +23,8 @@ class ProjetMollusque(TablePecheSentinelle):
     Object model representing the PROJET_MOLLUSQUE table
     """
 
-    def __init__(self, andes_db):
-        super().__init__()
+    def __init__(self, andes_db, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.andes_db = andes_db
 
@@ -435,7 +436,7 @@ class ProjetMollusque(TablePecheSentinelle):
         return to_return
 
     @validate_int(not_null=False)
-    @tag(Seq)
+    @tag(AndesCodeLookup, HardCoded, FixMe)
     @log_results
     def get_seq_pecheur(self) -> int | None:
         """SEQ_PECHEUR INTEGER / NUMBER(10,0)
@@ -461,7 +462,9 @@ class ProjetMollusque(TablePecheSentinelle):
         # if result[0][2] == "Leim":
         #     # seq_pecher for "capitain Leim"
         #     to_return = 151
-        to_return = self._seq_result()
+
+        # to_return = self._seq_result()
+        to_return = self._hard_coded_result(151)
         return to_return
 
     @log_results
@@ -616,7 +619,7 @@ class ProjetMollusque(TablePecheSentinelle):
         return to_return
 
     @validate_string(max_len=250, not_null=False)
-    @tag(NotAndes)
+    @tag(NotAndes, FixMe, HardCoded)
     @log_results
     def get_nom_equip_navire(self) -> str | None:
         """NOM_EQUIPE_NAVIRE VARCHAR(250) / VARCHAR2(250)
@@ -625,7 +628,7 @@ class ProjetMollusque(TablePecheSentinelle):
         Andes: Pas dans Andes
 
         """
-        raise NotImplementedError
+        return self._hard_coded_result(None)
 
     @validate_string(max_len=250, not_null=False)
     @log_results

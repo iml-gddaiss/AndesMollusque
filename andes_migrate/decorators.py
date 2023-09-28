@@ -34,6 +34,11 @@ class Deprecated(Tag):
 
     pass
 
+class FixMe(Tag):
+    """used to tag as code that needs to be fixed"""
+
+    pass
+
 
 class Seq(Tag):
     """used to tag as a SEQ-type"""

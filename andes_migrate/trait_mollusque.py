@@ -8,6 +8,8 @@ from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.andes_helper import AndesHelper
 from andes_migrate.decorators import (
     AndesCodeLookup,
+    Deprecated,
+    HardCoded,
     tag,
     deprecate,
     log_results,
@@ -899,8 +901,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
-    @deprecate
+    @tag(HardCoded,Deprecated)
     @log_results
     def get_cod_type_ech_trait(self) -> float | None:
         """COD_TYP_ECH_TRAIT DOUBLE / NUMBER

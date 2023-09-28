@@ -185,7 +185,6 @@ class CaptureMollusque(TablePecheSentinelle):
             )
             raise (ValueError)
         else:
-            to_return = result[0][0]
             self.logger.info(
                 "Found matching strap code, returning COD_ESP_GEN=%s", to_return
             )
@@ -668,6 +667,7 @@ class CaptureMollusque(TablePecheSentinelle):
         barnacle_ratio = (num_specimens_with_barnacles) / (
             num_specimens_with_barnacles + num_specimens_without_barnacles
         )
+
         # now check for bins
         if barnacle_ratio == 0:
             return 0
@@ -702,18 +702,30 @@ class CaptureMollusque(TablePecheSentinelle):
         (typicaly for scallops).
 
         A None is automatically returned if the species' aphia_id is not one of following:
-        140692 (Pétoncle d' Islande)
-        156972 (Pétoncle géant)
+        140692 (Pétoncle d' Islande) STRAP: 4167
+        156972 (Pétoncle géant) STRAP: 4179
 
         """
 
-        # list of aphia id's for species that cold contain a barnacle coverge observation
-        candidate_species_aphia_id = [140692, 156972]
+        # # list of aphia id's for species that could contain a barnacle coverge observation
+        # candidate_species_aphia_id = [140692, 156972]
 
-        current_aphia_id = self.reference_data._cod_esp_gen_2_aphia_id(
+        # current_aphia_id = self.reference_data._cod_esp_gen_2_aphia_id(
+        #     self.get_cod_esp_gen()
+        # )
+
+        # if current_aphia_id not in candidate_species_aphia_id:
+        #     self.logger.warn("Current species not a EPIBIONT candidate, returning null")
+        #     return None
+
+
+        # list of strap codes for species that could contain a barnacle coverge observation
+        candidate_species_strap = [4167, 4179]
+
+        current_strap = self.reference_data._cod_esp_gen_2_strap(
             self.get_cod_esp_gen()
         )
-        if current_aphia_id not in candidate_species_aphia_id:
+        if current_strap not in candidate_species_strap:
             self.logger.warn("Current species not a EPIBIONT candidate, returning null")
             return None
 

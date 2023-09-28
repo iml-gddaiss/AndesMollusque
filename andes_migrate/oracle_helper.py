@@ -88,6 +88,36 @@ class OracleHelper(DBHelper):
         else:
             return int(result[0][0])
 
+    def _cod_esp_gen_2_strap(self, code_esp: int) -> int:
+        """convert code espece general to aphia id
+        returns mapped aphia
+
+        :param code_esp: code espece general
+        :type code_esp: int
+        :return: aphia _id
+        :rtype: int
+
+        """
+        if self.ms_access:
+            norme_name_str = "STRAP"
+        else:
+            norme_name_str = "STRAP_IML"
+
+        query = (
+            "SELECT ESPECE_NORME.COD_ESPECE "
+            "FROM ESPECE_NORME "
+            "LEFT JOIN NORME "
+            "ON ESPECE_NORME.COD_NORME=NORME.COD_NORME "
+            f"WHERE NORME.NOM_NORME='{norme_name_str}' "
+            f"AND ESPECE_NORME.COD_ESP_GEN={code_esp}"
+        )
+        result = self.execute_query(query)
+        if not len(result) == 1:
+            raise ValueError("Expected only one result.")
+        else:
+            return int(result[0][0])
+
+
     def _aphia_id_2_cod_esp_gen(self, aphia_id: int) -> int:
         """convert code aphia id to espece general
 
@@ -122,7 +152,12 @@ class OracleHelper(DBHelper):
         :rtype: int
 
         """
-        norme_name_str = "STRAP_IML"
+        # yup, ms access has a different name
+        if self.ms_access:
+            norme_name_str = "STRAP"
+        else:
+            norme_name_str = "STRAP_IML"
+
         query = (
             "SELECT ESPECE_NORME.COD_ESP_GEN "
             "FROM ESPECE_NORME "
@@ -131,10 +166,10 @@ class OracleHelper(DBHelper):
             f"WHERE NORME.NOM_NORME='{norme_name_str}' "
             f"AND ESPECE_NORME.COD_ESPECE={strap_code}"
         )
-
         result = self.execute_query(query)
+ 
         if not len(result) == 1:
-            raise ValueError("Expected only one result.")
+            raise ValueError("Expected only one result, got %s", len(result))
         else:
             return int(result[0][0])
 

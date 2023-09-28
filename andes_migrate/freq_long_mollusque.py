@@ -29,7 +29,6 @@ class FreqLongMollusque(TablePecheSentinelle):
         self.capture: CaptureMollusque = capture
         self.andes_db = capture.andes_db
         self.data = {}
-
         self._init_rows()
 
     def _init_rows(self):
@@ -95,13 +94,13 @@ class FreqLongMollusque(TablePecheSentinelle):
         self.data["COD_TYP_PANIER"] = self.get_cod_typ_panier()
         self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["NO_ENGIN"] = self.get_no_engin()
-        # self.data["VALEUR_LONG_MOLL"] = self.get_valeur_long_moll()
+        self.data["VALEUR_LONG_MOLL"] = self.get_valeur_long_moll()
         # self.data['NO_MOLLUSQUE'] = self.get_no_mollusque()
         self.data["COD_TYP_LONG"] = self.get_cod_typ_long()
         self.data["VALEUR_LONG_MOLL_P"] = self.get_valeur_long_moll_p()
         self.data["COD_TYP_ETAT"] = self.get_cod_typ_etat()
-        # self.data['NO_CHARGEMENT'] = self.get_no_chargement()
-        # self.data['COD_TECH_MESURE_LONG'] = self.get_cod_tech_mesure_long()
+        self.data['NO_CHARGEMENT'] = self.get_no_chargement()
+        self.data['COD_TECH_MESURE_LONG'] = self.get_cod_tech_mesure_long()
 
     def get_cod_esp_gen(self) -> int:
         """COD_ESP_GEN INTEGER / NUMBER(5,0)
@@ -128,7 +127,6 @@ class FreqLongMollusque(TablePecheSentinelle):
         Extrait de la capture ::func:`~andes_migrate.capture_mollusque.CaptureMollusque.get_cod_source_info`
 
         """
-
         return self.capture.get_cod_source_info()
 
     def get_no_releve(self) -> int:
@@ -188,15 +186,17 @@ class FreqLongMollusque(TablePecheSentinelle):
         # the specimen length is found in the _row_list
         self.get_current_length()
 
-    # @validate_int()
-    # @log_results
-    # def get_no_mollusque(self) -> int |
-    #     """NO_MOLLUSQUE INTEGER / NUMBER(5,0)
-    #     Numéro séquentiel attribué à l'individus mesuré
+    @validate_int()
+    @log_results
+    def get_no_mollusque(self) -> int :
+        """NO_MOLLUSQUE INTEGER / NUMBER(5,0)
+        Numéro séquentiel attribué à l'individus mesuré
 
-    #     """
-    #     pass
+        """
+        raise NotImplementedError
 
+    @tag(AndesCodeLookup)
+    @validate_int()
     @log_results
     def get_cod_typ_long(self) -> int:
         """COD_TYP_LONG INTEGER / NUMBER(5,0)
@@ -205,7 +205,7 @@ class FreqLongMollusque(TablePecheSentinelle):
         18  -> Hauteur coquille
         Hauteur de la coquille - Charnière (Apex) vers extérieur
 
-        Andes: Could get the observation type and mae a map?
+        Andes: Could get the observation type and make a lookup?
         """
         # TODO copy verbatim values for the Andes observation and match
         observation_name = "Hauteur coquille"
@@ -217,6 +217,7 @@ class FreqLongMollusque(TablePecheSentinelle):
         )
         return length_code
 
+    @tag(NotAndes)
     @log_results
     def get_valeur_long_moll_p(self) -> float | None:
         """VALEUR_LONG_MOLL_P DOUBLE / NUMBER
@@ -227,6 +228,8 @@ class FreqLongMollusque(TablePecheSentinelle):
         """
         return self._hard_coded_result(0.01)
 
+    @tag(AndesCodeLookup)
+    @validate_string(max_len=2)
     @log_results
     def get_cod_typ_etat(self) -> str:
         """COD_TYP_ETAT VARCHAR(5) / VARCHAR2(5)
@@ -260,3 +263,32 @@ class FreqLongMollusque(TablePecheSentinelle):
         )
         self.logger.info("Andes size-class: %s matched with Oracle code: %s",andes_desc, code)
         return code
+
+    @log_results
+    def get_no_chargement(self) -> float|None:
+        """NO_CHARGEMENT DOUBLE / NUMBER
+        Numéro de l'activité de chargement de données dans la base Oracle
+
+        Extrait de la capture ::func:`~andes_migrate.capture_mollusque.CaptureMollusque.get_no_engin`
+
+        """
+        return self.capture.get_no_chargement()
+
+    @tag(HardCoded, NotAndes)
+    @validate_int(min_val=1, max_val=6)
+    @log_results
+    def get_cod_tech_mesure_long(self):
+        """COD_TECH_MESURE_LONG INTERGER / NUMBER(5,0)
+        Technique de mesure utilisée tel que défini dans la table TECHNIQUE_MESURE_LONG
+
+        1 -> Vernier électronique (longueurs seulement)
+        2 -> Vernier électronique (longueurs et poids)
+        3 -> Vernier analogique
+        4 -> Saisie manuelle (binoculaire)
+        5 -> Correction manuelle vernier
+        6 -> Planche à mesurer incurvée longitudinale
+
+        Andes: This data type is not logged, perhaps it should?
+        Hard-coded: This function always returns 1 
+        """
+        return self._hard_coded_result(1)
