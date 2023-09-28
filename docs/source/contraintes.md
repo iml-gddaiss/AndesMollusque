@@ -41,6 +41,13 @@ Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Acces
 Cetaines Tables/colonnes ne sont pas présente dans la BD Access.
 
 #### TRAIT_MOLLUSQUE
+Table:  `PROJET_MOLLUSQUE` 
+
+Inconsistance dans le nom de colonne 
+ - IMLP: `REM_PROJET_MOLL`
+ - ACCESS: `REM_PROJ_MOLL`
+
+#### TRAIT_MOLLUSQUE
 les colonnes:
  - SALINITE_FOND
  - SALINITE_FOND_P

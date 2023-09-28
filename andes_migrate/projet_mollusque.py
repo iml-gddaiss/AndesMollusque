@@ -29,7 +29,7 @@ class ProjetMollusque(TablePecheSentinelle):
         self.andes_db = andes_db
 
         self.espece = None
-        self.data = {}
+        self.table_name = 'PROJET_MOLLUSQUE'
 
         # this may have to be modified to include milisecs
         self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
@@ -143,8 +143,12 @@ class ProjetMollusque(TablePecheSentinelle):
         self.data["DIST_CHALUTE_VISEE_P"] = self.get_dist_chalute_visee_p()
         self.data["NOM_EQUIPE_NAVIRE"] = self.get_nom_equip_navire()
         self.data["NOM_SCIENCE_NAVIRE"] = self.get_nom_science_navire()
-        self.data["REM_PROJ_MOLL"] = self.get_rem_projet_moll()
+
+        # self.data["REM_PROJ_MOLL"] = self.get_rem_projet_moll()
+        self.data["REM_PROJET_MOLL"] = self.get_rem_projet_moll()
+
         self.data["NO_CHARGEMENT"] = self.get_no_chargement()
+    
 
     @validate_int()
     @log_results
