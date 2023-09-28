@@ -49,9 +49,13 @@ Inconsistance dans le nom de colonne
 
 #### TRAIT_MOLLUSQUE
 les colonnes:
- - SALINITE_FOND
- - SALINITE_FOND_P
- - COD_TYP_ECH_TRAIT
+
+ - `DATE_HRE_DEB_TRAIT`
+ - `DATE_HRE_FIN_TRAIT`
+ - `SALINITE_FOND`
+ - `SALINITE_FOND_P`
+ - `COD_TYP_ECH_TRAIT`
+ 
 Ne sont pas dans la table `TRAIT_MOLLUSQUE` de la BD Access, mais est presente dans sur IMLP.
 Étant donné que ces valeurs peuvent etre null (et le sont pour la plupart des relevées récents), nous allons simplement insérer une valeur null.
 (relevé 32 a trois traits avec une valeur non null !?)

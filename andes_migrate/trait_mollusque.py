@@ -30,7 +30,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
-        self.data = {}
+        self.table_name = 'TRAIT_MOLLUSQUE'
 
         self._init_rows()
         # this may have to be modified to include milisecs
@@ -68,19 +68,19 @@ class TraitMollusque(TablePecheSentinelle):
 
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
         self.data["NO_RELEVE"] = self.get_no_releve()
-        self.data["CODE_NBPC"] = self.get_cod_nbpc()
+        self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["COD_ZONE_GEST_MOLL"] = self.get_cod_zone_gest_moll()
         self.data["COD_SECTEUR_RELEVE"] = self.get_cod_secteur_releve()
         self.data["NO_STATION"] = self.get_no_station()
-        self.data["COD_TYPE_TRAIT"] = self.get_cod_type_trait()
+        self.data["COD_TYP_TRAIT"] = self.get_cod_typ_trait()
         self.data["COD_RESULT_OPER"] = self.get_cod_result_oper()
         self.data["DATE_DEB_TRAIT"] = self.get_date_deb_trait()
         self.data["DATE_FIN_TRAIT"] = self.get_date_fin_trait()
         self.data["HRE_DEB_TRAIT"] = self.get_hre_deb_trait()
         self.data["HRE_FIN_TRAIT"] = self.get_hre_fin_trait()
-        self.data["CODE_TYPE_HEURE"] = self.get_cod_type_heure()
-        self.data["CODE_FUSEAU_HORAIRE"] = self.get_cod_fuseau_horaire()
+        self.data["COD_TYP_HEURE"] = self.get_cod_typ_heure()
+        self.data["COD_FUSEAU_HORAIRE"] = self.get_cod_fuseau_horaire()
         self.data["LAT_DEB_TRAIT"] = self.get_lat_deb_trait()
         self.data["LAT_FIN_TRAIT"] = self.get_lat_fin_trait()
         self.data["LONG_DEB_TRAIT"] = self.get_long_deb_trait()
@@ -98,13 +98,13 @@ class TraitMollusque(TablePecheSentinelle):
         self.data["PROF_DEB_P"] = self.get_prof_deb_p()
         self.data["PROF_FIN"] = self.get_prof_fin()
         self.data["PROF_FIN_P"] = self.get_prof_fin_p()
-        self.data["REM_PROJET_MOLL"] = self.get_rem_projet_moll()
+        self.data["REM_TRAIT_MOLL"] = self.get_rem_trait_moll()
         self.data["NO_CHARGEMENT"] = self.get_no_chargement()
-        self.data["DATE_HRE_DEB_TRAIT"] = self.get_date_heure_deb_trait()
-        self.data["DATE_HRE_FIN_TRAIT"] = self.get_date_heure_fin_trait()
-        self.data["SALINITE_FOND"] = self.get_salinite_fond()
-        self.data["SALINITE_FOND_P"] = self.get_salinite_fond_p()
-        self.data["COD_TYPE_ECH_TRAIT"] = self.get_cod_type_ech_trait()
+        # self.data["DATE_HRE_DEB_TRAIT"] = self.get_date_heure_deb_trait()
+        # self.data["DATE_HRE_FIN_TRAIT"] = self.get_date_heure_fin_trait()
+        # self.data["SALINITE_FOND"] = self.get_salinite_fond()
+        # self.data["SALINITE_FOND_P"] = self.get_salinite_fond_p()
+        # self.data["COD_TYP_ECH_TRAIT"] = self.get_cod_typ_ech_trait()
 
     @validate_int()
     def get_cod_source_info(self) -> int:
@@ -237,7 +237,7 @@ class TraitMollusque(TablePecheSentinelle):
     @tag(AndesCodeLookup)
     @validate_int()
     @log_results
-    def get_cod_type_trait(self) -> int:
+    def get_cod_typ_trait(self) -> int:
         """COD_TYP_TRAIT INTEGER / NUMBER(5,0)
         Identification du type de trait tel que décrit dans la table TYPE_TRAIT
 
@@ -424,7 +424,7 @@ class TraitMollusque(TablePecheSentinelle):
     @tag("hardcoded")
     @validate_int(not_null=False)
     @log_results
-    def get_cod_type_heure(self) -> int | None:
+    def get_cod_typ_heure(self) -> int | None:
         """COD_TYP_HEURE INTEGER / NUMBER(5,0)
         Type d'heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE
 
@@ -781,7 +781,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @validate_string(max_len=500, not_null=False)
     @log_results
-    def get_rem_projet_moll(self) -> str | None:
+    def get_rem_trait_moll(self) -> str | None:
         """REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)
         Remarque sur la réalisation du trait
 
@@ -903,7 +903,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @tag(HardCoded,Deprecated)
     @log_results
-    def get_cod_type_ech_trait(self) -> float | None:
+    def get_cod_typ_ech_trait(self) -> float | None:
         """COD_TYP_ECH_TRAIT DOUBLE / NUMBER
         Identification du type d'activité d'échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT
 
@@ -926,46 +926,5 @@ if __name__ == "__main__":
     proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
 
     trait = TraitMollusque(andes_db, proj)
-
-    # trait.get_cod_source_info()
-    # trait.get_no_releve()
-    # trait.get_code_nbpc()
-    # trait.get_ident_no_trait()
-    # trait.get_cod_zone_gest_moll()
-    # trait.get_cod_secteur_releve()
-    # trait.get_no_station()
-    # trait.get_cod_type_trait()
-    # trait.get_cod_result_oper()
-    # trait.get_date_deb_trait()
-    # trait.get_date_fin_trait()
-    # trait.get_hre_deb_trait()
-    # trait.get_hre_fin_trait()
-    # trait.get_cod_type_heure()
-    # trait.get_cod_fuseau_horaire()
-    # trait.get_lat_deb_trait()
-    # trait.get_lat_fin_trait()
-    # trait.get_long_deb_trait()
-    # trait.get_long_fin_trait()
-    # trait.get_latlong_p()
-    # trait.get_distance_pos()
-    # trait.get_distance_pos_p()
-    # trait.get_vit_touage()
-    # trait.get_vit_touage_p()
-    # trait.get_duree_trait()
-    # trait.get_duree_trait_p()
-    # trait.get_temp_fond()
-    # trait.get_temp_fond_p()
-    # trait.get_prof_deb()
-    # trait.get_prof_deb_p()
-    # trait.get_prof_fin()
-    # trait.get_prof_fin_p()
-    # trait.get_rem_projet_moll()
-    # trait.get_no_chargement()
-    # trait.get_date_heure_deb_trait()
-    # trait.get_date_heure_fin_trait()
-    # trait.get_salinite_fond()
-    # trait.get_salinite_fond_p()
-    # trait.get_cod_type_ech_trait()
-    # trait.validate()
 
     trait.populate_data()
