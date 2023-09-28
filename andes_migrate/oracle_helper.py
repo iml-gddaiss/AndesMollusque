@@ -62,6 +62,19 @@ class OracleHelper(DBHelper):
             else:
                 return self.cur.fetchall()
 
+    def execute_statement(self, statement: str):
+        if self.ms_access:
+            res = self.cur.execute(statement)
+            return res.fetchall()
+        else:
+            try:
+                self.cur.execute(statement)
+            except DatabaseError as exc:
+                self.logger.error("Error to executing query: %s", statement)
+                raise exc
+            else:
+                return self.cur.fetchall()
+
     def _cod_esp_gen_2_aphia_id(self, code_esp: int) -> int:
         """convert code espece general to aphia id
         returns mapped aphia
@@ -172,6 +185,24 @@ class OracleHelper(DBHelper):
             raise ValueError("Expected only one result, got %s", len(result))
         else:
             return int(result[0][0])
+
+    @staticmethod
+    def value_2_string(value: str | int | float | None) ->str|int|float:
+        """formats a valu into a SQL string
+        It will wrap string with an extr set of singel quotes.
+        This usualy does nothing to the value itself except will make None-types a NULL
+
+        :param val: a value to insert
+        :type val: _type_
+        :return: vaalid SQl value (including null)
+        :rtype: str
+        """
+        if value is None:
+            return "NULL"
+        elif isinstance(value,str):
+            return f"'{value}'"
+        else:
+            return value
 
     @staticmethod
     def convert_nm_2_km(val: float) -> float:

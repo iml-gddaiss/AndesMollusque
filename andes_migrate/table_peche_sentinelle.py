@@ -21,6 +21,8 @@ class TablePecheSentinelle:
         else:
             self.reference_data = OracleHelper()
 
+        self.table_name: str
+        self.data = {}
         self._row_list = []
         self._row_idx: int | None = None
 
@@ -117,3 +119,17 @@ class TablePecheSentinelle:
         Need to override by child class
         """
         raise NotImplementedError
+
+    def get_insert_statement(self):
+        col_str = [k for k in self.data.keys()]
+        col_str = ", ".join(col_str)
+        col_str = " (" + col_str + ") "
+
+        val_str = [
+            str(self.reference_data.value_2_string(k)) for k in self.data.values()
+        ]
+        val_str = ", ".join(val_str)
+        val_str = " (" + val_str + ") "
+
+        statement = f" INSERT INTO {self.table_name} {col_str} VALUES {val_str}"
+        return statement
