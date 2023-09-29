@@ -30,7 +30,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
-        self.table_name = 'TRAIT_MOLLUSQUE'
+        self.table_name = "TRAIT_MOLLUSQUE"
 
         self._init_rows()
 
@@ -46,10 +46,12 @@ class TraitMollusque(TablePecheSentinelle):
         self._row_idx will start at 0
 
         """
-        query = f"SELECT shared_models_set.id \
-                FROM shared_models_set \
-                WHERE shared_models_set.cruise_id={self.proj._get_current_row_pk()} \
-                ORDER BY shared_models_set.id ASC;"
+        query = (
+            "SELECT shared_models_set.id "
+            "FROM shared_models_set "
+            f"WHERE shared_models_set.cruise_id={self.proj._get_current_row_pk()} "
+            "ORDER BY shared_models_set.id ASC "
+        )
 
         result = self.andes_db.execute_query(query)
         self._assert_not_empty(result)
@@ -70,6 +72,7 @@ class TraitMollusque(TablePecheSentinelle):
         self.data["IDENT_NO_TRAIT"] = self.get_ident_no_trait()
         self.data["COD_ZONE_GEST_MOLL"] = self.get_cod_zone_gest_moll()
         self.data["COD_SECTEUR_RELEVE"] = self.get_cod_secteur_releve()
+        self.data["COD_STRATE"] = self.get_cod_strate()
         self.data["NO_STATION"] = self.get_no_station()
         self.data["COD_TYP_TRAIT"] = self.get_cod_typ_trait()
         self.data["COD_RESULT_OPER"] = self.get_cod_result_oper()
@@ -143,10 +146,11 @@ class TraitMollusque(TablePecheSentinelle):
         shared_models.set.set_number
         """
         set_pk = self._get_current_row_pk()
-        query = f"SELECT shared_models_set.set_number \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={set_pk};"
-
+        query = (
+            "SELECT shared_models_set.set_number "
+            "FROM shared_models_set "
+            f"WHERE shared_models_set.id={set_pk} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
@@ -189,9 +193,11 @@ class TraitMollusque(TablePecheSentinelle):
 
         """
 
-        query = f"SELECT shared_models_cruise.area_of_operation \
-                FROM shared_models_cruise \
-                WHERE shared_models_cruise.id={self.proj._get_current_row_pk()};"
+        query = (
+            "SELECT shared_models_cruise.area_of_operation "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self.proj._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         secteur: str = result[0][0]
@@ -206,6 +212,24 @@ class TraitMollusque(TablePecheSentinelle):
             val=secteur,
         )
         return key
+
+    @tag(HardCoded)
+    @validate_int(not_null=False)
+    @log_results
+    def get_cod_strate(self) -> int | None:
+        """COD_STRATE INTEGER / NUMBER(5,0)
+        Identification de la strate où se réalise le trait tel que défini dans la table TYPE_STRATE_MOLL
+
+        For the moment, this function returns None
+        More discussions are needed to decide how to determine the stratum
+        perhaps station.strate
+        """
+        # a faster way is to get shared_models_set.stratum directly
+        # TODO:  use an Andes stratum that is compatible with the ideas behind TYPE_STRATE_MOLL
+        exit()
+        # self._assert_one(result)
+
+        return self._hard_coded_result(None)
 
     @validate_int()
     @log_results
@@ -326,7 +350,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @tag(HardCoded, Deprecated)
     @deprecate(successor="DATE_HEURE_DEB_TRAIT")
-    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
+    @validate_string(max_len=19, not_null=False)  # allow 19 chars instead of 10
     @log_results
     def get_date_deb_trait(self) -> str | None:
         """DATE_DEB_TRAIT DATE
@@ -338,10 +362,9 @@ class TraitMollusque(TablePecheSentinelle):
         """
         return self.get_date_heure_deb_trait()
 
-
     @tag(HardCoded, Deprecated)
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
+    @validate_string(max_len=19, not_null=False)  # allow 19 chars instead of 10
     @log_results
     def get_date_fin_trait(self) -> str | None:
         """DATE_FIN_TRAIT DATE
@@ -353,9 +376,9 @@ class TraitMollusque(TablePecheSentinelle):
         """
         return self.get_date_heure_fin_trait()
 
-    @tag(HardCoded,Deprecated)
+    @tag(HardCoded, Deprecated)
     @deprecate(successor="DATE_HEURE_DEB_TRAIT")
-    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
+    @validate_string(max_len=19, not_null=False)  # allow 19 chars instead of 10
     @log_results
     def get_hre_deb_trait(self) -> str | None:
         """HRE_DEB_TRAIT DATE
@@ -369,7 +392,7 @@ class TraitMollusque(TablePecheSentinelle):
 
     @tag(HardCoded)
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
+    @validate_string(max_len=19, not_null=False)  # allow 19 chars instead of 10
     @log_results
     def get_hre_fin_trait(self) -> str | None:
         """HRE_FIN_TRAIT DATE
@@ -411,13 +434,15 @@ class TraitMollusque(TablePecheSentinelle):
         dt = result[0][0]
         dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
         if is_dst:
-            desc_val="Avancée"
+            desc_val = "Avancée"
         else:
-            desc_val="Normale"
-        to_return = self.reference_data.get_ref_key(table="TYPE_HEURE",
-                                                    pkey_col="COD_TYP_HEURE",
-                                                    col="DESC_TYP_HEURE_F",
-                                                    val=desc_val)
+            desc_val = "Normale"
+        to_return = self.reference_data.get_ref_key(
+            table="TYPE_HEURE",
+            pkey_col="COD_TYP_HEURE",
+            col="DESC_TYP_HEURE_F",
+            val=desc_val,
+        )
 
         return to_return
 
@@ -448,10 +473,12 @@ class TraitMollusque(TablePecheSentinelle):
         dt = result[0][0]
         dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
         if timezone_str == "America/Montreal":
-            to_return = self.reference_data.get_ref_key(table="FUSEAU_HORAIRE",
-                                                        pkey_col="COD_FUSEAU_HORAIRE",
-                                                        col="DESC_FUSEAU_HORAIRE_F",
-                                                        val="Québec")
+            to_return = self.reference_data.get_ref_key(
+                table="FUSEAU_HORAIRE",
+                pkey_col="COD_FUSEAU_HORAIRE",
+                col="DESC_FUSEAU_HORAIRE_F",
+                val="Québec",
+            )
             return to_return
         else:
             self.logger.error("Found an unexpected timezone: %s", timezone_str)
@@ -793,7 +820,6 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-
     @validate_int(not_null=False)
     @log_results
     def get_no_chargement(self) -> float | int | None:
@@ -859,8 +885,7 @@ class TraitMollusque(TablePecheSentinelle):
             self.logger.warn("Expected a datetime object , received None")
             return None
 
-
-    @tag(HardCoded,Deprecated)
+    @tag(HardCoded, Deprecated)
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
@@ -877,7 +902,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag(HardCoded,Deprecated)
+    @tag(HardCoded, Deprecated)
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
@@ -892,7 +917,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag(HardCoded,Deprecated)
+    @tag(HardCoded, Deprecated)
     @log_results
     def get_cod_typ_ech_trait(self) -> float | None:
         """COD_TYP_ECH_TRAIT DOUBLE / NUMBER
@@ -907,5 +932,3 @@ class TraitMollusque(TablePecheSentinelle):
         """
 
         return self._hard_coded_result(None)
-
-
