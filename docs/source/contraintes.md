@@ -40,7 +40,7 @@ Pour les mission pétoncle, un de ces choix:
 Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
 Cetaines Tables/colonnes ne sont pas présente dans la BD Access.
 
-#### TRAIT_MOLLUSQUE
+#### PROJET_MOLLUSQUE
 Table:  `PROJET_MOLLUSQUE` 
 
 Inconsistance dans le nom de colonne 
@@ -63,6 +63,17 @@ Ne sont pas dans la table `TRAIT_MOLLUSQUE` de la BD Access, mais est presente d
 La table IMLP `TYPE_ECHANT_TRAIT` n'éxiste pas dans la BD ACccess:
 ![area_of_operation](_static/TYPE_ECHANT_TRAIT.png)
 
+#### TYPE_HEURE
+- IMLP
+ - 0 -> Normale Standard
+ - 1 -> Avancée Daylight saving
+ - 2 -> GMT GMT
+
+- Acces
+ - 0 -> Normale Standard
+ - 1 -> Avancée Daylight saving
+
+Donc meme si Andes utilise l'heure GMT (selon les bonnes pratiques) l'option n'éxiste pas dans Access, donc les dates/heures sont converti en heure normal standard de l'est (EST).
 
 #### SECTEUR_RELEVE_MOLL
 Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.

@@ -33,8 +33,6 @@ class TraitMollusque(TablePecheSentinelle):
         self.table_name = 'TRAIT_MOLLUSQUE'
 
         self._init_rows()
-        # this may have to be modified to include milisecs
-        self.andes_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def _init_rows(self):
         """Initialisation method
@@ -326,103 +324,64 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = andes_2_oracle_map[str(to_return)]
         return to_return
 
-    @tag("hardcoded")
-    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=10, not_null=False)
+    @tag(HardCoded, Deprecated)
+    @deprecate(successor="DATE_HEURE_DEB_TRAIT")
+    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
     @log_results
     def get_date_deb_trait(self) -> str | None:
         """DATE_DEB_TRAIT DATE
         Date du début du trait, format AAAA-MM-JJ
 
         This field is deprecated in favour of DATE_HEURE_DEB_TRAIT
-        This function will always return None
+        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_deb_trait`
 
         """
+        return self.get_date_heure_deb_trait()
 
-        # query = f"SELECT shared_models_set.start_date \
-        #         FROM shared_models_set \
-        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
-        # result = self.andes_db.execute_query(query)
-        # self._assert_one(result)
-        # to_return = result[0][0]
-        # strfmt = "%Y-%m-%d"
-        # to_return = datetime.datetime.strftime(to_return, strfmt)
-        to_return = self._hard_coded_result(None)
-        return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded, Deprecated)
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=10, not_null=False)
+    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
     @log_results
     def get_date_fin_trait(self) -> str | None:
         """DATE_FIN_TRAIT DATE
         Date de la fin du trait, format AAAA-MM-JJ
 
         This field is deprecated in favour of DATE_HEURE_FIN_TRAIT
-        This function will always return None
+        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_fin_trait`
 
         """
+        return self.get_date_heure_fin_trait()
 
-        # query = f"SELECT shared_models_set.end_date \
-        #         FROM shared_models_set \
-        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
-        # result = self.andes_db.execute_query(query)
-        # self._assert_one(result)
-        # to_return = result[0][0]
-        # strfmt = "%Y-%m-%d"
-        # to_return = datetime.datetime.strftime(to_return, strfmt)
-        to_return = self._hard_coded_result(None)
-        return to_return
-
-    @tag("hardcoded")
-    @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=10, not_null=False)
+    @tag(HardCoded,Deprecated)
+    @deprecate(successor="DATE_HEURE_DEB_TRAIT")
+    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
     @log_results
     def get_hre_deb_trait(self) -> str | None:
         """HRE_DEB_TRAIT DATE
         Heure du début du trait, format HH:MI:SS
 
         This field is deprecated in favour of DATE_HEURE_DEB_TRAIT
-        This function will always return None
+        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_deb_trait`
 
         """
+        return self.get_date_heure_deb_trait()
 
-        # query = f"SELECT shared_models_set.start_date \
-        #         FROM shared_models_set \
-        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
-        # result = self.andes_db.execute_query(query)
-        # self._assert_one(result)
-        # to_return = result[0][0]
-        # strfmt = "%H:%M:%S"
-        # to_return = datetime.datetime.strftime(to_return, strfmt)
-        to_return = self._hard_coded_result(None)
-        return to_return
-
-    @tag("hardcoded")
+    @tag(HardCoded)
     @deprecate(successor="DATE_HEURE_FIN_TRAIT")
-    @validate_string(max_len=10, not_null=False)
+    @validate_string(max_len=19, not_null=False) # allow 19 chars instead of 10
     @log_results
     def get_hre_fin_trait(self) -> str | None:
         """HRE_FIN_TRAIT DATE
         Heure de la fin du trait, format HH:MI:SS
 
         This field is deprecated in favour of DATE_HEURE_FIN_TRAIT
-        This function will always return None
+        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_fin_trait`
 
         """
-        # query = f"SELECT shared_models_set.end_date \
-        #         FROM shared_models_set \
-        #         WHERE shared_models_set.id={self._get_current_set_pk()};"
-        # result = self.andes_db.execute_query(query)
-        # self._assert_one(result)
-        # to_return = result[0][0]
-        # strfmt = "%H:%M:%S"
-        # to_return = datetime.datetime.strftime(to_return, strfmt)
-        to_return = self._hard_coded_result(None)
-        return to_return
+        return self.get_date_heure_fin_trait()
 
-    @tag("hardcoded")
-    @validate_int(not_null=False)
+    @validate_int(min_val=0, max_val=1, not_null=False)
     @log_results
     def get_cod_typ_heure(self) -> int | None:
         """COD_TYP_HEURE INTEGER / NUMBER(5,0)
@@ -432,16 +391,37 @@ class TraitMollusque(TablePecheSentinelle):
         1 -> Avancée Daylight saving
         2 -> GMT GMT
 
+        N.B. The 3 (GMT) value is not present in Access (but GMS is a zone that never gets DST?).
+
         Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
-        This function always returns 2.
+
+        To stay consistent with existing data, Quebec times will be used.
+
+        The datetime from shared_models_set.start_date is taken as a reference.
+        It is then cast in the America/Montreal zone and the DST offset is extracted from it.
+
+        The code lookup is then made on the value "Avancée" or "Normale"
 
         """
-        # hard-code this
-        to_return = self._hard_coded_result(2)
+        query = f"SELECT shared_models_set.start_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        dt = result[0][0]
+        dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
+        if is_dst:
+            desc_val="Avancée"
+        else:
+            desc_val="Normale"
+        to_return = self.reference_data.get_ref_key(table="TYPE_HEURE",
+                                                    pkey_col="COD_TYP_HEURE",
+                                                    col="DESC_TYP_HEURE_F",
+                                                    val=desc_val)
+
         return to_return
 
-    @tag("hardcoded")
-    @validate_int(not_null=False)
+    @validate_int(min_val=0, max_val=3, not_null=False)
     @log_results
     def get_cod_fuseau_horaire(self) -> int | None:
         """COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)
@@ -452,15 +432,32 @@ class TraitMollusque(TablePecheSentinelle):
         2 -> Maritimes   Atlantic
         3 -> Terre-Neuve Newfoundland
 
-        Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.
-        This function always returns 0.
+        To stay consistent with existing data, Quebec times will be used.
+
+        The datetime from shared_models_set.start_date is taken as a reference.
+        It is then cast in the America/Montreal zone and the DST offset is extracted from it.
+
+        The code lookup is then made on the value "Quebec"
 
         """
-        # hard-code this
-        to_return = self._hard_coded_result(0)
-        return to_return
+        query = f"SELECT shared_models_set.start_date \
+                FROM shared_models_set \
+                WHERE shared_models_set.id={self._get_current_row_pk()};"
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        dt = result[0][0]
+        dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
+        if timezone_str == "America/Montreal":
+            to_return = self.reference_data.get_ref_key(table="FUSEAU_HORAIRE",
+                                                        pkey_col="COD_FUSEAU_HORAIRE",
+                                                        col="DESC_FUSEAU_HORAIRE_F",
+                                                        val="Québec")
+            return to_return
+        else:
+            self.logger.error("Found an unexpected timezone: %s", timezone_str)
+            raise NotImplementedError
 
-    @tag("hardcoded", "codelookup")
+    @tag(HardCoded, AndesCodeLookup)
     @validate_int(not_null=False)
     @log_results
     def get_cod_method_pos(self) -> int | None:
@@ -567,7 +564,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return *= -1
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_latlong_p(self) -> float | None:
         """LATLONG_P DOUBLE / NUMBER
@@ -584,7 +581,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_distance_pos(self) -> float | None:
         """DISTANCE_POS DOUBLE / NUMBER
@@ -606,7 +603,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_distance_pos_p(self) -> float | None:
         """DISTANCE_POS_P DOUBLE / NUMBER
@@ -621,7 +618,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_vit_touage(self) -> float | None:
         """VIT_TOUAGE DOUBLE / NUMBER
@@ -637,7 +634,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_vit_touage_p(self) -> float | None:
         """VIT_TOUAGE_P DOUBLE / NUMBER
@@ -651,7 +648,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_duree_trait(self) -> float | None:
         """DUREE_TRAIT DOUBLE / NUMBER
@@ -667,7 +664,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_duree_trait_p(self) -> float | None:
         """DUREE_TRAIT_P DOUBLE / NUMBER
@@ -681,7 +678,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_temp_fond(self) -> float | None:
         """TEMP_FOND DOUBLE / NUMBER
@@ -696,7 +693,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_temp_fond_p(self) -> float | None:
         """TEMP_FOND_P DOUBLE / NUMBER
@@ -731,7 +728,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_prof_deb_p(self) -> float | None:
         """PROF_DEB_P DOUBLE / NUMBER
@@ -764,7 +761,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = result[0][0]
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded)
     @log_results
     def get_prof_fin_p(self) -> float | None:
         """PROF_FIN_P DOUBLE / NUMBER
@@ -794,13 +791,8 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+        return to_return
 
-        if type(to_return) == datetime.datetime:
-            to_return = datetime.datetime.strftime(to_return, strfmt)
-            return to_return
-        else:
-            self.logger.warn("Expected a datetime object , received None")
-            return None
 
     @validate_int(not_null=False)
     @log_results
@@ -832,11 +824,10 @@ class TraitMollusque(TablePecheSentinelle):
                 WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        to_return = result[0][0]
-        strfmt = "%Y-%m-%d %H:%M:%S"
-        if type(to_return) == datetime.datetime:
-            to_return = datetime.datetime.strftime(to_return, strfmt)
-            return to_return
+        dt = result[0][0]
+        if type(dt) == datetime.datetime:
+            (dt_str, timezone_str, is_dst) = TraitMollusque.format_time(dt)
+            return dt_str
         else:
             self.logger.warn("Expected a datetime object , received None")
             return None
@@ -860,16 +851,16 @@ class TraitMollusque(TablePecheSentinelle):
                 WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        to_return = result[0][0]
-        strfmt = "%Y-%m-%d %H:%M:%S"
-        if type(to_return) == datetime.datetime:
-            to_return = datetime.datetime.strftime(to_return, strfmt)
-            return to_return
+        dt = result[0][0]
+        if type(dt) == datetime.datetime:
+            (dt_str, timezone_str, is_dst) = TraitMollusque.format_time(dt)
+            return dt_str
         else:
             self.logger.warn("Expected a datetime object , received None")
             return None
 
-    @tag("hardcoded")
+
+    @tag(HardCoded,Deprecated)
     @deprecate
     @log_results
     def get_salinite_fond(self) -> float | None:
@@ -886,7 +877,7 @@ class TraitMollusque(TablePecheSentinelle):
         to_return = self._hard_coded_result(None)
         return to_return
 
-    @tag("hardcoded")
+    @tag(HardCoded,Deprecated)
     @deprecate
     @log_results
     def get_salinite_fond_p(self) -> float | None:
@@ -918,13 +909,3 @@ class TraitMollusque(TablePecheSentinelle):
         return self._hard_coded_result(None)
 
 
-if __name__ == "__main__":
-    # andes_db = AndesHelper("db.sqlite3")
-    andes_db = AndesHelper()
-
-    proj = ProjetMollusque(andes_db)
-    proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
-
-    trait = TraitMollusque(andes_db, proj)
-
-    trait.populate_data()

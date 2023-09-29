@@ -1,4 +1,6 @@
+from datetime import datetime, timedelta
 import logging
+from zoneinfo import ZoneInfo
 
 from andes_migrate.oracle_helper import OracleHelper
 
@@ -133,3 +135,41 @@ class TablePecheSentinelle:
 
         statement = f" INSERT INTO {self.table_name} {col_str} VALUES {val_str}"
         return statement
+    
+
+    @staticmethod
+    def format_time(dt:datetime) -> tuple[str,str,bool]:
+        """Format to the standard Oracle time format
+
+        The input is a UTC datetime object, and the output is a string representation of the datetime
+        in America/Montreal timezone DST.
+
+        America/Montreal DST is the historical format foound in the Access tables.
+
+        The following methods ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_cod_fuseau_horaire`
+        and ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_cod_typ_heure`
+        are hard-coded for America/Montreal DST (which is usualy the case)
+
+        All datetime fields are processed by this helper method in case the standard format changes.
+
+        This funciton returns a tuple:
+        (datetime_str: str, timezone_str: str, is_dst:bool)
+
+        """
+        timezone_str = "America/Montreal"
+        strfmt = "%Y-%m-%d %H:%M:%S"
+
+        # daylight offset (either 1:00:00 or 00:00:00 for Quebec)         
+        dst = dt.astimezone(ZoneInfo(timezone_str)).dst()
+        # is_dst = dst==timedelta(hours=1)
+        if dst==timedelta(hours=1):
+            is_dst = True
+        elif dst==timedelta(hours=0):
+            is_dst = False
+        else:
+            raise ValueError("Cannot determine daylight saving time")  
+
+        dt_str = dt.astimezone(ZoneInfo(timezone_str)).strftime(strfmt)
+
+        return (dt_str, timezone_str, is_dst)
+
