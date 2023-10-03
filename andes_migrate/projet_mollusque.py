@@ -15,7 +15,7 @@ from andes_migrate.decorators import (
     validate_int,
 )
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 class ProjetMollusque(TablePecheSentinelle):
@@ -23,12 +23,25 @@ class ProjetMollusque(TablePecheSentinelle):
     Object model representing the PROJET_MOLLUSQUE table
     """
 
-    def __init__(self, andes_db, *args, **kwargs):
+    def __init__(self, andes_db, *args,
+            zone: str = "defaultzone",
+            no_releve: int = 0,
+            no_notif: str = "IML-2000-001",
+            espece: str = "pétoncle",
+            **kwargs
+             ):
+        
         super().__init__(*args, **kwargs)
-
         self.andes_db = andes_db
 
-        self.espece = None
+        self.init_input(
+            zone=zone,
+            no_releve=no_releve,
+            no_notif=no_notif,
+            espece=espece,
+        )
+
+
         self.table_name = 'PROJET_MOLLUSQUE'
 
         # this may have to be modified to include milisecs

@@ -4,6 +4,8 @@ from zoneinfo import ZoneInfo
 
 from andes_migrate.oracle_helper import OracleHelper
 
+# logging.basicConfig(level=logging.INFO)
+
 
 class TablePecheSentinelle:
     """Abstract Class
@@ -13,7 +15,13 @@ class TablePecheSentinelle:
 
     """
 
-    def __init__(self, ref: OracleHelper | None = None):
+    def __init__(self, output_cur, ref: OracleHelper | None = None):
+        """_summary_
+
+        Args:
+            output_cur (): output cursor for writing data to
+            ref (OracleHelper | None, optional): _description_. Defaults to None.
+        """
         self.logger = logging.getLogger(__name__)
         # self.reference_data = OracleHelper(
         #     access_file="./Relevés_Pétoncle_Globale_juin2020_PG .mdb"
@@ -22,11 +30,15 @@ class TablePecheSentinelle:
             self.reference_data = ref
         else:
             self.reference_data = OracleHelper()
+        self.output_cur = output_cur
 
         self.table_name: str
         self.data = {}
         self._row_list = []
         self._row_idx: int | None = None
+
+    def __iter__(self):
+        return self
 
     def _init_rows(self):
         """Initialisation method
@@ -44,18 +56,32 @@ class TablePecheSentinelle:
         """
         Return the Andes primary key of the current row
         """
+        # need to adjust becuse the iterator is already looking forward..
+        
         if self._row_idx is not None and self._row_list:
-            return self._row_list[self._row_idx]
+            adjusted_row_idx = self._row_idx-1
+            if adjusted_row_idx >= 0:
+                return self._row_list[adjusted_row_idx]
+            else:
+                self.logger.error("Somehow got the wrong index")
+                raise ValueError
         else:
             raise ValueError
 
-    def _increment_row(self):
+    def __next__(self):
         """
         Increment to focus on next row
         """
-        if self._row_idx is not None and self._row_list:
-            if self._row_idx < len(self._row_list) - 1:
+        print(self.table_name)
+        print(f"{self._row_idx} of {len(self._row_list)}")
+        print()
+        if self._row_idx is not None and self._row_list is not None:
+            if self._row_idx < len(self._row_list):
+                # increment first,  it'l be adjusted in _get_current_row_pk()
                 self._row_idx += 1
+                self.populate_data()
+                self.write_row()
+                return self.data
             else:
                 raise StopIteration
         else:
@@ -122,6 +148,12 @@ class TablePecheSentinelle:
         """
         raise NotImplementedError
 
+    def write_row(self):
+        statement = self.get_insert_statement()
+        self.output_cur.execute(statement)
+        # print(statement)
+        # self.output_cur.commit()
+
     def get_insert_statement(self):
         col_str = [k for k in self.data.keys()]
         col_str = ", ".join(col_str)
@@ -132,6 +164,12 @@ class TablePecheSentinelle:
         ]
         val_str = ", ".join(val_str)
         val_str = " (" + val_str + ") "
+        # print("#######")
+        # print(f"\t {self.table_name}")
+        # print("#######")
+        # print(self.data)
+        # for key, val in self.data.items():
+        #     print(key, val)
 
         statement = f" INSERT INTO {self.table_name} {col_str} VALUES {val_str}"
         return statement

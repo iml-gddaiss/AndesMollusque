@@ -15,7 +15,7 @@ from andes_migrate.decorators import (
     validate_int,
 )
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 class FreqLongMollusque(TablePecheSentinelle):
@@ -23,13 +23,16 @@ class FreqLongMollusque(TablePecheSentinelle):
     Object model representing the FREQ_LONG_MOLLUSQUE table
     """
 
-    def __init__(self, capture: CaptureMollusque):
-        super().__init__(ref=capture.reference_data)
+    def __init__(self, capture: CaptureMollusque, *args, no_moll_init=0, **kwargs):
+        super().__init__(*args, ref=capture.reference_data, **kwargs)
 
         self.capture: CaptureMollusque = capture
+
+        self.table_name = "FREQ_LONG_MOLLUSQUE"
         self.andes_db = capture.andes_db
         self.data = {}
         self._init_rows()
+        self.no_moll = no_moll_init
 
     def _init_rows(self):
         """Initialisation method
@@ -68,19 +71,25 @@ class FreqLongMollusque(TablePecheSentinelle):
 
     def get_current_specimen(self):
         if self._row_idx is not None and self._row_list:
-            return self._row_list[self._row_idx][0]
+            # need to adjust becuse the iterator is already looking forward..
+            adjusted_row_idx = self._row_idx-1
+            return self._row_list[adjusted_row_idx][0]
         else:
             raise ValueError
 
     def get_current_length(self):
         if self._row_idx is not None and self._row_list:
-            return self._row_list[self._row_idx][1]
+            # need to adjust becuse the iterator is already looking forward..
+            adjusted_row_idx = self._row_idx-1
+            return self._row_list[adjusted_row_idx][1]
         else:
             raise ValueError
 
     def get_current_basket_id(self):
         if self._row_idx is not None and self._row_list:
-            return self._row_list[self._row_idx][2]
+            # need to adjust becuse the iterator is already looking forward..
+            adjusted_row_idx = self._row_idx-1
+            return self._row_list[adjusted_row_idx][2]
         else:
             raise ValueError
 
@@ -95,7 +104,7 @@ class FreqLongMollusque(TablePecheSentinelle):
         self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["NO_ENGIN"] = self.get_no_engin()
         self.data["VALEUR_LONG_MOLL"] = self.get_valeur_long_moll()
-        # self.data['NO_MOLLUSQUE'] = self.get_no_mollusque()
+        self.data['NO_MOLLUSQUE'] = self.get_no_mollusque()
         self.data["COD_TYP_LONG"] = self.get_cod_typ_long()
         self.data["VALEUR_LONG_MOLL_P"] = self.get_valeur_long_moll_p()
         self.data["COD_TYP_ETAT"] = self.get_cod_typ_etat()
@@ -118,7 +127,7 @@ class FreqLongMollusque(TablePecheSentinelle):
         Extrait de la capture ::func:`~andes_migrate.capture_mollusque.CapturenMollusque.get_cod_eng_gen`
 
         """
-        return self.capture.get_cod_source_info()
+        return self.capture.get_cod_eng_gen()
 
     def get_cod_source_info(self) -> int:
         """COD_SOURCE_INFO INTEGER / NUMBER(5,0)
@@ -193,7 +202,10 @@ class FreqLongMollusque(TablePecheSentinelle):
         Numéro séquentiel attribué à l'individus mesuré
 
         """
-        raise NotImplementedError
+        adjusted_row_idx = self._row_idx-1
+
+        return self.no_moll + adjusted_row_idx
+        # raise NotImplementedError
 
     @tag(AndesCodeLookup)
     @validate_int()

@@ -17,7 +17,7 @@ from andes_migrate.decorators import (
     validate_int,
 )
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 class TraitMollusque(TablePecheSentinelle):
@@ -25,8 +25,9 @@ class TraitMollusque(TablePecheSentinelle):
     Object model representing the TRAIT_MOLLUSQUE table
     """
 
-    def __init__(self, andes_db: AndesHelper, proj: ProjetMollusque):
-        super().__init__(ref=proj.reference_data)
+    def __init__(self, andes_db: AndesHelper, proj: ProjetMollusque, *args, **kwargs):
+        # super().__init__(*args, **kwargs)
+        super().__init__(*args, ref=proj.reference_data, **kwargs)
 
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
@@ -58,9 +59,6 @@ class TraitMollusque(TablePecheSentinelle):
 
         # a list of all the Set pk's (need to unpack a bit)
         self._row_list = [set[0] for set in result]
-        self._row_idx = 0
-
-        # start at zero index (not to be confused with pk)
         self._row_idx = 0
 
     def populate_data(self):
@@ -226,10 +224,17 @@ class TraitMollusque(TablePecheSentinelle):
         """
         # a faster way is to get shared_models_set.stratum directly
         # TODO:  use an Andes stratum that is compatible with the ideas behind TYPE_STRATE_MOLL
-        exit()
-        # self._assert_one(result)
 
-        return self._hard_coded_result(None)
+        # need andes station.stratum.code? station.stratum.name?
+        andes_2_oracle_map = {
+            # PdO / Millerang
+            "Étang-du-Nord": "EN",
+            "Dix-Milles": "DM",
+            "Chaîne-de-la-Passe":"CP"
+        }
+
+        # HACK return this for now, but need to come back to this
+        return self._hard_coded_result(15)
 
     @validate_int()
     @log_results
@@ -284,27 +289,61 @@ class TraitMollusque(TablePecheSentinelle):
         # manual hack
         # we take the french description and match with Oracle\
         # the match isn't even verbatim, we we need a manual map
-        andes_2_oracle_map = {
-            "Échantillonnage aléatoire": "Aléatoire simple",
-            "Station fixe": "Station fixe",
-        }
 
-        query = f"SELECT shared_models_stratificationtype.description_fra \
-                FROM shared_models_cruise \
-                LEFT JOIN shared_models_stratificationtype \
-                    ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \
-                WHERE shared_models_cruise.id={self.proj._get_current_row_pk()};"
+        # first, need to know what kind of set operations this is
+        # One could lookup directly the operation with the set_id, but this seems more proper...
+        query = (
+            "SELECT shared_models_operation.name "
+            "FROM shared_models_set "
+            "LEFT JOIN shared_models_set_operations "
+            "ON shared_models_set_operations.set_id = shared_models_set.id "
+            "LEFT JOIN shared_models_operation "
+            "ON shared_models_operation.id = shared_models_set_operations.operation_id "
+            f"WHERE shared_models_set.id={self._get_current_row_pk()} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        desc = result[0][0]
+        operation = result[0][0]
 
-        key = self.reference_data.get_ref_key(
-            table="TYPE_TRAIT",
-            pkey_col="COD_TYP_TRAIT",
-            col="DESC_TYP_TRAIT_F",
-            val=andes_2_oracle_map[desc],
-        )
-        return key
+        # For CTD, this is a direct lookup
+        if operation == 'CTD':
+            desc = 'Océanographie seulement'
+            key = self.reference_data.get_ref_key(
+                table="TYPE_TRAIT",
+                pkey_col="COD_TYP_TRAIT",
+                col="DESC_TYP_TRAIT_F",
+                val=desc,
+            )
+            return key
+
+        # For Fishing, need to lookup stratificatointype
+        elif operation == 'Fishing':
+            query = (
+                f"SELECT shared_models_stratificationtype.description_fra "
+                "FROM shared_models_cruise "
+                "LEFT JOIN shared_models_stratificationtype "
+                "ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id "
+                f"WHERE shared_models_cruise.id={self.proj._get_current_row_pk()} "
+            )
+            result = self.andes_db.execute_query(query)
+            self._assert_one(result)
+            desc = result[0][0]
+            
+            andes_2_oracle_map = {
+                "Échantillonnage aléatoire": "Aléatoire simple",
+                "Station fixe": "Station fixe",
+            }
+
+            key = self.reference_data.get_ref_key(
+                table="TYPE_TRAIT",
+                pkey_col="COD_TYP_TRAIT",
+                col="DESC_TYP_TRAIT_F",
+                val=andes_2_oracle_map[desc],
+            )
+            return key
+        else:
+            self.logger.error("Cannot determine COD_TYP_TRAIT")
+            raise ValueError
 
     @tag("codelookup")
     @validate_int()
@@ -432,6 +471,9 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         dt = result[0][0]
+        # if no start date, stop trying to find a cod_stype_heure, just return none
+        if dt is None:
+            return None
         dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
         if is_dst:
             desc_val = "Avancée"
@@ -471,6 +513,11 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         dt = result[0][0]
+
+        # if no start date, stop trying to find a cod_fuseau_horaire, just return none
+        if dt is None:
+            return None
+
         dt_str, timezone_str, is_dst = TraitMollusque.format_time(dt)
         if timezone_str == "America/Montreal":
             to_return = self.reference_data.get_ref_key(
@@ -564,6 +611,11 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+        
+        # return right away if None
+        if to_return is None:
+            return to_return
+        
         # convert to Oracle coord encoding
         to_return = OracleHelper._to_oracle_coord(to_return)
         # strip negative from longitudes
@@ -585,6 +637,11 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+
+        # return right away if None
+        if to_return is None:
+            return to_return
+
         # convert to Oracle coord encoding
         to_return = OracleHelper._to_oracle_coord(to_return)
         # strip negative from longitudes

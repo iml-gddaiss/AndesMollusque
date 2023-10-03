@@ -4,6 +4,7 @@ from andes_migrate.trait_mollusque import TraitMollusque
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
     AndesCodeLookup,
+    Deprecated,
     HardCoded,
     tag,
     log_results,
@@ -11,7 +12,7 @@ from andes_migrate.decorators import (
     validate_int,
 )
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 class EnginMollusque(TablePecheSentinelle):
@@ -19,12 +20,23 @@ class EnginMollusque(TablePecheSentinelle):
     Object model representing the ENGIN_MOLLUSQUE table
     """
 
-    def __init__(self, trait: TraitMollusque):
-        super().__init__(ref=trait.reference_data)
+    def __init__(self, trait: TraitMollusque, *args, **kwargs):
+        super().__init__(*args, ref=trait.reference_data, **kwargs)
         self.trait: TraitMollusque = trait
+        self.table_name = "ENGIN_MOLLUSQUE"
 
         self.andes_db = trait.andes_db
         self.data = {}
+
+        self._init_rows()
+
+    def _init_rows(self):
+        """ There is always one ENGIN_MOLLUSQUE per set.
+        This function inits a dummy list
+
+        """
+        self._row_list = [None]
+        self._row_idx = 0
 
     def populate_data(self):
         """Populate data: run all getters"""
@@ -42,7 +54,7 @@ class EnginMollusque(TablePecheSentinelle):
         self.data["NB_PANIER"] = self.get_nb_panier()
         self.data["REMPLISSAGE"] = self.get_remplissage()
         self.data["REMPLISSAGE_P"] = self.get_remplissage_p()
-        self.data["REM_ENGIN_MOLL"] = self.get_rem_engin_moll()
+        # self.data["REM_ENGIN_MOLL"] = self.get_rem_engin_moll()
 
     @validate_int()
     def get_cod_source_info(self) -> int:
@@ -308,7 +320,7 @@ class EnginMollusque(TablePecheSentinelle):
         return self._hard_coded_result(None)
 
     @validate_string(max_len=255, not_null=False)
-    @tag(HardCoded)
+    @tag(HardCoded, Deprecated)
     @log_results
     def get_rem_engin_moll(self) -> str | None:
         """REM_ENGIN_MOLL VARCHAR(255) / VARCHAR2(255)
@@ -316,6 +328,8 @@ class EnginMollusque(TablePecheSentinelle):
 
         All historical values are null except for a dozen in relevé 16.
         These comment can easily be moved to Set comment and the col can be removed.
+       
+        This IMLP col is not in Access
 
         """
 

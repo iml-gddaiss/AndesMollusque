@@ -132,6 +132,11 @@ DESC_SOURCE_INFO_F = f"Évaluation de stocks IML {self.zone} - {self.espece}"
 
 ```
 
+#### ENGIN_MOLLUSQUE
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
+
+La colonne `REM_ENGIN_MOLL` dans la table `ENGIN_MOLLUSQUE` existe sur IMLP, mais n'est pas présente sur Access.
+
 
 #### TYPE_PANIER
 Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
@@ -151,6 +156,11 @@ ACCESS:
 |3                |Aucun                      |	
 
 Il faudrait chercher (et valider) l'existance de type `0` et `3` dans ACCESS et IMLP (respectivement).
+
+#### CAPTURE_MOLLUSQUE
+Certaine tables de reference n'ont pas les memes valeurs entre la BD de MS Access la BD Peche_Sentinelle (IMLP). En cas de doute la BD PecheSentinelle devrait etre considéreé comme étant la bonne.
+
+La colonne `REM_CATURE_MOLL` dans la table `ENGINCAPTURE_MOLLUSQUE_MOLLUSQUE` existe sur IMLP, mais n'est pas présente sur Access.
 
 
 ## Résumeé de contraintes où les valeurs sur Andes doivent correspondre avec Oracle

@@ -15,7 +15,7 @@ from andes_migrate.decorators import (
     validate_int,
 )
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 class CaptureMollusque(TablePecheSentinelle):
@@ -23,10 +23,12 @@ class CaptureMollusque(TablePecheSentinelle):
     Object model representing the CAPTURE_MOLLUSQUE table
     """
 
-    def __init__(self, engin: EnginMollusque):
-        super().__init__(ref=engin.reference_data)
+    def __init__(self, engin: EnginMollusque, *args, **kwargs):
+        super().__init__(*args, ref=engin.reference_data, **kwargs)
 
         self.engin: EnginMollusque = engin
+        self.table_name = "CAPTURE_MOLLUSQUE"
+
         self.andes_db = engin.andes_db
         self.data = {}
 
@@ -84,7 +86,7 @@ class CaptureMollusque(TablePecheSentinelle):
         self.data["NO_CHARGEMENT"] = self.get_no_chargement()
         self.data["COD_ABONDANCE_EPIBIONT"] = self.get_cod_abondance_epibiont()
         self.data["COD_COUVERTURE_EPIBIONT"] = self.get_couverture_epibiont()
-        self.data["REM_CAPT_MOLL"] = self.get_rem_capt_moll()
+        # self.data["REM_CAPT_MOLL"] = self.get_rem_capt_moll()
 
     @validate_int()
     @log_results
@@ -816,12 +818,14 @@ class CaptureMollusque(TablePecheSentinelle):
             return None
         return self._compute_couverture_epibiont(self._get_current_row_pk())
 
+    @tag(Deprecated)
     @log_results
     def get_rem_capt_moll(self) -> str | None:
         """REM_CAPT_MOLL VARCHAR(255) / VARCHAR2(255)
         Remarque au niveau de la capture
 
         Andes: ecosystem_survey_catch.notes
+        This IMLP col is not in Access
         """
         query = (
             "SELECT ecosystem_survey_catch.notes "

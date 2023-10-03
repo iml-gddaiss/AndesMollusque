@@ -200,6 +200,8 @@ class OracleHelper(DBHelper):
         if value is None:
             return "NULL"
         elif isinstance(value,str):
+            if (value==''):
+                return "NULL"
             return f"'{value}'"
         else:
             return value

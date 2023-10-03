@@ -1,5 +1,6 @@
 import shutil
 import pyodbc
+import logging 
 
 from andes_migrate.capture_mollusque import CaptureMollusque
 from andes_migrate.oracle_helper import OracleHelper
@@ -10,46 +11,73 @@ from andes_migrate.freq_long_mollusque import FreqLongMollusque
 from andes_migrate.andes_helper import AndesHelper
 
 
+logging.basicConfig(level=logging.ERROR)
 
 
 andes_db = AndesHelper()
 access_file = 'andes_migrate/template/access_template.mdb'
 ref = OracleHelper(access_file=access_file)
 
-proj = ProjetMollusque(andes_db, ref=ref)
-proj.init_input(zone="20", no_releve=34, no_notif="IML-2023-011", espece="pétoncle")
-proj.populate_data()
 
-output_fname = f'./{proj.no_notification}.mdb'
+# INPUT VALUES
+no_notification = "IML-2023-011"
+no_releve=34
+zone="20"
+espece="pétoncle"
+
+output_fname = f'./{no_notification}.mdb'
 shutil.copyfile('andes_migrate/template/access_template.mdb', output_fname)
 con = pyodbc.connect(
     f"Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={output_fname};"
 )
+output_cur = con.cursor()
 
-cur = con.cursor()
-statement = proj.get_insert_statement()
-cur.execute(statement)
-# cur.commit()
 
-trait = TraitMollusque(andes_db, proj)
+# proj = ProjetMollusque(andes_db, output_cur, ref=ref)
+# proj.init_input(zone="20", no_releve=34, no_notif=no_notification, espece="pétoncle")
+proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_releve=no_releve, no_notif=no_notification, espece=espece)
+
+no_moll = 0
+for p in proj:
+    print(f"Projet: ", p)
+    trait = TraitMollusque(andes_db, proj, output_cur)
+    for t in trait:
+        print(f"Trait: ", t)
+        engin = EnginMollusque(trait, output_cur)
+        for e in engin:
+            print(f"Engin: ", e)
+            capture = CaptureMollusque(engin, output_cur)
+            for c in capture:
+                print(f"Capture: ", c)
+                freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll)
+                for f in freq:
+                    print(f"FreqLong: ", f)
+                    no_moll += 1
+
+
+
 # for i in range(12):
 #     trait._increment_row()
-print("trait: ", trait.get_ident_no_trait())
-trait.populate_data()
+# print("trait: ", trait.get_ident_no_trait())
 
-cur = con.cursor()
-statement = trait.get_insert_statement()
-print(statement)
-cur.execute(statement)
+# statement = trait.get_insert_statement()
+# cur.execute(statement)
 # cur.commit()
-exit()
 
-engin = EnginMollusque(trait)
-engin.populate_data()
 
-capture = CaptureMollusque(engin)
-# print("capt: ", capture._get_current_row_pk())
-capture.populate_data()
+# statement = engin.get_insert_statement()
+# cur.execute(statement)
+# cur.commit()
 
-freq_long = FreqLongMollusque(capture)
-freq_long.populate_data()
+# capture.populate_data()
+# statement = capture.get_insert_statement()
+# cur.execute(statement)
+# cur.commit()
+
+# freq_long = FreqLongMollusque(capture)
+# print("iterating...")
+# for i in FreqLongMollusque(capture, output_cur):
+#     print(i)
+#     # statement = i.get_insert_statement()
+#     # cur.execute(statement)
+#     # cur.commit()
