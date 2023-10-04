@@ -46,15 +46,43 @@ class CaptureMollusque(TablePecheSentinelle):
         self._row_idx will start at 0
 
         """
+        # query = (
+        #     "SELECT ecosystem_survey_catch.id "
+        #     "FROM ecosystem_survey_catch "
+        #     f"WHERE ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
+        #     "ORDER BY ecosystem_survey_catch.id ASC;"
+        # )
+
+        # HACK! only choose scallops aphia IDs
+        placopecten_magellanicus = 156972
+        chlamys_islandica = 140692
+
+        # DOUBLE HACK! only choose catches that contain baskets that are NOT and NA size-class (shared_models_sizeclass.code=0)
+        # some NA baskets can still exist in a catch that has a non-NA basket
+        # The NA basket filter is probably not needed...
+
         query = (
-            "SELECT ecosystem_survey_catch.id "
+            "SELECT DISTINCT ecosystem_survey_catch.id "
             "FROM ecosystem_survey_catch "
-            f"WHERE ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
-            "ORDER BY ecosystem_survey_catch.id ASC;"
+            "LEFT JOIN shared_models_species "
+            "ON shared_models_species.id=ecosystem_survey_catch.species_id "
+            # # this part is to remove 'NA' size-class baskets
+            "LEFT JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_catch.id=ecosystem_survey_basket.catch_id "
+            "LEFT JOIN shared_models_sizeclass "
+            "ON ecosystem_survey_basket.size_class = shared_models_sizeclass.code "
+            "LEFT JOIN shared_models_cruise "
+            "ON shared_models_cruise.sampling_protocol_id = shared_models_sizeclass.sampling_protocol_id "
+            f"WHERE shared_models_cruise.id={self.engin.trait.proj._get_current_row_pk()} "
+            f"AND NOT shared_models_sizeclass.code=0 "
+            f"AND ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
+            f"AND (shared_models_species.aphia_id = {placopecten_magellanicus} OR shared_models_species.aphia_id = {chlamys_islandica}) "
+            "ORDER BY ecosystem_survey_catch.id ASC "
         )
 
         result = self.andes_db.execute_query(query)
-        self._assert_not_empty(result)
+        # a set could be empty,
+        # self._assert_not_empty(result)
 
         # a list of all the catch pk's (need to unpack a bit)
         self._row_list = [catch[0] for catch in result]
@@ -185,7 +213,7 @@ class CaptureMollusque(TablePecheSentinelle):
             self.logger.warn(
                 "did not match to Oracle using code=%s (assuming strap)", andes_code
             )
-            raise (ValueError)
+            raise ValueError
         else:
             self.logger.info(
                 "Found matching strap code, returning COD_ESP_GEN=%s", to_return
@@ -401,12 +429,33 @@ class CaptureMollusque(TablePecheSentinelle):
                 "Abundance category with no weights or specimens infers a qualitative catch."
             )
             return qualitative_code
-        else:
-            self.logger.error(
-                "Cannot determine cod_type_mesure for catch %s",
-                self._get_current_row_pk(),
-            )
-            raise ValueError
+
+
+        # Some species do not have a relative abundance category, nor do they have a weight (g.e., hermit crabs are not normaly weighted)
+        exceptions_aphia_id = [
+                               106854, # STRAP 2561, Pagurus sp.
+                               100854, # STRAP 8313, Anemone (S.coccinea)
+                               ] 
+        query = (
+            "SELECT ecosystem_survey_catch.specimen_count, shared_models_species.aphia_id "
+            "FROM ecosystem_survey_catch "
+            "LEFT JOIN shared_models_species "
+            "ON shared_models_species.id=ecosystem_survey_catch.species_id "
+            f"WHERE ecosystem_survey_catch.id={self._get_current_row_pk()}"
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        specimen_count = result[0][0]
+        aphia_id = result[0][1]
+        print(result)
+        if specimen_count is not None and aphia_id in exceptions_aphia_id:
+            return qualitative_code
+
+        self.logger.error(
+            "Cannot determine cod_type_mesure for catch %s",
+            self._get_current_row_pk(),
+        )
+        raise ValueError
 
     @tag(Computed, HardCoded, NotAndes)
     @log_results

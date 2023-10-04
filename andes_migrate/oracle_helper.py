@@ -180,9 +180,10 @@ class OracleHelper(DBHelper):
             f"AND ESPECE_NORME.COD_ESPECE={strap_code}"
         )
         result = self.execute_query(query)
- 
+        # print(query)
         if not len(result) == 1:
-            raise ValueError("Expected only one result, got %s", len(result))
+            self.logger.error("Expected only one result, got %s", len(result))
+            raise ValueError
         else:
             return int(result[0][0])
 

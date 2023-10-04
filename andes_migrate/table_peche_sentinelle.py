@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 import logging
 from zoneinfo import ZoneInfo
 
+from pyodbc import DataError
+
 from andes_migrate.oracle_helper import OracleHelper
 
 # logging.basicConfig(level=logging.INFO)
@@ -72,9 +74,9 @@ class TablePecheSentinelle:
         """
         Increment to focus on next row
         """
-        print(self.table_name)
-        print(f"{self._row_idx} of {len(self._row_list)}")
-        print()
+        # print(self.table_name)
+        # print(f"{self._row_idx} of {len(self._row_list)}")
+        # print()
         if self._row_idx is not None and self._row_list is not None:
             if self._row_idx < len(self._row_list):
                 # increment first,  it'l be adjusted in _get_current_row_pk()
@@ -150,7 +152,11 @@ class TablePecheSentinelle:
 
     def write_row(self):
         statement = self.get_insert_statement()
-        self.output_cur.execute(statement)
+        try:
+            self.output_cur.execute(statement)
+        except DataError as exc:
+            self.logger.error("Could not execute statement: %s", statement)
+            raise exc
         # print(statement)
         # self.output_cur.commit()
 

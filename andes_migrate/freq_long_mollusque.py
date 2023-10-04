@@ -48,6 +48,11 @@ class FreqLongMollusque(TablePecheSentinelle):
 
         """
         # HACK, change this using lookup
+
+        # DOUBLE HACK! only choose baskets that are NOT and NA size-class (shared_models_sizeclass.code=0)
+        # NA size classes should not be sampled, and should not have a length observation
+
+
         observation_length_type_id = 7
         query = (
             "SELECT ecosystem_survey_specimen.id, ecosystem_survey_observation.observation_value, ecosystem_survey_basket.id "
@@ -193,7 +198,9 @@ class FreqLongMollusque(TablePecheSentinelle):
 
         """
         # the specimen length is found in the _row_list
-        self.get_current_length()
+        to_return = self.get_current_length()
+        return float(to_return)
+
 
     @validate_int()
     @log_results
@@ -266,7 +273,7 @@ class FreqLongMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         andes_desc = result[0][0]
-
+        # print(query)
         code = self.reference_data.get_ref_key(
             table="TYPE_ETAT_MOLL",
             pkey_col="COD_TYP_ETAT",

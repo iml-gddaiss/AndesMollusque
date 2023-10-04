@@ -129,10 +129,18 @@ class EnginMollusque(TablePecheSentinelle):
         Code lookup
 
         """
+
         set_pk = self.trait._get_current_row_pk()
-        query = f"SELECT shared_models_set.winch_code \
-                FROM shared_models_set \
-                WHERE shared_models_set.id={set_pk};"
+        query = (
+            "SELECT shared_models_set.winch_code "
+            "FROM shared_models_set "
+            "LEFT JOIN shared_models_set_operations "
+            "ON shared_models_set_operations.set_id = shared_models_set.id "
+            "LEFT JOIN shared_models_operation "
+            "ON shared_models_operation.id = shared_models_set_operations.operation_id "
+
+            f"WHERE shared_models_set.id={set_pk} "
+        )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
