@@ -37,13 +37,13 @@ output_cur = con.cursor()
 # proj.init_input(zone="20", no_releve=34, no_notif=no_notification, espece="pétoncle")
 proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_releve=no_releve, no_notif=no_notification, espece=espece)
 
-no_moll_c_islandica = 0
-no_moll_p_magellanicus = 0
 
 for p in proj:
     print(f"Projet: ", p)
     trait = TraitMollusque(andes_db, proj, output_cur)
     for t in trait:
+        no_moll = 1
+
         print(f"Trait: ", t)
         engin = EnginMollusque(trait, output_cur)
         for e in engin:
@@ -51,25 +51,13 @@ for p in proj:
             capture = CaptureMollusque(engin, output_cur)
             for c in capture:
                 # print(f"Capture: ", c)
-                # chlamis islandica
-                if c['COD_ESP_GEN'] == 48 : 
-                    no_moll_init = no_moll_c_islandica
-                # placopecten magellanicus
-                elif c['COD_ESP_GEN'] == 50 :
-                    no_moll_init = no_moll_p_magellanicus
+                # chlamys islandica
 
-                freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll_init)
+                freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll)
                 for f in freq:
-                    print(f"FreqLong: ", f)
-                    # chlamis islandica
-                    if (c['COD_ESP_GEN'] == 48) : 
-                        no_moll_c_islandica += 1
-                        print(f"incr chlam to {no_moll_c_islandica}")
-
-                    # placopecten magellanicus
-                    elif (c['COD_ESP_GEN'] == 50) : 
-                        no_moll_p_magellanicus +=1
-                        print(f"incr placo to {no_moll_p_magellanicus}")
+                    # print(f"FreqLong: ", f)
+                    # if (c['COD_ESP_GEN'] == 48 or c['COD_ESP_GEN'] == 50) : 
+                    no_moll += 1
 
 
 # monolithic commit if no errors are found
