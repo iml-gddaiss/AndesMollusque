@@ -225,6 +225,47 @@ class TraitMollusque(TablePecheSentinelle):
         # a faster way is to get shared_models_set.stratum directly
         # TODO:  use an Andes stratum that is compatible with the ideas behind TYPE_STRATE_MOLL
 
+        query = (
+            "SELECT shared_models_newstation.name "
+            "FROM shared_models_set "
+            "LEFT JOIN shared_models_newstation "
+            "ON shared_models_set.new_station_id=shared_models_newstation.id "
+            f"WHERE shared_models_set.id={self._get_current_row_pk()} "
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        station_name = str(result[0][0])
+                           
+        cod_secteur_releve = self.get_cod_secteur_releve()
+        # 1 -> Côte-Nord
+        if cod_secteur_releve == 1:
+            # Need to get the station name, since it contains the cod_strate
+
+            # use the first character as the strate value (need to fetch key)
+            secteur = station_name[0]
+            key = self.reference_data.get_ref_key(
+                table="TYPE_STRATE_MOLL",
+                pkey_col="COD_STRATE",
+                col="STRATE",
+                val=secteur,
+                optional_query="AND COD_SECTEUR_RELEVE=1"
+            )
+            return key
+        # IdM
+        elif cod_secteur_releve == 4:
+            strat_dict = {
+            "Étang-du-Nord":[]
+            "Dix-Milles":[]
+            "Chaîne-de-la-Passe":[]
+            }
+            # need to populate these lists ^^^
+            
+            if int(station_name) in strat_dict["Étang-du-Nord"]:
+                secteur = "EN"
+            elif int(station_name) in strat_dict["Dix-Milles"]:
+                secteur = "EN"
+
+            raise NotImplementedError
         # need andes station.stratum.code? station.stratum.name?
         andes_2_oracle_map = {
             # PdO / Millerang

@@ -30,23 +30,26 @@ class DBHelper:
         pkey_col: str = "columnofprimarykey",
         col: str = "columnname",
         val="entryvalue",
+        optional_query="",
     ):
         """gets the Oracle reference key corresponding to a value
 
         :param table: The name of the Oracle table, defaults to "tablename"
-        :type table: str, optional
+        :type table: str,
         :param pkey_col: The column name that holds the key, defaults to "columnofprimarykey"
-        :type pkey_col: str, optional
+        :type pkey_col: str,
         :param col: The column that holds the value to match, defaults to "columnname"
-        :type col: str, optional
+        :type col: str, l
         :param val: The value to match, defaults to "entryvalue"
+        :type val: str,
+        :param val: additional string to append to the query
         :type val: str, optional
         :return: The value found in the pkey column for the entry with the value
         :rtype: _type_
         """
         # sanitize string (double escape single quotes)
         val = self._format_sql_string(val)
-        query = f"SELECT {pkey_col} FROM {table} WHERE {col}='{val}'"
+        query = f"SELECT {pkey_col} FROM {table} WHERE {col}='{val}' {optional_query}"
         res = self.execute_query(query)
 
         if len(res) == 1:

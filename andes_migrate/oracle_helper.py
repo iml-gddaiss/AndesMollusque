@@ -3,7 +3,8 @@ import pyodbc
 import logging
 import oracledb
 
-from oracledb.exceptions import DatabaseError
+# from oracledb.exceptions import Error
+from pyodbc import Error
 
 from dotenv import load_dotenv
 
@@ -50,15 +51,18 @@ class OracleHelper(DBHelper):
 
     def execute_query(self, query: str):
         if self.ms_access:
-            res = self.cur.execute(query)
+            try:
+                res = self.cur.execute(query)
+            except Exception as exc:
+                self.logger.error("Error to executing query: %s", query)
+                raise exc
             return res.fetchall()
         else:
             try:
                 self.cur.execute(query)
-            except DatabaseError as exc:
+            except Exception as exc:
                 self.logger.error("Error to executing query: %s", query)
                 raise exc
-
             else:
                 return self.cur.fetchall()
 
