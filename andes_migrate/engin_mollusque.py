@@ -260,8 +260,8 @@ class EnginMollusque(TablePecheSentinelle):
         """LONG_FUNE DOUBLE / NUMBER
         Longueur des funes lors de la réalisation du trait; unité mètre
 
-        For scallops, it is assumed to be 2x depth unless specified in set comments
-
+        For scallops, it is assumed to be 3x depth 
+        
         The Andes associated field is shared_models_set.trawl_cable_length
         """
         set_pk = self.trait._get_current_row_pk()

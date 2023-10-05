@@ -447,7 +447,7 @@ class CaptureMollusque(TablePecheSentinelle):
         self._assert_one(result)
         specimen_count = result[0][0]
         aphia_id = result[0][1]
-        print(result)
+        # print(result)
         if specimen_count is not None and aphia_id in exceptions_aphia_id:
             return qualitative_code
 

@@ -481,7 +481,9 @@ class ProjetMollusque(TablePecheSentinelle):
         #     to_return = 151
 
         # to_return = self._seq_result()
-        to_return = self._hard_coded_result(151)
+        # to_return = self._hard_coded_result(151)
+        to_return = self._hard_coded_result(None)
+
         return to_return
 
     @log_results
@@ -613,10 +615,10 @@ class ProjetMollusque(TablePecheSentinelle):
 
         Andes: Pas dans Andes
 
-        This function always returns a hard-coded value of 2.0
+        This function always returns a hard-coded value of None
 
         """
-        to_return = self._hard_coded_result(2.0)
+        to_return = self._hard_coded_result(None)
         return to_return
 
     @tag(HardCoded)
