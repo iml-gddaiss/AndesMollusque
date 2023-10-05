@@ -11,9 +11,10 @@ Documentation for Andes -> Projet Mollusque data migration
    
    code_espece
    contraintes
-   engin_mollusque
-   trait_mollusque
    projet_mollusque
+   trait_mollusque
+   engin_mollusque
+   capture_mollusque
 
    table_peche_sentinelle
    oracle_helper
