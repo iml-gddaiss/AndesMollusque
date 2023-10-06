@@ -1,5 +1,12 @@
 # Contraintes pour Pétoncle
 
+## Numéro de missin alternatif et `NO_RELEVE`
+
+Un champ critique des la BD PSE, `NO_RELEVE` (numéro du relevé) doit etre obtenu par un DBA de la DAISS. Ce champ était présent dans le fichier Access fourni pas la DAISS.
+Une fois que le numéro de relevé à été désigné pour la mission, il doit etre saisie dan andes via le champ de mission "Numéro de missin alternatif", voir figure.
+![targeted_vessel_speed>](_static/shared_models_cruise.survey_number.png)
+
+
 ## Distance de trait visée par la mission
 
 ![targeted_vessel_speed>](_static/shared_models.cruise.targeted_vessel_speed.png)

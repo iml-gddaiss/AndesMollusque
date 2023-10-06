@@ -21,9 +21,9 @@ ref = OracleHelper(access_file=access_file)
 
 # INPUT VALUES
 no_notification = "IML-2023-011"
-no_releve=34
-zone="20"
-espece="pétoncle"
+zone = "20"
+espece = "pétoncle"
+SEQ_peche = 151
 
 output_fname = f'./{no_notification}.mdb'
 shutil.copyfile('andes_migrate/template/access_template.mdb', output_fname)
@@ -35,7 +35,7 @@ output_cur = con.cursor()
 
 # proj = ProjetMollusque(andes_db, output_cur, ref=ref)
 # proj.init_input(zone="20", no_releve=34, no_notif=no_notification, espece="pétoncle")
-proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_releve=no_releve, no_notif=no_notification, espece=espece)
+proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_notif=no_notification, espece=espece)
 
 
 for p in proj:
@@ -61,7 +61,7 @@ for p in proj:
 
 
 # monolithic commit if no errors are found
-output_cur.commit()
+# output_cur.commit()
 
 
 

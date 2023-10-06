@@ -25,7 +25,6 @@ class ProjetMollusque(TablePecheSentinelle):
 
     def __init__(self, andes_db, *args,
             zone: str = "defaultzone",
-            no_releve: int = 0,
             no_notif: str = "IML-2000-001",
             espece: str = "pétoncle",
             **kwargs
@@ -36,7 +35,6 @@ class ProjetMollusque(TablePecheSentinelle):
 
         self.init_input(
             zone=zone,
-            no_releve=no_releve,
             no_notif=no_notif,
             espece=espece,
         )
@@ -106,7 +104,6 @@ class ProjetMollusque(TablePecheSentinelle):
     def init_input(
         self,
         zone: str = "defaultzone",
-        no_releve: int = 0,
         no_notif: str = "IML-2000-001",
         espece: str = "pétoncle",
     ):
@@ -125,10 +122,6 @@ class ProjetMollusque(TablePecheSentinelle):
             raise ValueError("zone doit etre un de 16E, 16F ou 20")
         self.zone = zone
 
-        if not no_releve:
-            raise ValueError("Le num. relevé doit etre obtenu par un DBA de la DAISS")
-        self.no_releve = no_releve
-
         if not no_notif:
             raise ValueError("Le num. notif (Ex. IML-2000-023) doit etre fourni")
         self.no_notification = no_notif
@@ -138,7 +131,7 @@ class ProjetMollusque(TablePecheSentinelle):
     def populate_data(self):
         """Populate data: run all getters"""
         self.data["COD_SOURCE_INFO"] = self.get_cod_source_info()
-        self.data["NO_RELEVE"] = self.no_releve
+        self.data["NO_RELEVE"] = self.get_no_releve()
         self.data["COD_NBPC"] = self.get_cod_nbpc()
         self.data["ANNEE"] = self.get_annee()
         self.data["COD_SERIE_HIST"] = self.get_cod_serie_hist()
@@ -219,10 +212,21 @@ class ProjetMollusque(TablePecheSentinelle):
         """NO_RELEVE INTEGER / NUMBER(5,0)
         Numéro séquentiel du relevé
 
-        Andes: Pas dans Andes, doit être spécifié à l'initialisation.
+        Doit etre obtenu par un DBA de la DAISS avant la mission.
+
+        Andes: shared_models_cruise.survey_number
 
         """
-        # this has to be supplied as input using self.init_input
+        query = (
+            "SELECT shared_models_cruise.survey_number "
+            "FROM shared_models_cruise "
+            f"WHERE shared_models_cruise.id={self._get_current_row_pk()}"
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+
+        to_return = result[0][0]
+
         return int(self.no_releve)
 
     @validate_string(max_len=6)
@@ -687,6 +691,7 @@ class ProjetMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+
         return to_return
 
     @tag(HardCoded, NotAndes)
