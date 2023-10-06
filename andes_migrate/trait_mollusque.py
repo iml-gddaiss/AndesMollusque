@@ -263,7 +263,7 @@ class TraitMollusque(TablePecheSentinelle):
             if int(station_name) in strat_dict["Étang-du-Nord"]:
                 secteur = "EN"
             elif int(station_name) in strat_dict["Dix-Milles"]:
-                secteur = "EN"
+                secteur = "DM"
 
             raise NotImplementedError
         # need andes station.stratum.code? station.stratum.name?
@@ -916,6 +916,11 @@ class TraitMollusque(TablePecheSentinelle):
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+
+        # need to remove line breaks
+        # only because it currupts de .dat files,
+        to_return = to_return.replace('\n', ' ')
+
         return to_return
 
     @validate_int(not_null=False)

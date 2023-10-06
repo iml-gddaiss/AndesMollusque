@@ -885,4 +885,8 @@ class CaptureMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
 
+        # need to remove line breaks
+        # only because it currupts de .dat files,
+        to_return = to_return.replace('\n', ' ')
+
         return to_return
