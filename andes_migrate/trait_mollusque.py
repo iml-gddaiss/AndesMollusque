@@ -222,8 +222,8 @@ class TraitMollusque(TablePecheSentinelle):
         More discussions are needed to decide how to determine the stratum
         perhaps station.strate
         """
-        # a faster way is to get shared_models_set.stratum directly
-        # TODO:  use an Andes stratum that is compatible with the ideas behind TYPE_STRATE_MOLL
+        # a faster way is to get shared_models_set.stratum directly ?
+        # but that would be too easy, instead  do the following...
 
         query = (
             "SELECT shared_models_newstation.name "
@@ -253,29 +253,29 @@ class TraitMollusque(TablePecheSentinelle):
             return key
         # IdM
         elif cod_secteur_releve == 4:
-            strat_dict = {
-            "Étang-du-Nord":[]
-            "Dix-Milles":[]
-            "Chaîne-de-la-Passe":[]
-            }
-            # need to populate these lists ^^^
-            
-            if int(station_name) in strat_dict["Étang-du-Nord"]:
+            from andes_migrate.ref_data.strat_pet_idm import strat_dict 
+            # strip non-numeric characters            
+            station_number = "".join(c for c in station_name if c.isdigit())
+            if int(station_number) in strat_dict["Étang-du-Nord"]:
                 secteur = "EN"
-            elif int(station_name) in strat_dict["Dix-Milles"]:
+            elif int(station_number) in strat_dict["Dix-Milles"]:
                 secteur = "DM"
-
-            raise NotImplementedError
-        # need andes station.stratum.code? station.stratum.name?
-        andes_2_oracle_map = {
-            # PdO / Millerang
-            "Étang-du-Nord": "EN",
-            "Dix-Milles": "DM",
-            "Chaîne-de-la-Passe":"CP"
-        }
-
-        # HACK return this for now, but need to come back to this
-        return self._hard_coded_result(15)
+            elif int(station_number) in strat_dict["Chaîne-de-la-Passe"]:
+                secteur = "CP"
+            else: 
+                self.logger.error("Cannot find strat for station: %s", station_number)
+                raise ValueError()
+            key = self.reference_data.get_ref_key(
+                table="TYPE_STRATE_MOLL",
+                pkey_col="COD_STRATE",
+                col="STRATE",
+                val=secteur,
+                optional_query="AND COD_SECTEUR_RELEVE=4"
+            )
+            return key
+        else:
+            self.logger.error("secteur %s not implemented", cod_secteur_releve)
+            raise ValueError
 
     @validate_int()
     @log_results

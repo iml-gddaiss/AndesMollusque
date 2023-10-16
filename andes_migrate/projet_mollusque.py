@@ -227,7 +227,7 @@ class ProjetMollusque(TablePecheSentinelle):
 
         to_return = result[0][0]
 
-        return int(self.no_releve)
+        return to_return
 
     @validate_string(max_len=6)
     @tag(AndesCodeLookup)

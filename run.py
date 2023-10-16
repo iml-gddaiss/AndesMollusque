@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.ERROR)
 
 
 andes_db = AndesHelper()
-access_file = 'andes_migrate/template/access_template.mdb'
+access_file = 'andes_migrate/ref_data/access_template.mdb'
 ref = OracleHelper(access_file=access_file)
 
 
@@ -26,7 +26,7 @@ espece = "pétoncle"
 SEQ_peche = 151
 
 output_fname = f'./{no_notification}.mdb'
-shutil.copyfile('andes_migrate/template/access_template.mdb', output_fname)
+shutil.copyfile('andes_migrate/ref_data/access_template.mdb', output_fname)
 con = pyodbc.connect(
     f"Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={output_fname};"
 )
@@ -43,7 +43,6 @@ for p in proj:
     trait = TraitMollusque(andes_db, proj, output_cur)
     for t in trait:
         no_moll = 1
-
         print(f"Trait: ", t)
         engin = EnginMollusque(trait, output_cur)
         for e in engin:
@@ -51,7 +50,6 @@ for p in proj:
             capture = CaptureMollusque(engin, output_cur)
             for c in capture:
                 # print(f"Capture: ", c)
-                # chlamys islandica
 
                 freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll)
                 for f in freq:
@@ -61,7 +59,7 @@ for p in proj:
 
 
 # monolithic commit if no errors are found
-# output_cur.commit()
+output_cur.commit()
 
 
 
