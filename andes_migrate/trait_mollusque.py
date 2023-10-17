@@ -915,12 +915,12 @@ class TraitMollusque(TablePecheSentinelle):
                 WHERE shared_models_set.id={self._get_current_row_pk()};"
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
-        to_return = result[0][0]
+        to_return = str(result[0][0])
 
-        # need to remove line breaks
+        # need to remove line breaks and carriage-returns
         # only because it currupts de .dat files,
         to_return = to_return.replace('\n', ' ')
-
+        to_return = to_return.replace('\r', ' ')
         return to_return
 
     @validate_int(not_null=False)
