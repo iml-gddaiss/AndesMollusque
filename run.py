@@ -1,6 +1,8 @@
+import csv
 import shutil
 import pyodbc
-import logging 
+import logging
+from andes_migrate.biometrie_petoncle import BiometriePetoncle 
 
 from andes_migrate.capture_mollusque import CaptureMollusque
 from andes_migrate.oracle_helper import OracleHelper
@@ -38,28 +40,70 @@ output_cur = con.cursor()
 proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_notif=no_notification, espece=espece)
 
 
+
 for p in proj:
     print(f"Projet: ", p)
-    trait = TraitMollusque(andes_db, proj, output_cur)
-    for t in trait:
-        no_moll = 1
-        print(f"Trait: ", t)
-        engin = EnginMollusque(trait, output_cur)
-        for e in engin:
-            # print(f"Engin: ", e)
-            capture = CaptureMollusque(engin, output_cur)
-            for c in capture:
-                # print(f"Capture: ", c)
 
-                freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll)
-                for f in freq:
-                    # print(f"FreqLong: ", f)
-                    # if (c['COD_ESP_GEN'] == 48 or c['COD_ESP_GEN'] == 50) : 
-                    no_moll += 1
+    collection_name='Conserver le spécimen (Biométrie Ouest)'
+    biometrie = BiometriePetoncle(andes_db, proj, collection_name, output_cur)
+    with open('ouest.csv','w') as fp:
+        writer = csv.DictWriter(fp, lineterminator="\n", fieldnames=["id_specimen",
+                                                                    "secteur",
+                                                                    "trait",
+                                                                    "no",
+                                                                    "taille", 
+                                                                    "poids_vif",
+                                                                    "poids_muscle", 
+                                                                    "poids_gonade",
+                                                                    "poids_visceres",
+                                                                    "poids_gonade",
+                                                                    "sexe",
+                                                                    "comment"])
+        writer.writeheader()
+        for b in biometrie:
+            writer.writerow(b)
+
+
+    collection_name='Conserver le spécimen (Biométrie Centre)'
+    biometrie = BiometriePetoncle(andes_db, proj, collection_name, output_cur)
+    with open('centre.csv','w') as fp:
+        writer = csv.DictWriter(fp, lineterminator="\n", fieldnames=["id_specimen",
+                                                                    "secteur",
+                                                                    "trait",
+                                                                    "no",
+                                                                    "taille", 
+                                                                    "poids_vif",
+                                                                    "poids_muscle", 
+                                                                    "poids_gonade",
+                                                                    "poids_visceres",
+                                                                    "poids_gonade",
+                                                                    "sexe",
+                                                                    "comment"])
+        writer.writeheader()
+        for b in biometrie:
+            writer.writerow(b)
+
+    exit()
+#     trait = TraitMollusque(andes_db, proj, output_cur)
+#     for t in trait:
+#         no_moll = 1
+#         print(f"Trait: ", t)
+#         engin = EnginMollusque(trait, output_cur)
+#         for e in engin:
+#             # print(f"Engin: ", e)
+#             capture = CaptureMollusque(engin, output_cur)
+#             for c in capture:
+#                 # print(f"Capture: ", c)
+
+#                 freq = FreqLongMollusque(capture, output_cur, no_moll_init=no_moll)
+#                 for f in freq:
+#                     # print(f"FreqLong: ", f)
+#                     # if (c['COD_ESP_GEN'] == 48 or c['COD_ESP_GEN'] == 50) : 
+#                     no_moll += 1
 
 
 # monolithic commit if no errors are found
-output_cur.commit()
+# output_cur.commit()
 
 
 
