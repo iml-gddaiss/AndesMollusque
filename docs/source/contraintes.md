@@ -30,6 +30,7 @@ Doit corréspondre à une entrée de la table `PROJET_MOLLUSQUE` ayant une valeu
 Pour les mission pétoncle, un de ces choix:
  - `Évaluation de stocks IML - Pétoncle I de M`
  - `Évaluation de stocks IML - Pétoncle Minganie`
+
 Pour les missions buccin: 
 - `Relevé buccin Haute Côte-Nord`
 
@@ -42,6 +43,7 @@ Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur
 Pour les mission pétoncle, un de ces choix:
  - `Îles-de-la-Madeleine`
  - `Côte-Nord`
+
 Pour les missions buccin:
 - `Haute Côte-Nord`
 
