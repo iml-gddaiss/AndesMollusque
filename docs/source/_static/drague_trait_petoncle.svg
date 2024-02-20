@@ -9,7 +9,7 @@
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="drague_trait_petoncle.svg"
-   inkscape:export-filename="drague_trait_petoncle.png"
+   inkscape:export-filename="capture.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -29,13 +29,13 @@
      inkscape:document-units="mm"
      showgrid="false"
      showguides="true"
-     inkscape:zoom="0.86772068"
-     inkscape:cx="309.43137"
-     inkscape:cy="456.36806"
+     inkscape:zoom="2.4542847"
+     inkscape:cx="305.58802"
+     inkscape:cy="220.43082"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="1289"
+     inkscape:window-y="1072"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <inkscape:grid
@@ -46,25 +46,6 @@
   </sodipodi:namedview>
   <defs
      id="defs2">
-    <marker
-       style="overflow:visible"
-       id="Arrow2"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Arrow2"
-       markerWidth="4.5999999"
-       markerHeight="3.6800001"
-       viewBox="0 0 7.7 5.6"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="arrow2L" />
-    </marker>
     <pattern
        patternUnits="userSpaceOnUse"
        width="256"
@@ -149,7 +130,7 @@
        id="path3683"
        sodipodi:nodetypes="czcc" />
     <ellipse
-       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
        id="path790"
        cx="97.895836"
        cy="48.053539"
@@ -354,102 +335,31 @@
        height="5.2916665"
        x="21.166666"
        y="201.08333" />
-    <text
-       xml:space="preserve"
-       style="font-size:5.64444px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
-       x="96.836128"
-       y="179.44662"
-       id="text7593"><tspan
-         sodipodi:role="line"
-         id="tspan7591"
-         style="stroke-width:2"
-         x="96.836128"
-         y="179.44662">CAPTURE</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:5.64444px;text-align:start;text-anchor:start;fill:none;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
-       x="4.7404518"
-       y="182.91803"
-       id="text10311"><tspan
-         sodipodi:role="line"
-         id="tspan10303"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="4.7404518"
-         y="182.91803">ÉCHANTILLON</tspan><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="4.7404518"
-         y="189.97359"
-         id="tspan10305" /><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="4.7404518"
-         y="197.02913"
-         id="tspan10307" /><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="4.7404518"
-         y="204.08469"
-         id="tspan10309" /></text>
     <path
        style="fill:none;fill-opacity:1;stroke:#7a7a7a;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
        d="m 26.458334,246.06251 v 13.22916 h 10.583333 v -13.22916"
        id="path11099" />
-    <text
-       xml:space="preserve"
-       style="font-size:5.64444px;text-align:start;text-anchor:start;fill:none;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
-       x="42.333332"
-       y="256.64584"
-       id="text11109"><tspan
-         sodipodi:role="line"
-         id="tspan11101"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="42.333332"
-         y="256.64584">SOUS-ÉCHANTILLON</tspan><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="42.333332"
-         y="263.70139"
-         id="tspan11103" /><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="42.333332"
-         y="270.75696"
-         id="tspan11105" /><tspan
-         sodipodi:role="line"
-         style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#000000;stroke-width:2"
-         x="42.333332"
-         y="277.8125"
-         id="tspan11107" /></text>
+    <rect
+       style="fill:#661313;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       id="rect462"
+       width="10.583333"
+       height="10.583333"
+       x="40.179626"
+       y="248.70833" />
     <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="M 42.333333,195.79167 31.75,243.41666"
-       id="path11745"
-       sodipodi:nodetypes="cc" />
+       style="fill:none;fill-opacity:1;stroke:#7a7a7a;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 40.179627,246.06251 v 13.22916 H 50.76296 v -13.22916"
+       id="path464" />
+    <rect
+       style="fill:#661313;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       id="rect466"
+       width="10.583333"
+       height="10.583333"
+       x="13.041958"
+       y="248.70833" />
     <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="m 23.8125,185.20833 7.9375,5.95313"
-       id="path13176"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="m 82.412211,181.76299 -21.525507,7.39358"
-       id="path19288"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="m 108.0878,181.76299 32.30521,7.39358"
-       id="path19292"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="m 99.675796,182.16299 7.937504,5.95313"
-       id="path19296"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:#661313;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow2);paint-order:markers fill stroke"
-       d="m 93.167721,182.16299 -7.93751,5.95313"
-       id="path19304"
-       sodipodi:nodetypes="cc" />
+       style="fill:none;fill-opacity:1;stroke:#7a7a7a;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 13.041958,246.06251 v 13.22916 h 10.583333 v -13.22916"
+       id="path468" />
   </g>
 </svg>
