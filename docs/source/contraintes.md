@@ -17,7 +17,7 @@ La vitesse, ayant un impacte sur la performance de drague, mérite d'etre trait�
 
 Andes impose comme métadonnées de mission, que la saisie de la vitesse visée, ainsi que la durée visée soit traité comme variables indépendentes, et donc distance est dérivées de ces derniers, voir figure.
 
-Dans les situations ou la distance devait être traité somme variable indépendent au lieu de la vitesse,  il était jugé plus simple de seulement pré-calculé et saisir la durée requise pour donner la distance voulu. Cette approche étant la plus simple ne demande aucune modifications d'Andes.
+Dans les situations ou la distance devait être traité somme variable indépendent au lieu de la vitesse,  il était jugé plus simple de seulement pré-calculé et saisir la durée requise pour donner la distance voulu. Cette approche étant la plus simple ne demande aucune modifications d'Andes. Un durée de `8,09935205` minutes à un vitesse de `2,0` noeuds est de 500 mètres (soit `0.269978` miles nautiques).
 
 N.B. Ces distances sont utilisé comme métadonnées de mission. Il est possible que la distances visées de traits différent entre les stations. Ceux-ci devront être saisie autrement.
 
@@ -30,7 +30,8 @@ Doit corréspondre à une entrée de la table `PROJET_MOLLUSQUE` ayant une valeu
 Pour les mission pétoncle, un de ces choix:
  - `Évaluation de stocks IML - Pétoncle I de M`
  - `Évaluation de stocks IML - Pétoncle Minganie`
-
+Pour les missions buccin: 
+- `Relevé buccin Haute Côte-Nord`
 
 ## Région échantilonnée -> Secteur du relevé
 
@@ -41,6 +42,8 @@ Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur
 Pour les mission pétoncle, un de ces choix:
  - `Îles-de-la-Madeleine`
  - `Côte-Nord`
+Pour les missions buccin:
+- `Haute Côte-Nord`
 
 ### ATTENTION!
 
