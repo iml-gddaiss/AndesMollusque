@@ -26,17 +26,20 @@ class BiometriePetoncle(TablePecheSentinelle):
             secteur = "Centre"
         if self.collection_name == 'Conserver le spécimen (Biométrie Ouest)':
             secteur = "Ouest"
-
+        sexe_dict={'0':"I",
+                   '1':'M',
+                   '2':'F',
+                   }
         self.data["id_specimen"] = self._get_current_row_pk()
         self.data["secteur"] = secteur
         self.data["trait"] = self.get_ident_no_trait()
-        self.data["no"] = self.get_observation("Code Collection coquille")
-        self.data["taille"] = self.get_observation("Longueur (non officiel)")
-        self.data["poids_vif"] = self.get_observation("Poids vif")
-        self.data["poids_muscle"] = self.get_observation("Poids du muscle")
-        self.data["poids_gonade"] = self.get_observation("Poids des gonades")
-        self.data["poids_visceres"] = self.get_observation("Poids des viscères")
-        self.data["poids_gonade"] = self.get_observation("Poids des gonades")
+        self.data["no"] = int(self.get_observation("Code Collection coquille").strip().split("-")[-1])
+        self.data["taille"] = self.get_observation("Longueur (non officiel)").replace(".",",")
+        self.data["poids_vif"] = self.get_observation("Poids vif").replace(".",",")
+        self.data["poids_muscle"] = self.get_observation("Poids du muscle").replace(".",",")
+        self.data["poids_gonade"] = self.get_observation("Poids des gonades").replace(".",",")
+        self.data["poids_visceres"] = self.get_observation("Poids des viscères").replace(".",",")
+        self.data["poids_gonade"] = self.get_observation("Poids des gonades").replace(".",",")
         self.data["sexe"] = self.get_observation("Sexe")
         self.data["comment"] = self.get_comment()
 
@@ -140,6 +143,8 @@ class BiometriePetoncle(TablePecheSentinelle):
         except ValueError:
             print(specimen_pk, name_fr,result)
             to_return = None
+        if to_return is None:
+            to_return=""
         return to_return
     
     def get_comment(self):
