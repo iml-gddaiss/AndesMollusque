@@ -26,6 +26,11 @@ class BiometriePetoncle(TablePecheSentinelle):
             secteur = "Centre"
         if self.collection_name == 'Conserver le spécimen (Biométrie Ouest)':
             secteur = "Ouest"
+        # if self.collection_name == 'Conserver un specimen':
+        #     secteur = "16E"
+        # secteur = "16E"
+
+        # print(self.collection_name)
         sexe_dict={'0':"I",
                    '1':'M',
                    '2':'F',
@@ -33,8 +38,9 @@ class BiometriePetoncle(TablePecheSentinelle):
         self.data["id_specimen"] = self._get_current_row_pk()
         self.data["secteur"] = secteur
         self.data["trait"] = self.get_ident_no_trait()
-        self.data["no"] = int(self.get_observation("Code Collection coquille").strip().split("-")[-1])
-        self.data["taille"] = self.get_observation("Longueur (non officiel)").replace(".",",")
+        self.data["no"] = self.get_observation("Code Collection coquille").strip().split("-")[-1]
+        self.data["taille"] = self.get_observation("Longuer (biométrie)").replace(".",",")
+        self.data["taille (old)"] = self.get_observation("Longueur").replace(".",",")
         self.data["poids_vif"] = self.get_observation("Poids vif").replace(".",",")
         self.data["poids_muscle"] = self.get_observation("Poids du muscle").replace(".",",")
         self.data["poids_gonade"] = self.get_observation("Poids des gonades").replace(".",",")
@@ -141,7 +147,7 @@ class BiometriePetoncle(TablePecheSentinelle):
             self._assert_one(result)
             to_return = result[0][0]
         except ValueError:
-            print(specimen_pk, name_fr,result)
+            # print('error:', specimen_pk, name_fr,result)
             to_return = None
         if to_return is None:
             to_return=""
