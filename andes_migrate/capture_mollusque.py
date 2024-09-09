@@ -57,9 +57,12 @@ class CaptureMollusque(TablePecheSentinelle):
         placopecten_magellanicus = 156972
         chlamys_islandica = 140692
 
-        # DOUBLE HACK! only choose catches that contain baskets that are NOT and NA size-class (shared_models_sizeclass.code=0)
+        # DOUBLE HACK! only choose catches that contain baskets that are NOT an NA size-class (shared_models_sizeclass.code=0)
         # some NA baskets can still exist in a catch that has a non-NA basket
         # The NA basket filter is probably not needed...
+        # also do not consider basket class 9 (biodiversity basket)
+        size_class_code_NA = 0
+        size_class_code_biodiversity = 9
 
         query = (
             "SELECT DISTINCT ecosystem_survey_catch.id "
@@ -74,7 +77,8 @@ class CaptureMollusque(TablePecheSentinelle):
             "LEFT JOIN shared_models_cruise "
             "ON shared_models_cruise.sampling_protocol_id = shared_models_sizeclass.sampling_protocol_id "
             f"WHERE shared_models_cruise.id={self.engin.trait.proj._get_current_row_pk()} "
-            f"AND NOT shared_models_sizeclass.code=0 "
+            f"AND NOT shared_models_sizeclass.code={size_class_code_NA} "
+            f"AND NOT shared_models_sizeclass.code={size_class_code_biodiversity} "
             f"AND ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
             f"AND (shared_models_species.aphia_id = {placopecten_magellanicus} OR shared_models_species.aphia_id = {chlamys_islandica}) "
             "ORDER BY ecosystem_survey_catch.id ASC "
@@ -814,6 +818,8 @@ class CaptureMollusque(TablePecheSentinelle):
             f"AND ecosystem_survey_observation.observation_type_id='{observation_coverage_type_id}' "
             f"AND NOT ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
             "AND ecosystem_survey_observation.observation_value IS NOT NULL "
+            "AND NOT ecosystem_survey_observation.observation_value='NaN' "
+
         )
         result = self.andes_db.execute_query(query)
 

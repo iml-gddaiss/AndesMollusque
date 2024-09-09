@@ -161,8 +161,44 @@ class TraitMollusque(TablePecheSentinelle):
         Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL
 
         Pas présente dans Andes, doit être initialisé via le parametre `zone` du projet.
+        Uses lookup table based on station name, see andes_migrate.ref_data
+
+        consider using station.nafo_area for fishing zone
         """
-        zone = self.proj.zone
+        cod_source_info = self.proj.get_cod_source_info()
+        if cod_source_info==18 :
+            # Pétoncle Minganie
+            # 16E or 16F depending on initialization value
+            zone = self.proj.zone
+        elif cod_source_info==19:
+            # Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine
+            # 17 -> Zone de pêche 20 définie en 2004
+            zone = "20"
+
+        elif cod_source_info==22:
+            # Relevé buccin Haute Côte-Nord
+            # use lookup table based on station name
+            # 18 -> Zone peche 1 Buccin
+            # 19 -> Zone peche 2 Buccin
+            from andes_migrate.ref_data.zone_buccin_hcn import zone_dict 
+
+            station_number = self.get_no_station()
+            if int(station_number) in zone_dict["1"]:
+                zone = "1"
+                return self._hard_coded_result(18)
+
+            elif int(station_number) in zone_dict["2"]:
+                zone = "2"
+                return self._hard_coded_result(19)
+            else: 
+                self.logger.error("Cannot find zone for station: %s", station_number)
+                raise ValueError()
+
+        else:
+            print(f'zones not implemented for cod_source_info={cod_source_info}')
+            raise ValueError
+       
+
 
         key = self.reference_data.get_ref_key(
             table="ZONE_GEST_MOLL",
@@ -185,6 +221,7 @@ class TraitMollusque(TablePecheSentinelle):
 
         1 -> C (Côte-Nord)
         4 -> I (Îles de la Madeleine)
+        7 -> H (Haute Côte-Nord)
 
         Bien q'il suffit de mettre seulement la premiere lettre, il est conseiller de mettre
         le nom en entier pour la lisibilité.
@@ -218,18 +255,19 @@ class TraitMollusque(TablePecheSentinelle):
         """COD_STRATE INTEGER / NUMBER(5,0)
         Identification de la strate où se réalise le trait tel que défini dans la table TYPE_STRATE_MOLL
 
-        For the moment, this function returns None
+        Uses lookup table based on station name, see andes_migrate.ref_data
+
         More discussions are needed to decide how to determine the stratum
-        perhaps station.strate
+        consider using station.stratum
         """
         # a faster way is to get shared_models_set.stratum directly ?
         # but that would be too easy, instead  do the following...
 
         query = (
-            "SELECT shared_models_newstation.name "
+            "SELECT shared_models_station.name "
             "FROM shared_models_set "
-            "LEFT JOIN shared_models_newstation "
-            "ON shared_models_set.new_station_id=shared_models_newstation.id "
+            "LEFT JOIN shared_models_station "
+            "ON shared_models_set.station_id=shared_models_station.id "
             f"WHERE shared_models_set.id={self._get_current_row_pk()} "
         )
         result = self.andes_db.execute_query(query)
@@ -273,6 +311,29 @@ class TraitMollusque(TablePecheSentinelle):
                 optional_query="AND COD_SECTEUR_RELEVE=4"
             )
             return key
+        # buccin haut cote nord
+        elif cod_secteur_releve == 7:
+            from andes_migrate.ref_data.strat_buccin_hcn import strat_dict 
+
+            if int(station_name) in strat_dict["Forestville"]:
+                secteur = "For."
+            elif int(station_name) in strat_dict["Pointe-aux-Outardes"]:
+                secteur = "PaO"
+            elif int(station_name) in strat_dict["Baie-Comeau"]:
+                secteur = "BC"
+            else:
+                self.logger.error("Cannot find sector for station %s in secteur %s", station_name, cod_secteur_releve)
+                raise ValueError
+
+            key = self.reference_data.get_ref_key(
+                table="TYPE_STRATE_MOLL",
+                pkey_col="COD_STRATE",
+                col="STRATE",
+                val=secteur,
+                optional_query="AND COD_SECTEUR_RELEVE=7"
+            )
+            return key
+
         else:
             self.logger.error("secteur %s not implemented", cod_secteur_releve)
             raise ValueError
@@ -283,16 +344,16 @@ class TraitMollusque(TablePecheSentinelle):
         """NO_STATION  INTEGER/NUMBER(5,0)
         Numéro de la station en fonction du protocole d'échantillonnage
 
-        ANDES: shared_models_newstation.name
+        ANDES: shared_models_station.name
         The station name is stripped of non-numerical characters
         to generate no_station(i.e., NR524 -> 524)
 
         """
 
-        query = f"SELECT shared_models_newstation.name \
+        query = f"SELECT shared_models_station.name \
                 FROM shared_models_set \
-                LEFT JOIN shared_models_newstation \
-                    ON shared_models_set.new_station_id = shared_models_newstation.id \
+                LEFT JOIN shared_models_station \
+                    ON shared_models_set.station_id = shared_models_station.id \
                 WHERE shared_models_set.id={self._get_current_row_pk()};"
 
         result = self.andes_db.execute_query(query)

@@ -3,8 +3,11 @@ import csv
 # TODO
 # read from a CSV the station list
 
-dir_path = abspath(dirname(__file__))
+# open from shared drive
+dir_path = "S:/Petoncle/Recherche/Mission/Îles"
 
+# only open locally if local files are updated
+# dir_path = abspath(dirname(__file__))
 
 stations_cp = []
 with open(f"{dir_path}/stations_CP.csv", 'r') as fp:

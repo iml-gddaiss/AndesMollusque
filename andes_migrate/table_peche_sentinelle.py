@@ -82,7 +82,10 @@ class TablePecheSentinelle:
                 # increment first,  it'l be adjusted in _get_current_row_pk()
                 self._row_idx += 1
                 self.populate_data()
-                self.write_row()
+                try:
+                    self.write_row()
+                except Exception:
+                    print("problem with", self._row_idx, )
                 return self.data
             else:
                 raise StopIteration
