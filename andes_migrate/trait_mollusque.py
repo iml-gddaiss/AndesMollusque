@@ -316,9 +316,9 @@ class TraitMollusque(TablePecheSentinelle):
             from andes_migrate.ref_data.strat_buccin_hcn import strat_dict 
 
             if int(station_name) in strat_dict["Forestville"]:
-                secteur = "For."
+                secteur = "FOR"
             elif int(station_name) in strat_dict["Pointe-aux-Outardes"]:
-                secteur = "PaO"
+                secteur = "PAO"
             elif int(station_name) in strat_dict["Baie-Comeau"]:
                 secteur = "BC"
             else:
@@ -982,6 +982,8 @@ class TraitMollusque(TablePecheSentinelle):
         # only because it currupts de .dat files,
         to_return = to_return.replace('\n', ' ')
         to_return = to_return.replace('\r', ' ')
+        # need to escape single quotes because it corrupts the SQL statements
+        to_return = to_return.replace('\'', '\'\'')
         return to_return
 
     @validate_int(not_null=False)

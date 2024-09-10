@@ -23,7 +23,7 @@ with open(f"{dir_path}/stations_BC.csv", 'r') as fp:
 
 
 stations_pao = []
-with open(f"{dir_path}/stations_PaO.csv", 'r') as fp:
+with open(f"{dir_path}/stations_PAO.csv", 'r') as fp:
     csv_data = csv.reader(fp, delimiter=",", skipinitialspace=True)
     next(csv_data, None)  # skip the headers
     for r in csv_data:

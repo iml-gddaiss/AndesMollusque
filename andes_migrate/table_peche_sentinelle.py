@@ -44,7 +44,7 @@ class TablePecheSentinelle:
 
     def _init_rows(self):
         """Initialisation method
-        This queries the Andes DB and creaters a list of row entries to be added to the current table
+        This queries the Andes DB and creates a list of row entries to be added to the current table
 
         After running this methods initialises the following attribute:
         self._row_list
@@ -84,8 +84,9 @@ class TablePecheSentinelle:
                 self.populate_data()
                 try:
                     self.write_row()
-                except Exception:
-                    print("problem with", self._row_idx, )
+                except Exception as exc:
+                    print("problem with", self._row_idx, exc)
+                    raise exc
                 return self.data
             else:
                 raise StopIteration
@@ -160,6 +161,10 @@ class TablePecheSentinelle:
         except DataError as exc:
             self.logger.error("Could not execute statement: %s", statement)
             raise exc
+        except Exception as exc:
+            self.logger.error("Could not execute statement: %s", statement)
+            raise exc
+
         # print(statement)
         # self.output_cur.commit()
 

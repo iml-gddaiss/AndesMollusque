@@ -53,9 +53,19 @@ class CaptureMollusque(TablePecheSentinelle):
         #     "ORDER BY ecosystem_survey_catch.id ASC;"
         # )
 
-        # HACK! only choose scallops aphia IDs
+        # HACK! only choose aphia IDs for commercial target species
         placopecten_magellanicus = 156972
         chlamys_islandica = 140692
+        buccinum_undatum = 138878
+        if 'pétoncle'==self.engin.trait.proj.espece:
+            species_filter = f"AND (shared_models_species.aphia_id = {placopecten_magellanicus} OR shared_models_species.aphia_id = {chlamys_islandica}) "
+        elif 'buccin'==self.engin.trait.proj.espece:
+            # NEED other bucinums, glacial, teranovae etc
+            species_filter = f"AND (shared_models_species.aphia_id = {buccinum_undatum}) "
+        else:
+            print("Problem filtering species, need aphia-ids for extraction")
+            raise ValueError
+
 
         # DOUBLE HACK! only choose catches that contain baskets that are NOT an NA size-class (shared_models_sizeclass.code=0)
         # some NA baskets can still exist in a catch that has a non-NA basket
@@ -80,7 +90,7 @@ class CaptureMollusque(TablePecheSentinelle):
             f"AND NOT shared_models_sizeclass.code={size_class_code_NA} "
             f"AND NOT shared_models_sizeclass.code={size_class_code_biodiversity} "
             f"AND ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
-            f"AND (shared_models_species.aphia_id = {placopecten_magellanicus} OR shared_models_species.aphia_id = {chlamys_islandica}) "
+            f"{species_filter} "
             "ORDER BY ecosystem_survey_catch.id ASC "
         )
 
