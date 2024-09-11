@@ -21,12 +21,27 @@ andes_db = AndesHelper()
 access_file = 'andes_migrate/ref_data/access_template.mdb'
 ref = OracleHelper(access_file=access_file)
 
+# HACK! only choose aphia IDs for commercial target species
+placopecten_magellanicus = 156972
+chlamys_islandica = 140692
+buccinum_undatum = 138878
+
+na_size_class = 0
+claquette_ouverte=2
+vivant_intact_size_class = 1
+vivant_brisé_size_class = 2
+oeufs_buccin_size_class = 3
+predateur_size_class = 4
+biodiversite_size_class = 9
 
 # INPUT VALUES
 no_notification = "IML-2024-022"
 zone = None
 espece = "buccin"
 SEQ_peche = 151
+aphia_id_filter = [buccinum_undatum]
+size_class_filter = [vivant_intact_size_class, vivant_brisé_size_class]
+
 
 output_fname = f'./{no_notification}.mdb'
 shutil.copyfile('andes_migrate/ref_data/access_template.mdb', output_fname)
@@ -55,7 +70,10 @@ for p in proj:
             engin = EnginMollusque(trait, output_cur)
             for e in engin:
                 # print(f"Engin: ", e)
-                capture = CaptureMollusque(engin, output_cur)
+                # capture for freq-long
+                capture = CaptureMollusque(engin, output_cur,
+                                           aphia_id_filter=aphia_id_filter,
+                                           size_class_filter=[vivant_intact_size_class, vivant_brisé_size_class])
                 for c in capture:
                     # print(f"Capture: ", c)
 
@@ -65,6 +83,11 @@ for p in proj:
                         # if (c['COD_ESP_GEN'] == 48 or c['COD_ESP_GEN'] == 50) : 
                         no_moll_freq_long += 1
 
+                # capture for biometrie (whelk eggs)
+                capture = CaptureMollusque(engin, output_cur,
+                                           aphia_id_filter=aphia_id_filter,
+                                           size_class_filter=[oeufs_buccin_size_class])
+                for c in capture:
                     biometrie = BiometrieMollusque(capture, output_cur, no_moll_init=no_moll_biometrie)
                     for b in biometrie:
                         print(f"biometrie: ", b)

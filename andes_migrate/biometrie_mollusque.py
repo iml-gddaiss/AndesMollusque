@@ -91,14 +91,14 @@ class BiometrieMollusque(TablePecheSentinelle):
         self.data['VOLUME_GONADE_P'] = self.get_volume_gonade_p()
         self.data['NO_CHARGEMENT'] = self.get_no_chargement()
 
+    @tag(HardCoded)
     def get_cod_esp_gen(self) -> int:
         """COD_ESP_GEN INTEGER / NUMBER(5,0)
         Identification de l'espèce capturée tel que défini dans la table ESPECE_GENERAL
 
-        Extrait de la capture ::func:`~andes_migrate.capture_mollusque.CapturenMollusque.get_cod_esp_gen`
-
+        hard-coded to whelk eggs: 2151
         """
-        return self.capture.get_cod_esp_gen()
+        return self._hard_coded_result(2151)
 
     def get_cod_eng_gen(self) -> int:
         """COD_ENG_GEN INTEGER / NUMBER(5,0)

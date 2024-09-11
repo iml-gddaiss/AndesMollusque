@@ -18,12 +18,26 @@ andes_db = AndesHelper()
 access_file = 'andes_migrate/ref_data/access_template.mdb'
 ref = OracleHelper(access_file=access_file)
 
+placopecten_magellanicus = 156972
+chlamys_islandica = 140692
+buccinum_undatum = 138878
+
+na_size_class = 0
+claquette_ouverte=2
+vivant_intact_size_class = 1
+vivant_brisé_size_class = 2
+oeufs_Buccin_size_class = 3
+predateur_size_class = 4
+biodiversite_size_class = 9
+
 
 # INPUT VALUES
 no_notification = "IML-2024-008F"
 zone = "16F"
 espece = "pétoncle"
 SEQ_peche = 151
+aphia_id_filter = [placopecten_magellanicus, chlamys_islandica]
+size_class_filter = [vivant_intact_size_class, claquette_ouverte]
 
 output_fname = f'./{no_notification}.mdb'
 shutil.copyfile('andes_migrate/ref_data/access_template.mdb', output_fname)
