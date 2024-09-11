@@ -23,7 +23,8 @@ class CaptureMollusque(TablePecheSentinelle):
     Object model representing the CAPTURE_MOLLUSQUE table
     """
 
-    def __init__(self, engin: EnginMollusque, *args, **kwargs):
+    def __init__(self, engin: EnginMollusque, *args, aphia_id_filter=None, size_class_filter=None, **kwargs):
+
         super().__init__(*args, ref=engin.reference_data, **kwargs)
 
         self.engin: EnginMollusque = engin
@@ -31,7 +32,8 @@ class CaptureMollusque(TablePecheSentinelle):
 
         self.andes_db = engin.andes_db
         self.data = {}
-
+        self.aphia_id_filter = aphia_id_filter
+        self.size_class_filter = size_class_filter
         self._init_rows()
 
     def _init_rows(self):
@@ -53,13 +55,28 @@ class CaptureMollusque(TablePecheSentinelle):
         #     "ORDER BY ecosystem_survey_catch.id ASC;"
         # )
 
-        # HACK! only choose scallops aphia IDs
-        placopecten_magellanicus = 156972
-        chlamys_islandica = 140692
 
-        # DOUBLE HACK! only choose catches that contain baskets that are NOT and NA size-class (shared_models_sizeclass.code=0)
-        # some NA baskets can still exist in a catch that has a non-NA basket
-        # The NA basket filter is probably not needed...
+        # create a SQL query to filter by aphia ids
+        aphia_id_filter_query = None
+        if self.aphia_id_filter:
+            aphia_id_filter_query='AND ('
+            # the first one
+            aphia_id_filter_query += f"shared_models_species.aphia_id = {self.aphia_id_filter[0]}"
+            # the rest
+            for aphia_id in self.aphia_id_filter[1:]:
+                aphia_id_filter_query += f" OR shared_models_species.aphia_id = {aphia_id}"
+            aphia_id_filter_query+=') '
+
+        # create a SQL query to filter by size class codes
+        size_class_filter_query = None
+        if self.size_class_filter:
+            size_class_filter_query='AND ('
+            # the first one
+            size_class_filter_query += f"shared_models_sizeclass.code={self.size_class_filter[0]}"
+            # the rest
+            for size_class_code in self.size_class_filter[1:]:
+                size_class_filter_query += f" OR shared_models_sizeclass.code={size_class_code}"
+            size_class_filter_query+=') '
 
         query = (
             "SELECT DISTINCT ecosystem_survey_catch.id "
@@ -74,16 +91,15 @@ class CaptureMollusque(TablePecheSentinelle):
             "LEFT JOIN shared_models_cruise "
             "ON shared_models_cruise.sampling_protocol_id = shared_models_sizeclass.sampling_protocol_id "
             f"WHERE shared_models_cruise.id={self.engin.trait.proj._get_current_row_pk()} "
-            f"AND NOT shared_models_sizeclass.code=0 "
             f"AND ecosystem_survey_catch.set_id={self.engin.trait._get_current_row_pk()} "
-            f"AND (shared_models_species.aphia_id = {placopecten_magellanicus} OR shared_models_species.aphia_id = {chlamys_islandica}) "
+            f"{size_class_filter_query if size_class_filter_query else ''} "
+            f"{aphia_id_filter_query if aphia_id_filter_query else ''} "
             "ORDER BY ecosystem_survey_catch.id ASC "
         )
 
         result = self.andes_db.execute_query(query)
         # a set could be empty,
         # self._assert_not_empty(result)
-
         # a list of all the catch pk's (need to unpack a bit)
         self._row_list = [catch[0] for catch in result]
         self._row_idx = 0
@@ -172,6 +188,13 @@ class CaptureMollusque(TablePecheSentinelle):
 
 
         """
+        oeufs_buccin_size_class = 3
+        espece = "buccin"
+        # HACK for whelk eggs,
+        if self.engin.trait.proj.espece=="buccin" and self.size_class_filter and oeufs_buccin_size_class in self.size_class_filter:
+            self.logger.info("cod_es_gen hack for whelk eggs")
+            return self._hard_coded_result(2151)
+
         query = (
             "SELECT shared_models_species.id, shared_models_species.aphia_id, shared_models_species.code "
             "FROM ecosystem_survey_catch "
@@ -185,7 +208,6 @@ class CaptureMollusque(TablePecheSentinelle):
         andes_id = result[0][0]
         andes_aphia_id = result[0][1]
         andes_code = result[0][2]
-        # print( andes_id, andes_aphia_id, andes_code)
 
         # try to match an aphia_id
         self.logger.info(
@@ -814,6 +836,8 @@ class CaptureMollusque(TablePecheSentinelle):
             f"AND ecosystem_survey_observation.observation_type_id='{observation_coverage_type_id}' "
             f"AND NOT ecosystem_survey_observation.observation_value='{observation_value_no_barnacles}' "
             "AND ecosystem_survey_observation.observation_value IS NOT NULL "
+            "AND NOT ecosystem_survey_observation.observation_value='NaN' "
+
         )
         result = self.andes_db.execute_query(query)
 

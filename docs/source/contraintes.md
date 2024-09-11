@@ -1,9 +1,9 @@
 # Contraintes pour Pétoncle
 
-## Numéro de missin alternatif et `NO_RELEVE`
+## Numéro de mission alternatif et `NO_RELEVE`
 
-Un champ critique des la BD PSE, `NO_RELEVE` (numéro du relevé) doit etre obtenu par un DBA de la DAISS. Ce champ était présent dans le fichier Access fourni pas la DAISS.
-Une fois que le numéro de relevé à été désigné pour la mission, il doit etre saisie dan andes via le champ de mission "Numéro de missin alternatif", voir figure.
+Un champ critique des la BD PSE, `NO_RELEVE` (numéro du relevé) doit être obtenu par un DBA de la DAISS. Ce champ était présent dans le fichier Access fourni pas la DAISS.
+Une fois que le numéro de relevé à été désigné pour la mission, il doit être saisie dan andes via le champ de mission "Numéro de mission alternatif", voir figure.
 ![targeted_vessel_speed>](_static/shared_models_cruise.survey_number.png)
 
 
@@ -42,6 +42,9 @@ Doit corréspondre à une entrée de la table `TRAIT_MOLLUSQUE` ayant une valeur
 Pour les mission pétoncle, un de ces choix:
  - `Îles-de-la-Madeleine`
  - `Côte-Nord`
+Pour les missions buccin:
+- `Haute Côte-Nord`
+
 Pour les missions buccin:
 - `Haute Côte-Nord`
 
@@ -134,7 +137,7 @@ IMLP:
 | 30              | 1                 | Recherche écosystémique - Communautés benthiques             | Ecosystemic research - Benthic communites                   |
 | 32              | 7                 | Projets de recherche - Mollusques                            | Research projects - Mollusks                                |
 
-Il pourait etre ensisageable de faire comme avec `DESC_SERIE_HIST_F`
+Il pourait etre envisageable de faire comme avec `DESC_SERIE_HIST_F`
 ```python
 DESC_SERIE_HIST_F = f"Indice d'abondance zone {self.zone} - {self.espece}"
 
@@ -179,5 +182,5 @@ La colonne `REM_CATURE_MOLL` dans la table `ENGINCAPTURE_MOLLUSQUE_MOLLUSQUE` ex
 |--------|---------------|----------|-------|
 |`shared_models_cruise.description`  |`PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F`   |`Évaluation de stocks IML - Pétoncle I de M` | texte verbatim|
 |`shared_models_cruise.area_of_operation`  | `TRAIT_MOLLUSQUE.SECTEUR` | `Côte-Nord` | Permiere lettre seulement (devient `C`)
-|`shared_models_new_station.name`  | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |
+|`shared_models_station.name`  | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |
 |`shared_models_stratificationtype.description_fra`|`TYPE_TRAIT.DESC_TYP_TRAIT_F`| `Échantillonnage aléatoire` | map manuel, (devient `Aléatoire simple`)|

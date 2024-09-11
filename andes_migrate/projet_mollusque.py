@@ -2,6 +2,7 @@ import logging
 import datetime
 
 from andes_migrate.andes_helper import AndesHelper
+from andes_migrate.oracle_helper import OracleHelper
 from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 from andes_migrate.decorators import (
     AndesCodeLookup,
@@ -54,7 +55,12 @@ class ProjetMollusque(TablePecheSentinelle):
             )
         if self.zone in ["20"] and not cod_source_info == 19:
             raise ValueError(
-                f"La zone {self.zone} est incompatible avec le COD_SOURCE_INFO: {cod_source_info}"
+                f"La zones {self.zone} est incompatible avec le COD_SOURCE_INFO: {cod_source_info}"
+            )
+
+        if self.zone is None and cod_source_info == 18:
+            raise ValueError(
+                f"Le COD_SOURCE_INFO: {cod_source_info} doit spécifier la zone de peche 16E ou 16F"
             )
 
         # year compatible with start and end dates
@@ -103,12 +109,12 @@ class ProjetMollusque(TablePecheSentinelle):
 
     def init_input(
         self,
-        zone: str = "defaultzone",
+        zone: str|None = None,
         no_notif: str = "IML-2000-001",
         espece: str = "pétoncle",
     ):
         """
-        zone (str): 16E, 16F ou 20
+        zone (str): 16E, 16F or None. ONLY for petoncle minganie 
 
         """
 
@@ -118,7 +124,7 @@ class ProjetMollusque(TablePecheSentinelle):
             )
         self.espece = espece
 
-        if zone not in ["16E", "16F", "20"]:
+        if zone not in ["16E", "16F", "20", None]:
             raise ValueError("zone doit etre un de 16E, 16F ou 20")
         self.zone = zone
 
@@ -171,6 +177,8 @@ class ProjetMollusque(TablePecheSentinelle):
         18 -> Évaluation de stocks IML - Pétoncle Minganie
         19 -> Évaluation de stocks IML - Pétoncle I de M (Access)
         19 -> Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine (Oracle)
+        22 -> Relevé buccin Haute Côte-Nord
+
         """
         query = (
             f"SELECT shared_models_cruise.description "
@@ -299,6 +307,7 @@ class ProjetMollusque(TablePecheSentinelle):
         15 -> Indice d'abondance zone 16E - pétoncle
         16 -> Indice d'abondance zone 16F - pétoncle
         18 -> Indice d'abondance zone 20 - pétoncle
+        20 -> Indice d'abondance buccin
 
         Valid description should be one of
             Indice d'abondance zone 16E - pétoncle
@@ -311,8 +320,11 @@ class ProjetMollusque(TablePecheSentinelle):
         # TODO: use COD_SERIE_HIST as datainput
         if self.espece == "pétoncle":
             desc = f"Indice d'abondance zone {self.zone} - {self.espece}"
-        else:
+        elif self.espece == "buccin":
             desc = f"Indice d'abondance {self.espece}"
+        else:
+            print("cannot find description for COD_SERIE_HIST")
+            raise ValueError
 
         key = self.reference_data.get_ref_key(
             table="Indice_Suivi_Etat_Stock",
@@ -417,7 +429,7 @@ class ProjetMollusque(TablePecheSentinelle):
 
         return to_return
 
-    @validate_string(max_len=12)
+    @validate_string(max_len=13)
     @log_results
     def get_no_notif_iml(self) -> str | None:
         """NO_NOTIF_IML VARCHAR(12) / VARCHAR2(12)
@@ -572,7 +584,8 @@ class ProjetMollusque(TablePecheSentinelle):
 
         Andes: `shared_models_cruise.targeted_trawl_distance`
 
-        units: meters
+        units: meters Andes stores this in nautical miles, need to convert to m.
+
 
         N.B Andes does not permit setting this value, but will rather calculate it.
 
@@ -591,6 +604,7 @@ class ProjetMollusque(TablePecheSentinelle):
         self._assert_one(result)
         to_return = result[0][0]
         to_return = float(to_return)
+        to_return = OracleHelper.convert_nm_2_km(to_return)*1000
         return to_return
 
     @tag(HardCoded)

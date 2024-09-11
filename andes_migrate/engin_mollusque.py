@@ -121,29 +121,31 @@ class EnginMollusque(TablePecheSentinelle):
         """COD_ENG_GEN INTEGER / NUMBER(5,0)
         Numéro identifiant l'engin utilisé tel que défini dans la table NO_ENGIN
 
-        Andes: shared_models_set.gear_type_id-> shared_models.geartype.code
+        Andes: shared_models_auxiliaryequipment.code
 
         This one would be good to have linked with a regional code lookup
         https://github.com/dfo-gulf-science/andes/issues/988
 
         Code lookup
+        1 -> Engin babord
+        2 -> Engin tribord
+        3 -> Treuil océano
 
         """
 
         set_pk = self.trait._get_current_row_pk()
         query = (
-            "SELECT shared_models_set.winch_code "
+            "SELECT shared_models_auxiliaryequipment.code "
             "FROM shared_models_set "
-            "LEFT JOIN shared_models_set_operations "
-            "ON shared_models_set_operations.set_id = shared_models_set.id "
-            "LEFT JOIN shared_models_operation "
-            "ON shared_models_operation.id = shared_models_set_operations.operation_id "
+            "LEFT JOIN shared_models_auxiliaryequipment "
+            "ON shared_models_set.auxiliary_equipment_id = shared_models_auxiliaryequipment.id "
 
             f"WHERE shared_models_set.id={set_pk} "
         )
         result = self.andes_db.execute_query(query)
         self._assert_one(result)
         to_return = result[0][0]
+
         return to_return
 
     @log_results
