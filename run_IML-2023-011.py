@@ -22,7 +22,7 @@ ref = OracleHelper(access_file=access_file)
 
 
 # INPUT VALUES
-no_notification = "IML-2024-008E"
+no_notification = "IML-2024-008"
 zone = "16E"
 espece = "pétoncle"
 SEQ_peche = 0
@@ -44,10 +44,9 @@ proj = ProjetMollusque(andes_db, output_cur, ref=ref, zone=zone, no_notif=no_not
 for p in proj:
     print(f"Projet: ", p)
 
-    collection_name = 'Conserver un specimen'
-    # observationgroup_name = 'Biometrie 16E extérieur' 
+    collection_name='Conserver un specimen'
     biometrie = BiometriePetoncle(andes_db, proj, collection_name, output_cur)
-    with open('Biometrie_16E.csv','w') as fp:
+    with open('16E.csv','w') as fp:
         writer = csv.DictWriter(fp, lineterminator="\n", fieldnames=["id_specimen",
                                                                     "secteur",
                                                                     "trait",
@@ -63,11 +62,28 @@ for p in proj:
                                                                     "comment"])
         writer.writeheader()
         for b in biometrie:
-            # print(b)
             if b is not None:
                 writer.writerow(b)
 
 
+    # collection_name='Conserver le spécimen (Biométrie Centre)'
+    # biometrie = BiometriePetoncle(andes_db, proj, collection_name, output_cur)
+    # with open('centre.csv','w') as fp:
+    #     writer = csv.DictWriter(fp, lineterminator="\n", fieldnames=["id_specimen",
+    #                                                                 "secteur",
+    #                                                                 "trait",
+    #                                                                 "no",
+    #                                                                 "taille", 
+    #                                                                 "poids_vif",
+    #                                                                 "poids_muscle", 
+    #                                                                 "poids_gonade",
+    #                                                                 "poids_visceres",
+    #                                                                 "poids_gonade",
+    #                                                                 "sexe",
+    #                                                                 "comment"])
+    #     writer.writeheader()
+    #     for b in biometrie:
+    #         writer.writerow(b)
 
     exit()
 #     trait = TraitMollusque(andes_db, proj, output_cur)
