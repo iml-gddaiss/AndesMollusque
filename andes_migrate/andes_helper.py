@@ -32,7 +32,7 @@ class AndesHelper:
                 user=os.getenv("ANDES_DB_USERNAME", "Bob Eponge"),
                 password=os.getenv("ANDES_DB_USERPASS", "SQUIDWARD"),
             )
-            print("Successfully connected to MySQL Database")
+            print("Successfully connected to MySQL Database",os.getenv("ANDES_HOST"),os.getenv("ANDES_PORT") )
 
         self.cur = self.con.cursor()
 
