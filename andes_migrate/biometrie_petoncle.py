@@ -6,41 +6,30 @@ from andes_migrate.table_peche_sentinelle import TablePecheSentinelle
 
 
 class BiometriePetoncle(TablePecheSentinelle):
+    """
+    This is NOT a PecheSentinelle table, but a hacky class to generate the biometrie CSV.
+    For the real biometrie table, see biometrie_mollusque.py
+
+    """
 
     def __init__(self, andes_db: AndesHelper, proj: ProjetMollusque, collection_name:str, *args, **kwargs):
-        # super().__init__(*args, **kwargs)
         super().__init__(*args, ref=proj.reference_data, **kwargs)
 
         self.andes_db = andes_db
         self.proj: ProjetMollusque = proj
         self.collection_name:str = collection_name 
-        # self.table_name = "TRAIT_MOLLUSQUE"
 
-        # call this form outside
         self._init_rows()
 
     def populate_data(self):
         """Populate data: run all getters"""
         # secteur	trait	no	taille	poids_vif	poids_muscle	poids_gonade	poids_visceres	sexe	espece	comment
-        if self.collection_name == 'Conserver le spécimen (Biométrie Centre)':
-            secteur = "Centre"
-        if self.collection_name == 'Conserver le spécimen (Biométrie Ouest)':
-            secteur = "Ouest"
-        # if self.collection_name == 'Conserver un specimen':
-        #     secteur = "16E"
-        # secteur = "16E"
-
-        # print(self.collection_name)
-        sexe_dict={'0':"I",
-                   '1':'M',
-                   '2':'F',
-                   }
         self.data["id_specimen"] = self._get_current_row_pk()
-        self.data["secteur"] = secteur
+        self.data["secteur"] = self.get_secteur()
         self.data["trait"] = self.get_ident_no_trait()
         self.data["no"] = self.get_observation("Code Collection coquille").strip().split("-")[-1]
         self.data["taille"] = self.get_observation("Longuer (biométrie)").replace(".",",")
-        self.data["taille (old)"] = self.get_observation("Longueur").replace(".",",")
+        # self.data["taille (old)"] = self.get_observation("Longueur").replace(".",",")
         self.data["poids_vif"] = self.get_observation("Poids vif").replace(".",",")
         self.data["poids_muscle"] = self.get_observation("Poids du muscle").replace(".",",")
         self.data["poids_gonade"] = self.get_observation("Poids des gonades").replace(".",",")
@@ -103,6 +92,55 @@ class BiometriePetoncle(TablePecheSentinelle):
         self._assert_not_empty(result)
         self._row_list = [specimen[0] for specimen in result]
         self._row_idx = 0
+
+    def get_secteur(self)->str:
+        """_summary_
+        For Minganie, uses the Zone
+        For IdM, looks at station in a lookup table
+        Returns:
+            str: The secteur biometrie , 16R, 16F centre or ouest
+        """
+        if self.proj.zone == "16E":
+            return "16E"
+        elif self.proj.zone == "16F":
+            return "16F"
+        elif self.proj.zone == "20":
+            from andes_migrate.ref_data.secteur_bio_idm import secteur_dict
+            station = self.get_station()
+            if station in secteur_dict["Centre"]:
+                return "Centre"
+            elif station in secteur_dict["Ouest"]:
+                return "Ouest"
+            else:
+                print("cannot find station in secteur dictionary ", station)
+                raise ValueError
+        else:
+            print("cannot get secteur biometrie, from given zone:", self.proj.zone)
+            raise ValueError
+
+        secteur = "16E"
+
+    def get_station(self) -> str:
+        specimen_pk = self._get_current_row_pk()
+        query = (
+            "SELECT shared_models_station.name "
+            "FROM ecosystem_survey_specimen "
+            "LEFT JOIN ecosystem_survey_basket "
+            "ON ecosystem_survey_specimen.basket_id=ecosystem_survey_basket.id "
+            "LEFT JOIN ecosystem_survey_catch "
+            "ON ecosystem_survey_basket.catch_id=ecosystem_survey_catch.id "
+            "LEFT JOIN shared_models_set "
+            "ON shared_models_set.id=ecosystem_survey_catch.set_id "
+            "LEFT JOIN shared_models_station "
+            "ON shared_models_set.station_id=shared_models_station.id "
+
+            f"WHERE ecosystem_survey_specimen.id={specimen_pk} "
+        )
+        result = self.andes_db.execute_query(query)
+        self._assert_one(result)
+        to_return = result[0][0]
+        return to_return
+
 
     # @validate_int()
     # @log_results
