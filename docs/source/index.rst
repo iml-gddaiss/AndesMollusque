@@ -19,6 +19,8 @@ Documentation for Andes -> Projet Mollusque data migration
    table_peche_sentinelle
    oracle_helper
 
+   combiner_bd
+
 
 Indices and tables
 ==================
