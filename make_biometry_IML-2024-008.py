@@ -17,7 +17,8 @@ access_file = 'andes_migrate/ref_data/access_template.mdb'
 ref = OracleHelper(access_file=access_file)
 
 
-# INPUT VALUES
+# INPUT VALUES 
+#  re-do with 16E and 16F
 no_notification = "IML-2024-008E"
 zone = "16E"
 espece = "pétoncle"

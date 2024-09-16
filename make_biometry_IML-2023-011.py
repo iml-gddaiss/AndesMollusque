@@ -4,12 +4,8 @@ import pyodbc
 import logging
 from andes_migrate.biometrie_petoncle import BiometriePetoncle 
 
-from andes_migrate.capture_mollusque import CaptureMollusque
 from andes_migrate.oracle_helper import OracleHelper
 from andes_migrate.projet_mollusque import ProjetMollusque
-from andes_migrate.trait_mollusque import TraitMollusque
-from andes_migrate.engin_mollusque import EnginMollusque
-from andes_migrate.freq_long_mollusque import FreqLongMollusque
 from andes_migrate.andes_helper import AndesHelper
 
 
