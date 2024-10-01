@@ -1,0 +1,1049 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
+        <title>andes_migrate.projet_mollusque - Andes -&gt; Projet Mollusque 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Andes -> Projet Mollusque 1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Andes -> Projet Mollusque 1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../code_espece.html">Codes espèce: Saisie vs archivage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contraintes.html">Contraintes pour Pétoncle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projet_mollusque.html">Table PROJET_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trait_mollusque.html">Table TRAIT_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../engin_mollusque.html">Table ENGIN_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../capture_mollusque.html">Table CAPTURE_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../table_peche_sentinelle.html">Abstract Class Peche Sentinelle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oracle_helper.html">Oracle Helper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../combiner_bd.html">Combiner deux BD MS Access</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for andes_migrate.projet_mollusque</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">andes_migrate.andes_helper</span> <span class="kn">import</span> <span class="n">AndesHelper</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.oracle_helper</span> <span class="kn">import</span> <span class="n">OracleHelper</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.table_peche_sentinelle</span> <span class="kn">import</span> <span class="n">TablePecheSentinelle</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.decorators</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AndesCodeLookup</span><span class="p">,</span>
+    <span class="n">HardCoded</span><span class="p">,</span>
+    <span class="n">NotAndes</span><span class="p">,</span>
+    <span class="n">FixMe</span><span class="p">,</span>
+    <span class="n">Seq</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">,</span>
+    <span class="n">log_results</span><span class="p">,</span>
+    <span class="n">validate_string</span><span class="p">,</span>
+    <span class="n">validate_int</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># logging.basicConfig(level=logging.INFO)</span>
+
+
+<div class="viewcode-block" id="ProjetMollusque">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque">[docs]</a>
+<span class="k">class</span> <span class="nc">ProjetMollusque</span><span class="p">(</span><span class="n">TablePecheSentinelle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object model representing the PROJET_MOLLUSQUE table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">andes_db</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">zone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;defaultzone&quot;</span><span class="p">,</span>
+            <span class="n">no_notif</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IML-2000-001&quot;</span><span class="p">,</span>
+            <span class="n">espece</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pétoncle&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+             <span class="p">):</span>
+        
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span> <span class="o">=</span> <span class="n">andes_db</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_input</span><span class="p">(</span>
+            <span class="n">zone</span><span class="o">=</span><span class="n">zone</span><span class="p">,</span>
+            <span class="n">no_notif</span><span class="o">=</span><span class="n">no_notif</span><span class="p">,</span>
+            <span class="n">espece</span><span class="o">=</span><span class="n">espece</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;PROJET_MOLLUSQUE&#39;</span>
+
+        <span class="c1"># this may have to be modified to include milisecs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">andes_datetime_format</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
+
+<div class="viewcode-block" id="ProjetMollusque.validate">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.validate">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># use zones are compatible with code_source_info</span>
+        <span class="n">cod_source_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_source_info</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;16E&quot;</span><span class="p">,</span> <span class="s2">&quot;16F&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cod_source_info</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;La zones </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="si">}</span><span class="s2"> est incompatible avec le COD_SOURCE_INFO: </span><span class="si">{</span><span class="n">cod_source_info</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;20&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cod_source_info</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;La zones </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="si">}</span><span class="s2"> est incompatible avec le COD_SOURCE_INFO: </span><span class="si">{</span><span class="n">cod_source_info</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cod_source_info</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Le COD_SOURCE_INFO: </span><span class="si">{</span><span class="n">cod_source_info</span><span class="si">}</span><span class="s2"> doit spécifier la zone de peche 16E ou 16F&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># year compatible with start and end dates</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_annee</span><span class="p">()</span>
+        <span class="c1"># year start</span>
+        <span class="n">date_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_date_deb_project</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_datetime_format</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">year</span> <span class="o">==</span> <span class="n">date_start</span><span class="o">.</span><span class="n">year</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;La date debut </span><span class="si">{</span><span class="n">date_start</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> est incompatible avec l&#39;année: </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># year end</span>
+        <span class="n">date_end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_date_fin_project</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_datetime_format</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">year</span> <span class="o">==</span> <span class="n">date_end</span><span class="o">.</span><span class="n">year</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;La date fin </span><span class="si">{</span><span class="n">date_start</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> est incompatible avec l&#39;année: </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># start is before end</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">date_start</span> <span class="o">&lt;</span> <span class="n">date_end</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;La date debut </span><span class="si">{</span><span class="n">date_start</span><span class="si">}</span><span class="s2"> est apres la date fin </span><span class="si">{</span><span class="n">date_end</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_init_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        mission_number (str)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.id &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.mission_number=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">no_notification</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># a list of all the catch pk&#39;s (need to unpack a bit)</span>
+        <span class="c1"># should only be one, but use list comprehension still</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">cruise</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">cruise</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="ProjetMollusque.init_input">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.init_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_input</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">zone</span><span class="p">:</span> <span class="nb">str</span><span class="o">|</span><span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_notif</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IML-2000-001&quot;</span><span class="p">,</span>
+        <span class="n">espece</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pétoncle&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        zone (str): 16E, 16F or None. ONLY for petoncle minganie </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">espece</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;pétoncle&quot;</span><span class="p">,</span> <span class="s2">&quot;buccin&quot;</span><span class="p">,</span> <span class="s2">&quot;Mactre de Stimpson&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;espece doit etre un de pétoncle, buccin ou Mactre de Stimpson&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">espece</span> <span class="o">=</span> <span class="n">espece</span>
+
+        <span class="k">if</span> <span class="n">zone</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;16E&quot;</span><span class="p">,</span> <span class="s2">&quot;16F&quot;</span><span class="p">,</span> <span class="s2">&quot;20&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;zone doit etre un de 16E, 16F ou 20&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">no_notif</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Le num. notif (Ex. IML-2000-023) doit etre fourni&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_notification</span> <span class="o">=</span> <span class="n">no_notif</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_rows</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.populate_data">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.populate_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">populate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate data: run all getters&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_SOURCE_INFO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_source_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_RELEVE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_releve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_NBPC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_nbpc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;ANNEE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_annee</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_SERIE_HIST&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_serie_hist</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_TYP_STRATIF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_type_stratif</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DATE_DEB_PROJET&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_deb_project</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DATE_FIN_PROJET&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_fin_project</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_NOTIF_IML&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_notif_iml</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;CHEF_MISSION&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chef_mission</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SEQ_PECHEUR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_seq_pecheur</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DUREE_TRAIT_VISEE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_duree_trait_visee</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DUREE_TRAIT_VISEE_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_duree_trait_visee_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;VIT_TOUAGE_VISEE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vit_touage_visee</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;VIT_TOUAGE_VISEE_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vit_touage_visee_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DIST_CHALUTE_VISEE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dist_chalute_visee</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DIST_CHALUTE_VISEE_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dist_chalute_visee_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NOM_EQUIPE_NAVIRE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nom_equip_navire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NOM_SCIENCE_NAVIRE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nom_science_navire</span><span class="p">()</span>
+
+        <span class="c1"># self.data[&quot;REM_PROJ_MOLL&quot;] = self.get_rem_projet_moll()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;REM_PROJET_MOLL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rem_projet_moll</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_CHARGEMENT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_chargement</span><span class="p">()</span></div>
+
+    
+
+<div class="viewcode-block" id="ProjetMollusque.get_cod_source_info">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_cod_source_info">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_source_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_SOURCE_INFO INTEGER / NUMBER(5,0),</span>
+<span class="sd">        Identification de la source d&#39;information tel que défini dans la table SOURCE_INFO</span>
+
+<span class="sd">        Andes: `shared_models_cruise.description`</span>
+
+<span class="sd">        CONTRAINTE</span>
+<span class="sd">        La valeur du champ shared_models_cruise.description (FR: Description)</span>
+<span class="sd">        doit absolument correspondres avec la description présente dans la table SOURCE_INFO:</span>
+
+<span class="sd">        18 -&gt; Évaluation de stocks IML - Pétoncle Minganie</span>
+<span class="sd">        19 -&gt; Évaluation de stocks IML - Pétoncle I de M (Access)</span>
+<span class="sd">        19 -&gt; Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine (Oracle)</span>
+<span class="sd">        22 -&gt; Relevé buccin Haute Côte-Nord</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_cruise.description &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Source_Info&quot;</span><span class="p">,</span>
+            <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_SOURCE_INFO&quot;</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_SOURCE_INFO_F&quot;</span><span class="p">,</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="c1"># if area_of_operation == &#39;I de M&#39; or area_of_operation == &#39;Iles de la Madeleine&#39;:</span>
+        <span class="c1">#     to_return = 19</span>
+        <span class="c1">#     self.logger.info(&quot;Found &#39;I de M&#39;, using code, %s&quot;, to_return)</span>
+        <span class="c1"># elif area_of_operation == &#39;Minganie&#39;:</span>
+        <span class="c1">#     to_return = 18</span>
+        <span class="c1">#     self.logger.info(&quot;Found &#39;Minganie&#39;, using code, %s&quot;, to_return)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     raise ValueError(&quot;Source Info, Le champ de la mission Andes&#39;Région échantillonnée&#39; n&#39;est pas reconnu: %s&quot;, area_of_operation)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">validate_exists</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Source_Info&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;COD_SOURCE_INFO&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">to_return</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_no_releve">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_no_releve">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_no_releve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_RELEVE INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Numéro séquentiel du relevé</span>
+
+<span class="sd">        Doit etre obtenu par un DBA de la DAISS avant la mission.</span>
+
+<span class="sd">        Andes: shared_models_cruise.survey_number</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.survey_number &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_cod_nbpc">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_cod_nbpc">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">AndesCodeLookup</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_nbpc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_NBPC VARCHAR(6) / VARCHAR2(6)</span>
+<span class="sd">        Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE</span>
+
+<span class="sd">        Andes: `shared_models_vessel.nbpc`</span>
+
+<span class="sd">        This one would be good to have linked with a regional code lookup</span>
+<span class="sd">        https://github.com/dfo-gulf-science/andes/issues/988</span>
+
+<span class="sd">        Code lookup</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_vessel.nbpc, shared_models_vessel.name &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="s2">&quot;LEFT JOIN shared_models_vessel &quot;</span>
+            <span class="s2">&quot;ON shared_models_cruise.vessel_id=shared_models_vessel.id &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found NBPC: </span><span class="si">%s</span><span class="s2">,for </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">to_return</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># typecast val</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">validate_exists</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Navire&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;COD_NBPC&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">to_return</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_annee">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_annee">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">min_val</span><span class="o">=</span><span class="mi">1970</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">2100</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_annee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;ANNEE INTEGER / NUMBER(4,0)</span>
+<span class="sd">        Année de réalisation du projet</span>
+
+<span class="sd">        Andes: `shared_models_cruise.season`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.season &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_cod_serie_hist">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_cod_serie_hist">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_serie_hist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_SERIE_HIST INTEGER /NUMBER(5,0) NOT NULL,</span>
+<span class="sd">        Identification du type de série auquel les données sont liées tel que défini dans la table INDICE_SUIVI_ABONDANCE</span>
+
+<span class="sd">        Andes: Pas dans Andes, doit être spécifié à l&#39;initialisation.</span>
+
+<span class="sd">        15 -&gt; Indice d&#39;abondance zone 16E - pétoncle</span>
+<span class="sd">        16 -&gt; Indice d&#39;abondance zone 16F - pétoncle</span>
+<span class="sd">        18 -&gt; Indice d&#39;abondance zone 20 - pétoncle</span>
+<span class="sd">        20 -&gt; Indice d&#39;abondance buccin</span>
+
+<span class="sd">        Valid description should be one of</span>
+<span class="sd">            Indice d&#39;abondance zone 16E - pétoncle</span>
+<span class="sd">            Indice d&#39;abondance zone 16F - pétoncle</span>
+<span class="sd">            Indice d&#39;abondance zone 20 - pétoncle</span>
+<span class="sd">            Indice d&#39;abondance buccin</span>
+<span class="sd">            Indice d&#39;abondance Mactre de Stimpson</span>
+<span class="sd">            Indice d&#39;abondance homard Îles-de-la-Madeleine</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: use COD_SERIE_HIST as datainput</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">espece</span> <span class="o">==</span> <span class="s2">&quot;pétoncle&quot;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Indice d&#39;abondance zone </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">espece</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">espece</span> <span class="o">==</span> <span class="s2">&quot;buccin&quot;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Indice d&#39;abondance </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">espece</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cannot find description for COD_SERIE_HIST&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Indice_Suivi_Etat_Stock&quot;</span><span class="p">,</span>
+            <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_SERIE_HIST&quot;</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_SERIE_HIST_F&quot;</span><span class="p">,</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">validate_exists</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Indice_Suivi_Etat_Stock&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;COD_SERIE_HIST&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">to_return</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_cod_type_stratif">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_cod_type_stratif">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">AndesCodeLookup</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_type_stratif</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_TYP_STRATIF INTEGER / NUMBER(5,0)NOT NULL,</span>
+<span class="sd">        Identification du type de stratification utilisé durant l&#39;activité tel que défini dans la table TYPE_STRATIFICATION</span>
+
+<span class="sd">        Andes: `shared_models_stratificationtype.code`</span>
+
+<span class="sd">        7 -&gt; Station fixe</span>
+<span class="sd">        8 -&gt; Échantillonnage aléatoire simple</span>
+
+<span class="sd">        This one would be good to have linked with a regional code lookup</span>
+<span class="sd">        https://github.com/dfo-gulf-science/andes/issues/988</span>
+
+<span class="sd">        Code lookup</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># res = self.cur.execute(f&quot;SELECT shared_models_stratificationtype.code FROM shared_models_stratificationtype ;&quot;)</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT &quot;</span>
+            <span class="s2">&quot;shared_models_stratificationtype.code, &quot;</span>
+            <span class="s2">&quot;shared_models_stratificationtype.description_fra &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="s2">&quot;LEFT JOIN shared_models_stratificationtype &quot;</span>
+            <span class="s2">&quot;ON shared_models_cruise.stratification_type_id=shared_models_stratificationtype.id &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> est </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">validate_exists</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Type_Stratification&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;COD_TYP_STRATIF&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">to_return</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_date_deb_project">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_date_deb_project">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_deb_project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_DEB_PROJET TIMESTAMP / DATE</span>
+<span class="sd">        Date de début du projet format AAAA-MM-JJ</span>
+
+<span class="sd">        Andes: `shared_models_cruise.start_date`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.start_date &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE id = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">to_return</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_datetime_format</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">datetime_strfmt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_date_fin_project">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_date_fin_project">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_fin_project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_FIN_PROJET TIMESTAMP / DATE</span>
+<span class="sd">        Date de début du projet format AAAA-MM-JJ</span>
+
+<span class="sd">        Andes: `shared_models_cruise.end_date`</span>
+
+<span class="sd">        TODO: verify datetime format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.end_date &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE id = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">to_return</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_datetime_format</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">datetime_strfmt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_no_notif_iml">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_no_notif_iml">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_no_notif_iml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_NOTIF_IML VARCHAR(12) / VARCHAR2(12)</span>
+<span class="sd">        Numéro de notification de recherche émis par l&#39;Institut Maurice-Lamontagne</span>
+
+<span class="sd">        Andes: `shared_models_cruise.mission_number`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.mission_number &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_chef_mission">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_chef_mission">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_chef_mission</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;CHEF_MISSION VARCHAR(50) / VARCHAR2(50)</span>
+<span class="sd">        Nom du chef de mission</span>
+
+<span class="sd">        Andes: `shared_models_cruise.chief_scientist`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.chief_scientist &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_seq_pecheur">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_seq_pecheur">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">AndesCodeLookup</span><span class="p">,</span> <span class="n">HardCoded</span><span class="p">,</span> <span class="n">FixMe</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_seq_pecheur</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SEQ_PECHEUR INTEGER / NUMBER(10,0)</span>
+<span class="sd">        Numéro unique pour l&#39;identification du pêcheur tel que défini dans la table PECHEUR</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        Champ de type SEQ</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># query = f&quot;SELECT shared_models_set.bridge \</span>
+        <span class="c1">#           FROM shared_models_set \</span>
+        <span class="c1">#           WHERE shared_models_set.cruise_id={self.pk};&quot;</span>
+        <span class="c1"># res = self.cur.execute(query)</span>
+
+        <span class="c1"># result = res.fetchall()</span>
+        <span class="c1"># make sure bridge is the same for all sets,</span>
+        <span class="c1"># this is a bit silly since there can be crew changes, but it&#39;s how the ProjetMollusque table is designed</span>
+        <span class="c1"># thus to satisfy this, use the generic &quot;Capitain Leim&quot; bridge name.</span>
+        <span class="c1"># It&#39;s a good idea to set it as the default value for set.bridge in Andes.</span>
+        <span class="c1"># self._assert_all_equal(result)</span>
+
+        <span class="c1"># if result[0][2] == &quot;Leim&quot;:</span>
+        <span class="c1">#     # seq_pecher for &quot;capitain Leim&quot;</span>
+        <span class="c1">#     to_return = 151</span>
+
+        <span class="c1"># to_return = self._seq_result()</span>
+        <span class="c1"># to_return = self._hard_coded_result(151)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_duree_trait_visee">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_duree_trait_visee">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_duree_trait_visee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DUREE_TRAIT_VISEE DOUBLE / NUMBER</span>
+<span class="sd">        Durée anticipée pour la réalisation d&#39;un trait, unité minute</span>
+
+<span class="sd">        Andes: `shared_models_cruise.targeted_trawl_duration`</span>
+
+<span class="sd">        descript: targeted set duration</span>
+<span class="sd">        units: minutes</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.targeted_trawl_duration &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_duree_trait_visee_p">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_duree_trait_visee_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_duree_trait_visee_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DUREE_TRAIT_VISEE_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Durée_Trait_Visee&quot;</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        This function always returns a hard-coded value of 0.1</span>
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_vit_touage_visee">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_vit_touage_visee">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_vit_touage_visee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;VIT_TOUAGE_VISEE DOUBLE / NUMBER</span>
+<span class="sd">        Vitesse anticipée du navire pour la réalisation d&#39;un trait, unité noeud (mille marin)</span>
+
+<span class="sd">        Andes: `shared_models_cruise.targeted_trawl_speed`</span>
+
+<span class="sd">        units: knots</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.targeted_trawl_speed &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_vit_touage_visee_p">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_vit_touage_visee_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_vit_touage_visee_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;VIT_TOUAGE_VISEE_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Vit_Touage_Visee&quot;</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        This function always returns a hard-coded value of 0.1</span>
+
+<span class="sd">        units: knots</span>
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_dist_chalute_visee">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_dist_chalute_visee">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_dist_chalute_visee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DIST_CHALUTE_VISEE DOUBLE / NUMBER</span>
+<span class="sd">        Distance anticipée parcourue par l&#39;engin de pêche, unité mètre</span>
+
+<span class="sd">        Andes: `shared_models_cruise.targeted_trawl_distance`</span>
+
+<span class="sd">        units: meters Andes stores this in nautical miles, need to convert to m.</span>
+
+
+<span class="sd">        N.B Andes does not permit setting this value, but will rather calculate it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># speed_kph = OracleHelper.convert_knots_to_kph(self.get_vit_touage_visee())</span>
+        <span class="c1"># time_h = self.get_duree_trait_visee() / 60.0</span>
+        <span class="c1"># dist_m = speed_kph * time_h * 1000</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.targeted_trawl_distance &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">OracleHelper</span><span class="o">.</span><span class="n">convert_nm_2_km</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_dist_chalute_visee_p">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_dist_chalute_visee_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_dist_chalute_visee_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DIST_CHALUTE_VISEE_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Dsitance_Chalute_Visee&quot;</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        This function always returns a hard-coded value of 1.0</span>
+
+<span class="sd">        units: meters</span>
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_rapport_fune_visee">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_rapport_fune_visee">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_rapport_fune_visee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;RAPPORT_FUNE_VISEE DOUBLE / NUMBER</span>
+<span class="sd">        Rapport de longueur de fune sur profondeur visée</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        This function always returns a hard-coded value of None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_rapport_fune_visee_p">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_rapport_fune_visee_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_rapport_fune_visee_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;RAPPORT_FUNE_VISEE_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Rappport_Fune_Visee&quot;</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        This function always returns a hard-coded value of 0.1</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_nom_equip_navire">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_nom_equip_navire">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">NotAndes</span><span class="p">,</span> <span class="n">FixMe</span><span class="p">,</span> <span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_nom_equip_navire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NOM_EQUIPE_NAVIRE VARCHAR(250) / VARCHAR2(250)</span>
+<span class="sd">        Noms des membres d&#39;équipage</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_nom_science_navire">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_nom_science_navire">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_nom_science_navire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NOM_SCIENCE_NAVIRE VARCHAR(250) / VARCHAR2(250)</span>
+<span class="sd">        Noms des membres de &#39;&#39;équipe scientifique</span>
+
+<span class="sd">        Andes: `shared_models_cruise.samplers`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.samplers &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_rem_projet_moll">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_rem_projet_moll">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_rem_projet_moll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;REM_PROJET_MOLL VARCHAR(255) / VARCHAR2(500)</span>
+<span class="sd">        Remarque sur le projet</span>
+
+<span class="sd">        Andes: `shared_models_cruise.notes`</span>
+
+<span class="sd">        N.B. max length mistmatch between Orale and MSAccess</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.notes &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="ProjetMollusque.get_no_chargement">
+<a class="viewcode-back" href="../../projet_mollusque.html#andes_migrate.projet_mollusque.ProjetMollusque.get_no_chargement">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">NotAndes</span><span class="p">)</span>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_no_chargement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_CHARGEMENT INTEGER / NUMBER</span>
+<span class="sd">        Numéro de l&#39;activité de chargement de données dans la base Oracle</span>
+
+<span class="sd">        Andes: Pas dans Andes</span>
+
+<span class="sd">        N.B. Datatype mistmatch between Oracle and MSAccess</span>
+<span class="sd">        Oracle Optimisation: this datatype should be INTEGER</span>
+
+<span class="sd">        Andes is unaware of this field, and will need to be populated manually</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># hard-code this? Not a seq-type, but similar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seq_result</span><span class="p">()</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+</div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, David Sean-Fortin
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

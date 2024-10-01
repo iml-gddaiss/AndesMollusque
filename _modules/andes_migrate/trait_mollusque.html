@@ -1,0 +1,1461 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
+        <title>andes_migrate.trait_mollusque - Andes -&gt; Projet Mollusque 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Andes -> Projet Mollusque 1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Andes -> Projet Mollusque 1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../code_espece.html">Codes espèce: Saisie vs archivage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contraintes.html">Contraintes pour Pétoncle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../projet_mollusque.html">Table PROJET_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../trait_mollusque.html">Table TRAIT_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../engin_mollusque.html">Table ENGIN_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../capture_mollusque.html">Table CAPTURE_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../table_peche_sentinelle.html">Abstract Class Peche Sentinelle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../oracle_helper.html">Oracle Helper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../combiner_bd.html">Combiner deux BD MS Access</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for andes_migrate.trait_mollusque</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">unidecode</span> <span class="kn">import</span> <span class="n">unidecode</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.oracle_helper</span> <span class="kn">import</span> <span class="n">OracleHelper</span>
+
+<span class="kn">from</span> <span class="nn">andes_migrate.projet_mollusque</span> <span class="kn">import</span> <span class="n">ProjetMollusque</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.table_peche_sentinelle</span> <span class="kn">import</span> <span class="n">TablePecheSentinelle</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.andes_helper</span> <span class="kn">import</span> <span class="n">AndesHelper</span>
+<span class="kn">from</span> <span class="nn">andes_migrate.decorators</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AndesCodeLookup</span><span class="p">,</span>
+    <span class="n">Deprecated</span><span class="p">,</span>
+    <span class="n">HardCoded</span><span class="p">,</span>
+    <span class="n">tag</span><span class="p">,</span>
+    <span class="n">deprecate</span><span class="p">,</span>
+    <span class="n">log_results</span><span class="p">,</span>
+    <span class="n">validate_string</span><span class="p">,</span>
+    <span class="n">validate_int</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># logging.basicConfig(level=logging.INFO)</span>
+
+
+<div class="viewcode-block" id="TraitMollusque">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque">[docs]</a>
+<span class="k">class</span> <span class="nc">TraitMollusque</span><span class="p">(</span><span class="n">TablePecheSentinelle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object model representing the TRAIT_MOLLUSQUE table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">andes_db</span><span class="p">:</span> <span class="n">AndesHelper</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">ProjetMollusque</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># super().__init__(*args, **kwargs)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">proj</span><span class="o">.</span><span class="n">reference_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span> <span class="o">=</span> <span class="n">andes_db</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">:</span> <span class="n">ProjetMollusque</span> <span class="o">=</span> <span class="n">proj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">=</span> <span class="s2">&quot;TRAIT_MOLLUSQUE&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_rows</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_init_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialisation method</span>
+<span class="sd">        This queries the Andes DB and creates a list of row entries to be added to the current table</span>
+
+<span class="sd">        After running this methods initialises the following attribute:</span>
+<span class="sd">        self._row_list</span>
+<span class="sd">        self._row_idx (hopefully to self._row_idx=0)</span>
+
+<span class="sd">        self._row_list will be populated with the associated Andes set ids for the current mission</span>
+<span class="sd">        self._row_idx will start at 0</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_set.id &quot;</span>
+            <span class="s2">&quot;FROM shared_models_set &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_set.cruise_id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;ORDER BY shared_models_set.id ASC &quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_not_empty</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># a list of all the Set pk&#39;s (need to unpack a bit)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="nb">set</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="TraitMollusque.populate_data">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.populate_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">populate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate data: run all getters&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_SOURCE_INFO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_source_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_RELEVE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_releve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_NBPC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_nbpc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;IDENT_NO_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ident_no_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_ZONE_GEST_MOLL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_zone_gest_moll</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_SECTEUR_RELEVE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_secteur_releve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_STRATE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_strate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_STATION&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_station</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_TYP_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_typ_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_RESULT_OPER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_result_oper</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DATE_DEB_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_deb_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DATE_FIN_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_fin_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;HRE_DEB_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hre_deb_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;HRE_FIN_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hre_fin_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_TYP_HEURE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_typ_heure</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;COD_FUSEAU_HORAIRE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_fuseau_horaire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;LAT_DEB_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lat_deb_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;LAT_FIN_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lat_fin_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;LONG_DEB_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_long_deb_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;LONG_FIN_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_long_fin_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;LATLONG_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_latlong_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DISTANCE_POS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_distance_pos</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DISTANCE_POS_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_distance_pos_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;VIT_TOUAGE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vit_touage</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;VIT_TOUAGE_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vit_touage_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DUREE_TRAIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_duree_trait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;DUREE_TRAIT_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_duree_trait_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;TEMP_FOND&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_fond</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;TEMP_FOND_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_fond_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PROF_DEB&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prof_deb</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PROF_DEB_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prof_deb_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PROF_FIN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prof_fin</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;PROF_FIN_P&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prof_fin_p</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;REM_TRAIT_MOLL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rem_trait_moll</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;NO_CHARGEMENT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_chargement</span><span class="p">()</span></div>
+
+        <span class="c1"># self.data[&quot;DATE_HRE_DEB_TRAIT&quot;] = self.get_date_heure_deb_trait()</span>
+        <span class="c1"># self.data[&quot;DATE_HRE_FIN_TRAIT&quot;] = self.get_date_heure_fin_trait()</span>
+        <span class="c1"># self.data[&quot;SALINITE_FOND&quot;] = self.get_salinite_fond()</span>
+        <span class="c1"># self.data[&quot;SALINITE_FOND_P&quot;] = self.get_salinite_fond_p()</span>
+        <span class="c1"># self.data[&quot;COD_TYP_ECH_TRAIT&quot;] = self.get_cod_typ_ech_trait()</span>
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_source_info">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_source_info">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_cod_source_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_SOURCE_INFO INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Identification de la source d&#39;information tel que défini dans la table SOURCE_INFO</span>
+
+<span class="sd">        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_cod_source_info`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">get_cod_source_info</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_no_releve">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_no_releve">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_no_releve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_RELEVE INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Numéro séquentiel du relevé</span>
+
+<span class="sd">        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_no_releve`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">get_no_releve</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_nbpc">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_nbpc">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_nbpc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_NBPC VARCHAR(6) / VARCHAR2(6)</span>
+<span class="sd">        Numéro du navire utilisé pour réaliser le relevé tel que défini dans la table NAVIRE</span>
+
+<span class="sd">        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_cod_nbpc`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">get_cod_nbpc</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_ident_no_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_ident_no_trait">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_ident_no_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;IDENT_NO_TRAIT INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Numéro séquentiel d&#39;identification du trait</span>
+
+<span class="sd">        Andes</span>
+<span class="sd">        -----</span>
+<span class="sd">        shared_models.set.set_number</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">set_pk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_set.set_number &quot;</span>
+            <span class="s2">&quot;FROM shared_models_set &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_set.id=</span><span class="si">{</span><span class="n">set_pk</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_zone_gest_moll">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_zone_gest_moll">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_zone_gest_moll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_ZONE_GEST_MOLL  COD_TYP_TRAIT INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Identification de la zone de gestion de la pêche aux mollusques tel que défini dans la table ZONE_GEST_MOLL</span>
+
+<span class="sd">        Pas présente dans Andes, doit être initialisé via le parametre `zone` du projet.</span>
+<span class="sd">        Uses lookup table based on station name, see andes_migrate.ref_data</span>
+
+<span class="sd">        consider using station.nafo_area for fishing zone</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cod_source_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">get_cod_source_info</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cod_source_info</span><span class="o">==</span><span class="mi">18</span> <span class="p">:</span>
+            <span class="c1"># Pétoncle Minganie</span>
+            <span class="c1"># 16E or 16F depending on initialization value</span>
+            <span class="n">zone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">zone</span>
+        <span class="k">elif</span> <span class="n">cod_source_info</span><span class="o">==</span><span class="mi">19</span><span class="p">:</span>
+            <span class="c1"># Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine</span>
+            <span class="c1"># 17 -&gt; Zone de pêche 20 définie en 2004</span>
+            <span class="n">zone</span> <span class="o">=</span> <span class="s2">&quot;20&quot;</span>
+
+        <span class="k">elif</span> <span class="n">cod_source_info</span><span class="o">==</span><span class="mi">22</span><span class="p">:</span>
+            <span class="c1"># Relevé buccin Haute Côte-Nord</span>
+            <span class="c1"># use lookup table based on station name</span>
+            <span class="c1"># 18 -&gt; Zone peche 1 Buccin</span>
+            <span class="c1"># 19 -&gt; Zone peche 2 Buccin</span>
+            <span class="kn">from</span> <span class="nn">andes_migrate.ref_data.zone_buccin_hcn</span> <span class="kn">import</span> <span class="n">zone_dict</span> 
+
+            <span class="n">station_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_no_station</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">zone_dict</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">]:</span>
+                <span class="n">zone</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">zone_dict</span><span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">]:</span>
+                <span class="n">zone</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot find zone for station: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">station_number</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;zones not implemented for cod_source_info=</span><span class="si">{</span><span class="n">cod_source_info</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+       
+
+
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;ZONE_GEST_MOLL&quot;</span><span class="p">,</span>
+            <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_ZONE_GEST_MOLL&quot;</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="s2">&quot;ZONE_GEST_MOLL&quot;</span><span class="p">,</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">zone</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_secteur_releve">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_secteur_releve">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_secteur_releve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_SECTEUR_RELEVE INTEGER/NUMBER(5,0)</span>
+<span class="sd">        Identification de la zone géographique de déroulement du relevé tel que défini dans la table SECTEUR_RELEVE_MOLL</span>
+
+<span class="sd">        CONTRAINTE</span>
+
+<span class="sd">        La premiere lettre du champ shared_models_cruise.area_of_operation (FR: Région échantillonée)</span>
+<span class="sd">        doit absolument correspondres avec la valeur SECTEUR_RELEVE de la table SECTEUR_RELEVE_MOLL:</span>
+
+<span class="sd">        1 -&gt; C (Côte-Nord)</span>
+<span class="sd">        4 -&gt; I (Îles de la Madeleine)</span>
+<span class="sd">        7 -&gt; H (Haute Côte-Nord)</span>
+
+<span class="sd">        Bien q&#39;il suffit de mettre seulement la premiere lettre, il est conseiller de mettre</span>
+<span class="sd">        le nom en entier pour la lisibilité.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_cruise.area_of_operation &quot;</span>
+            <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">secteur</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># first char stripped of accents and cast to uppercase</span>
+        <span class="n">secteur</span> <span class="o">=</span> <span class="n">unidecode</span><span class="p">(</span><span class="n">secteur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;SECTEUR_RELEVE_MOLL&quot;</span><span class="p">,</span>
+            <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_SECTEUR_RELEVE&quot;</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="s2">&quot;SECTEUR_RELEVE&quot;</span><span class="p">,</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">secteur</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_strate">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_strate">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_strate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_STRATE INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Identification de la strate où se réalise le trait tel que défini dans la table TYPE_STRATE_MOLL</span>
+
+<span class="sd">        Uses lookup table based on station name, see andes_migrate.ref_data</span>
+
+<span class="sd">        More discussions are needed to decide how to determine the stratum</span>
+<span class="sd">        consider using station.stratum</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># a faster way is to get shared_models_set.stratum directly ?</span>
+        <span class="c1"># but that would be too easy, instead  do the following...</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_station.name &quot;</span>
+            <span class="s2">&quot;FROM shared_models_set &quot;</span>
+            <span class="s2">&quot;LEFT JOIN shared_models_station &quot;</span>
+            <span class="s2">&quot;ON shared_models_set.station_id=shared_models_station.id &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">station_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                           
+        <span class="n">cod_secteur_releve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cod_secteur_releve</span><span class="p">()</span>
+        <span class="c1"># 1 -&gt; Côte-Nord</span>
+        <span class="k">if</span> <span class="n">cod_secteur_releve</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Need to get the station name, since it contains the cod_strate</span>
+
+            <span class="c1"># use the first character as the strate value (need to fetch key)</span>
+            <span class="n">secteur</span> <span class="o">=</span> <span class="n">station_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_STRATE_MOLL&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_STRATE&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;STRATE&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="n">secteur</span><span class="p">,</span>
+                <span class="n">optional_query</span><span class="o">=</span><span class="s2">&quot;AND COD_SECTEUR_RELEVE=1&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="c1"># IdM</span>
+        <span class="k">elif</span> <span class="n">cod_secteur_releve</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">andes_migrate.ref_data.strat_pet_idm</span> <span class="kn">import</span> <span class="n">strat_dict</span> 
+            <span class="c1"># strip non-numeric characters            </span>
+            <span class="n">station_number</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">station_name</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">())</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Étang-du-Nord&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;EN&quot;</span>
+            <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Dix-Milles&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;DM&quot;</span>
+            <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_number</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Chaîne-de-la-Passe&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;CP&quot;</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot find strat for station: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">station_number</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_STRATE_MOLL&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_STRATE&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;STRATE&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="n">secteur</span><span class="p">,</span>
+                <span class="n">optional_query</span><span class="o">=</span><span class="s2">&quot;AND COD_SECTEUR_RELEVE=4&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="c1"># buccin haut cote nord</span>
+        <span class="k">elif</span> <span class="n">cod_secteur_releve</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">andes_migrate.ref_data.strat_buccin_hcn</span> <span class="kn">import</span> <span class="n">strat_dict</span> 
+
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Forestville&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;FOR&quot;</span>
+            <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Pointe-aux-Outardes&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;PAO&quot;</span>
+            <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">station_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">strat_dict</span><span class="p">[</span><span class="s2">&quot;Baie-Comeau&quot;</span><span class="p">]:</span>
+                <span class="n">secteur</span> <span class="o">=</span> <span class="s2">&quot;BC&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot find sector for station </span><span class="si">%s</span><span class="s2"> in secteur </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">station_name</span><span class="p">,</span> <span class="n">cod_secteur_releve</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_STRATE_MOLL&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_STRATE&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;STRATE&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="n">secteur</span><span class="p">,</span>
+                <span class="n">optional_query</span><span class="o">=</span><span class="s2">&quot;AND COD_SECTEUR_RELEVE=7&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;secteur </span><span class="si">%s</span><span class="s2"> not implemented&quot;</span><span class="p">,</span> <span class="n">cod_secteur_releve</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_no_station">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_no_station">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_no_station</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_STATION  INTEGER/NUMBER(5,0)</span>
+<span class="sd">        Numéro de la station en fonction du protocole d&#39;échantillonnage</span>
+
+<span class="sd">        ANDES: shared_models_station.name</span>
+<span class="sd">        The station name is stripped of non-numerical characters</span>
+<span class="sd">        to generate no_station(i.e., NR524 -&gt; 524)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_station.name </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                LEFT JOIN shared_models_station </span><span class="se">\</span>
+<span class="s2">                    ON shared_models_set.station_id = shared_models_station.id </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># extract all non-numerical chacters</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">to_return</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_typ_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_typ_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">AndesCodeLookup</span><span class="p">)</span>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_typ_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_TYP_TRAIT INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Identification du type de trait tel que décrit dans la table TYPE_TRAIT</span>
+
+<span class="sd">        Andes</span>
+<span class="sd">        -----</span>
+<span class="sd">        shared_models.stratificationtype.code</span>
+<span class="sd">        via la mission</span>
+<span class="sd">        shared_models.cruise.stratification_type_id</span>
+
+<span class="sd">        This one would be good to have linked with a regional code lookup</span>
+<span class="sd">        https://github.com/dfo-gulf-science/andes/issues/988</span>
+<span class="sd">        Code lookup</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># this query does not work because of a mistmatch between reference tables</span>
+        <span class="c1"># query = f&quot;SELECT shared_models_stratificationtype.code \</span>
+        <span class="c1">#         FROM shared_models_cruise \</span>
+        <span class="c1">#         LEFT JOIN shared_models_stratificationtype \</span>
+        <span class="c1">#             ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id \</span>
+        <span class="c1">#         WHERE shared_models_cruise.id={self.proj.pk};&quot;</span>
+
+        <span class="c1"># manual hack</span>
+        <span class="c1"># we take the french description and match with Oracle\</span>
+        <span class="c1"># the match isn&#39;t even verbatim, we we need a manual map</span>
+
+        <span class="c1"># first, need to know what kind of set operations this is</span>
+        <span class="c1"># One could lookup directly the operation with the set_id, but this seems more proper...</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT shared_models_operation.name &quot;</span>
+            <span class="s2">&quot;FROM shared_models_set &quot;</span>
+            <span class="s2">&quot;LEFT JOIN shared_models_set_operations &quot;</span>
+            <span class="s2">&quot;ON shared_models_set_operations.set_id = shared_models_set.id &quot;</span>
+            <span class="s2">&quot;LEFT JOIN shared_models_operation &quot;</span>
+            <span class="s2">&quot;ON shared_models_operation.id = shared_models_set_operations.operation_id &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># For CTD, this is a direct lookup</span>
+        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s1">&#39;CTD&#39;</span><span class="p">:</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Océanographie seulement&#39;</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_TRAIT&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_TYP_TRAIT&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_TYP_TRAIT_F&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+
+        <span class="c1"># For Fishing, need to lookup stratificatointype</span>
+        <span class="k">elif</span> <span class="n">operation</span> <span class="o">==</span> <span class="s1">&#39;Fishing&#39;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_stratificationtype.description_fra &quot;</span>
+                <span class="s2">&quot;FROM shared_models_cruise &quot;</span>
+                <span class="s2">&quot;LEFT JOIN shared_models_stratificationtype &quot;</span>
+                <span class="s2">&quot;ON shared_models_cruise.stratification_type_id = shared_models_stratificationtype.id &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;WHERE shared_models_cruise.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="n">andes_2_oracle_map</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Échantillonnage aléatoire&quot;</span><span class="p">:</span> <span class="s2">&quot;Aléatoire simple&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Station fixe&quot;</span><span class="p">:</span> <span class="s2">&quot;Station fixe&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_TRAIT&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_TYP_TRAIT&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_TYP_TRAIT_F&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="n">andes_2_oracle_map</span><span class="p">[</span><span class="n">desc</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot determine COD_TYP_TRAIT&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_result_oper">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_result_oper">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="s2">&quot;codelookup&quot;</span><span class="p">)</span>
+    <span class="nd">@validate_int</span><span class="p">()</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_result_oper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_RESULT_OPER INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Résultat de l&#39;activité de pêche tel que défini dans la table COD_RESULT_OPER</span>
+
+<span class="sd">        Andes</span>
+<span class="sd">        -----</span>
+<span class="sd">        shared_models_setresult.code</span>
+
+<span class="sd">        The Andes codes seem to match the first six from the Oracle database,</span>
+<span class="sd">        except for hte mistmatch between code 5 and 6.</span>
+<span class="sd">        see issue https://github.com/dfo-gulf-science/andes/issues/1237</span>
+
+<span class="sd">        This one would be good to have linked with a regional code lookup</span>
+<span class="sd">        https://github.com/dfo-gulf-science/andes/issues/988</span>
+<span class="sd">        Code lookup</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_setresult.code </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                LEFT JOIN shared_models_setresult </span><span class="se">\</span>
+<span class="s2">                    ON shared_models_set.set_result_id = shared_models_setresult.id </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># this ia a weird one...</span>
+        <span class="c1"># see issue #1237</span>
+        <span class="n">andes_2_oracle_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">&quot;6&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">andes_2_oracle_map</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">to_return</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_date_deb_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_date_deb_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@deprecate</span><span class="p">(</span><span class="n">successor</span><span class="o">=</span><span class="s2">&quot;DATE_HEURE_DEB_TRAIT&quot;</span><span class="p">)</span>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># allow 19 chars instead of 10</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_deb_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_DEB_TRAIT DATE</span>
+<span class="sd">        Date du début du trait, format AAAA-MM-JJ</span>
+
+<span class="sd">        This field is deprecated in favour of DATE_HEURE_DEB_TRAIT</span>
+<span class="sd">        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_deb_trait`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_heure_deb_trait</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_date_fin_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_date_fin_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@deprecate</span><span class="p">(</span><span class="n">successor</span><span class="o">=</span><span class="s2">&quot;DATE_HEURE_FIN_TRAIT&quot;</span><span class="p">)</span>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># allow 19 chars instead of 10</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_fin_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_FIN_TRAIT DATE</span>
+<span class="sd">        Date de la fin du trait, format AAAA-MM-JJ</span>
+
+<span class="sd">        This field is deprecated in favour of DATE_HEURE_FIN_TRAIT</span>
+<span class="sd">        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_fin_trait`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_heure_fin_trait</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_hre_deb_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_hre_deb_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@deprecate</span><span class="p">(</span><span class="n">successor</span><span class="o">=</span><span class="s2">&quot;DATE_HEURE_DEB_TRAIT&quot;</span><span class="p">)</span>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># allow 19 chars instead of 10</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_hre_deb_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;HRE_DEB_TRAIT DATE</span>
+<span class="sd">        Heure du début du trait, format HH:MI:SS</span>
+
+<span class="sd">        This field is deprecated in favour of DATE_HEURE_DEB_TRAIT</span>
+<span class="sd">        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_deb_trait`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_heure_deb_trait</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_hre_fin_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_hre_fin_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@deprecate</span><span class="p">(</span><span class="n">successor</span><span class="o">=</span><span class="s2">&quot;DATE_HEURE_FIN_TRAIT&quot;</span><span class="p">)</span>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># allow 19 chars instead of 10</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_hre_fin_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;HRE_FIN_TRAIT DATE</span>
+<span class="sd">        Heure de la fin du trait, format HH:MI:SS</span>
+
+<span class="sd">        This field is deprecated in favour of DATE_HEURE_FIN_TRAIT</span>
+<span class="sd">        This function redirects to ::func:`~andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_fin_trait`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_date_heure_fin_trait</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_typ_heure">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_typ_heure">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_typ_heure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_TYP_HEURE INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Type d&#39;heure en vigueur lors de la réalisation du trait tel que défini dans la table TYPE_HEURE</span>
+
+<span class="sd">        0 -&gt; Normale Standard</span>
+<span class="sd">        1 -&gt; Avancée Daylight saving</span>
+<span class="sd">        2 -&gt; GMT GMT</span>
+
+<span class="sd">        N.B. The 3 (GMT) value is not present in Access (but GMS is a zone that never gets DST?).</span>
+
+<span class="sd">        Andes DB fields are always in internally stored as UTC and only converted to the timezone by a the client.</span>
+
+<span class="sd">        To stay consistent with existing data, Quebec times will be used.</span>
+
+<span class="sd">        The datetime from shared_models_set.start_date is taken as a reference.</span>
+<span class="sd">        It is then cast in the America/Montreal zone and the DST offset is extracted from it.</span>
+
+<span class="sd">        The code lookup is then made on the value &quot;Avancée&quot; or &quot;Normale&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_date </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># if no start date, stop trying to find a cod_stype_heure, just return none</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">dt_str</span><span class="p">,</span> <span class="n">timezone_str</span><span class="p">,</span> <span class="n">is_dst</span> <span class="o">=</span> <span class="n">TraitMollusque</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_dst</span><span class="p">:</span>
+            <span class="n">desc_val</span> <span class="o">=</span> <span class="s2">&quot;Avancée&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">desc_val</span> <span class="o">=</span> <span class="s2">&quot;Normale&quot;</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s2">&quot;TYPE_HEURE&quot;</span><span class="p">,</span>
+            <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_TYP_HEURE&quot;</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_TYP_HEURE_F&quot;</span><span class="p">,</span>
+            <span class="n">val</span><span class="o">=</span><span class="n">desc_val</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_fuseau_horaire">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_fuseau_horaire">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_fuseau_horaire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_FUSEAU_HORAIRE INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Fuseau horaire utilisé pour déterminer l&#39;heure de réalisation du trait tel que décrit dans la table FUSEAU_HORAIRE</span>
+
+<span class="sd">        0 -&gt; GMT         GMT</span>
+<span class="sd">        1 -&gt; Québec      Quebec</span>
+<span class="sd">        2 -&gt; Maritimes   Atlantic</span>
+<span class="sd">        3 -&gt; Terre-Neuve Newfoundland</span>
+
+<span class="sd">        To stay consistent with existing data, Quebec times will be used.</span>
+
+<span class="sd">        The datetime from shared_models_set.start_date is taken as a reference.</span>
+<span class="sd">        It is then cast in the America/Montreal zone and the DST offset is extracted from it.</span>
+
+<span class="sd">        The code lookup is then made on the value &quot;Quebec&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_date </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># if no start date, stop trying to find a cod_fuseau_horaire, just return none</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">dt_str</span><span class="p">,</span> <span class="n">timezone_str</span><span class="p">,</span> <span class="n">is_dst</span> <span class="o">=</span> <span class="n">TraitMollusque</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">timezone_str</span> <span class="o">==</span> <span class="s2">&quot;America/Montreal&quot;</span><span class="p">:</span>
+            <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_data</span><span class="o">.</span><span class="n">get_ref_key</span><span class="p">(</span>
+                <span class="n">table</span><span class="o">=</span><span class="s2">&quot;FUSEAU_HORAIRE&quot;</span><span class="p">,</span>
+                <span class="n">pkey_col</span><span class="o">=</span><span class="s2">&quot;COD_FUSEAU_HORAIRE&quot;</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="s2">&quot;DESC_FUSEAU_HORAIRE_F&quot;</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="s2">&quot;Québec&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Found an unexpected timezone: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">timezone_str</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_method_pos">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_method_pos">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">AndesCodeLookup</span><span class="p">)</span>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_method_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_METHOD_POS INTEGER / NUMBER(5,0)</span>
+<span class="sd">        Identification de la méthode utilisée pour déterminer les coordonnées de l&#39;&#39;emplacement d&#39;&#39;échantillonnage tel que défini dans la table METHODE_POSITION</span>
+
+<span class="sd">        0 -&gt; Inconnue</span>
+<span class="sd">        1 -&gt; Estimation</span>
+<span class="sd">        2 -&gt; Radar</span>
+<span class="sd">        3 -&gt; Decca</span>
+<span class="sd">        4 -&gt; Loran</span>
+<span class="sd">        5 -&gt; Satellite (GPS)</span>
+<span class="sd">        6 -&gt; Satellite (DGPS)</span>
+
+<span class="sd">        Andes uses the vessel GPS, which may or may not have DGPS data.</span>
+<span class="sd">        This is specified via the GPS Quality indicator (6th field) of the $GPGGA NMEA message.</span>
+
+<span class="sd">        Historical records indicated having used DGPS, which is what is returnd here.</span>
+<span class="sd">        This function always returns 6.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_lat_deb_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_lat_deb_trait">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_lat_deb_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LAT_DEB_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Position de latitude du début du trait, unité ddmm.%%%% N</span>
+
+<span class="sd">        This uses a unique encoding scheme for the coordinates.</span>
+
+<span class="sd">        Andes: shared_models_set.start_latitude</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_latitude </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># convert to Oracle coord encoding</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">OracleHelper</span><span class="o">.</span><span class="n">_to_oracle_coord</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_lat_fin_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_lat_fin_trait">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_lat_fin_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LAT_FIN_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Position de latitude de la fin du trait, unité ddmm.%%%% N</span>
+
+<span class="sd">        This uses a unique encoding scheme for the coordinates.</span>
+
+<span class="sd">        Andes: shared_models_set.end_latitude</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.end_latitude </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># convert to Oracle coord encoding</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">OracleHelper</span><span class="o">.</span><span class="n">_to_oracle_coord</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_long_deb_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_long_deb_trait">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_long_deb_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LONG_DEB_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Position de longitude du début du trait, unité ddmm.%%%% W</span>
+<span class="sd">        This uses a unique encoding scheme for the coordinates.</span>
+
+<span class="sd">        Andes: shared_models_set.start_longitude</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_longitude </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1"># return right away if None</span>
+        <span class="k">if</span> <span class="n">to_return</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+        
+        <span class="c1"># convert to Oracle coord encoding</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">OracleHelper</span><span class="o">.</span><span class="n">_to_oracle_coord</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+        <span class="c1"># strip negative from longitudes</span>
+        <span class="n">to_return</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_long_fin_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_long_fin_trait">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_long_fin_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LONG_fin_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Position de longitude de la fin du trait, unité ddmm.%%%% W</span>
+<span class="sd">        This uses a unique encoding scheme for the coordinates.</span>
+
+<span class="sd">        Andes: shared_models_set.end_longitude</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.end_longitude </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># return right away if None</span>
+        <span class="k">if</span> <span class="n">to_return</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">to_return</span>
+
+        <span class="c1"># convert to Oracle coord encoding</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">OracleHelper</span><span class="o">.</span><span class="n">_to_oracle_coord</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span>
+        <span class="c1"># strip negative from longitudes</span>
+        <span class="n">to_return</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_latlong_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_latlong_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_latlong_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LATLONG_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage pour les variables de positionnement en latitude et longitude</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        Not sure what to use for GPS coords taken from the vessel NMEA feed.</span>
+<span class="sd">        Historical records indicate 0.01 and 0.001, for now, this function will always return None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Find what to do about this.</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_distance_pos">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_distance_pos">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_distance_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DISTANCE_POS DOUBLE / NUMBER</span>
+<span class="sd">        Distance parcourue évaluée à partir des coordonnées des positions en latitude et longitude, unité mètre</span>
+
+<span class="sd">        There can be more that than one way to evaluate the distance:</span>
+<span class="sd">         - crow&#39;s distance on a locally flat projection (like quebec-lambert)</span>
+<span class="sd">         - crow&#39;s distance on a curved surface</span>
+<span class="sd">         - integration of the vessel position (path length) on a flat projection</span>
+<span class="sd">         - integration of the vessel position (path length) on a curved surface</span>
+
+<span class="sd">        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).</span>
+<span class="sd">        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_distance_pos_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_distance_pos_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_distance_pos_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DISTANCE_POS_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Distance_Pos&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_vit_touage">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_vit_touage">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_vit_touage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;VIT_TOUAGE DOUBLE / NUMBER</span>
+<span class="sd">        Vitesse de touage, en nœuds,  lors de la réalisation du trait</span>
+
+<span class="sd">        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).</span>
+<span class="sd">        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_vit_touage_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_vit_touage_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_vit_touage_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;VIT_TOUAGE_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Vit_Touage&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_duree_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_duree_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_duree_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DUREE_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Durée du trait, en seconde évaluée selon différence entre l&#39;heures de fin et de début</span>
+
+<span class="sd">        This is a derived metric and not pure source-data (i.e., it can be re-computed from source data).</span>
+<span class="sd">        It may be best to delagate the evaluation to the analyst, and to not populate this field with andes.</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_duree_trait_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_duree_trait_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_duree_trait_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DUREE_TRAIT_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiiffre après la décimale pour la précision d&#39;affichage associée à &quot;Duree_Trait&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_temp_fond">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_temp_fond">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_temp_fond</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;TEMP_FOND DOUBLE / NUMBER</span>
+<span class="sd">        Température de l&#39;eau sur le fond, unité ° C</span>
+
+<span class="sd">        Andes: does not log temperature data.</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_temp_fond_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_temp_fond_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_temp_fond_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;TEMP_FOND_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Temp_Eau_Fond&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        Andes:  does not log temperature data.</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_prof_deb">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_prof_deb">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_prof_deb</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;PROF_DEB DOUBLE / NUMBER</span>
+<span class="sd">        Profondeur au début du trait, unité mètre</span>
+
+<span class="sd">        units: metre</span>
+
+<span class="sd">        Andes: shared_models_set.start_depth_m</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_depth_m </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_prof_deb_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_prof_deb_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_prof_deb_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;PROF_DEB_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Temp_Eau_Fond&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_prof_fin">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_prof_fin">[docs]</a>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_prof_fin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;PROF_FIN DOUBLE / NUMBER</span>
+<span class="sd">        Profondeur au début du trait, unité mètre</span>
+
+<span class="sd">        units: metre</span>
+
+<span class="sd">        Andes: shared_models_set.start_depth_m</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_depth_m </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_prof_fin_p">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_prof_fin_p">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_prof_fin_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;PROF_FIN_P DOUBLE / NUMBER</span>
+<span class="sd">        Nombre de chiffre après la décimale pour la précision d&#39;affichage associée à &quot;Temp_Eau_Fond&quot;</span>
+
+<span class="sd">        N.B. the description seems wrong, it&#39;s not the number of digits after the decimal, but rather the uncertainty</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_rem_trait_moll">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_rem_trait_moll">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_rem_trait_moll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;REM_TRAIT_MOLL VARCHAR(500) / VARCHAR2(500)</span>
+<span class="sd">        Remarque sur la réalisation du trait</span>
+
+<span class="sd">        Andes: shared_models_set.remarks</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.remarks </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># need to remove line breaks and carriage-returns</span>
+        <span class="c1"># only because it currupts de .dat files,</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">to_return</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">to_return</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="c1"># need to escape single quotes because it corrupts the SQL statements</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="n">to_return</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\&#39;\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_no_chargement">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_no_chargement">[docs]</a>
+    <span class="nd">@validate_int</span><span class="p">(</span><span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_no_chargement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NO_CHARGEMENT DOUBLE / NUMBER</span>
+<span class="sd">        Numéro de l&#39;activité de chargement de données dans la base Oracle</span>
+
+<span class="sd">        Extrait du projet ::func:`~andes_migrate.projet_mollusque.ProjetMollusque.get_no_chargement`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">get_no_chargement</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_date_heure_deb_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_deb_trait">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_heure_deb_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_HEURE_DEB_TRAIT</span>
+<span class="sd">        Date et heure du début du trait, format AAAA-MM-JJ HH:MI:SS</span>
+
+<span class="sd">        Andes: shared_models_set.end_date</span>
+
+<span class="sd">        Best practices dictate the use of UTC to store datetimes.</span>
+<span class="sd">        The convention is followed by andes, and thus all imported andes datetimes</span>
+<span class="sd">        will be in the UTC, as indicate in COD_FUSEAU_HORAIRE and COD_TYPE_HEURE</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.start_date </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">==</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">dt_str</span><span class="p">,</span> <span class="n">timezone_str</span><span class="p">,</span> <span class="n">is_dst</span><span class="p">)</span> <span class="o">=</span> <span class="n">TraitMollusque</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dt_str</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Expected a datetime object , received None&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="TraitMollusque.get_date_heure_fin_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_date_heure_fin_trait">[docs]</a>
+    <span class="nd">@validate_string</span><span class="p">(</span><span class="n">max_len</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">not_null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_date_heure_fin_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DATE_HEURE_FIN_TRAIT</span>
+<span class="sd">        Date et heure de la fin du trait, format AAAA-MM-JJ HH:MI:SS</span>
+
+<span class="sd">        Andes: shared_models_set.end_date</span>
+
+<span class="sd">        Best practices dictate the use of UTC to store datetimes.</span>
+<span class="sd">        The convention is followed by andes, and thus all imported andes datetimes</span>
+<span class="sd">        will be in the UTC, as indicate in COD_FUSEAU_HORAIRE and COD_TYPE_HEURE</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT shared_models_set.end_date </span><span class="se">\</span>
+<span class="s2">                FROM shared_models_set </span><span class="se">\</span>
+<span class="s2">                WHERE shared_models_set.id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_row_pk</span><span class="p">()</span><span class="si">}</span><span class="s2">;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">andes_db</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assert_one</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">==</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">dt_str</span><span class="p">,</span> <span class="n">timezone_str</span><span class="p">,</span> <span class="n">is_dst</span><span class="p">)</span> <span class="o">=</span> <span class="n">TraitMollusque</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dt_str</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Expected a datetime object , received None&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@deprecate</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_salinite_fond</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SALINITE_FOND DOUBLE / NUMBER</span>
+<span class="sd">        Salinité de l&#39;eau au fond, unité psu</span>
+
+<span class="sd">        Oracle Optimisation: column not in MSACCESS, is deprecated?</span>
+
+<span class="sd">        Andes does not log salinity data.</span>
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hard-code this</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span>
+
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@deprecate</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_salinite_fond_p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SALINITE_FOND_P DOUBLE / NUMBER</span>
+<span class="sd">        Précision d&#39;affichage associée à &#39;&#39; Salinite_Fond&#39;&#39;</span>
+
+<span class="sd">        Oracle Optimisation: column not in MSACCESS, is deprecated?</span>
+
+<span class="sd">        Andes does not log salinity data.</span>
+<span class="sd">        This function always returns None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">to_return</span>
+
+<div class="viewcode-block" id="TraitMollusque.get_cod_typ_ech_trait">
+<a class="viewcode-back" href="../../trait_mollusque.html#andes_migrate.trait_mollusque.TraitMollusque.get_cod_typ_ech_trait">[docs]</a>
+    <span class="nd">@tag</span><span class="p">(</span><span class="n">HardCoded</span><span class="p">,</span> <span class="n">Deprecated</span><span class="p">)</span>
+    <span class="nd">@log_results</span>
+    <span class="k">def</span> <span class="nf">get_cod_typ_ech_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;COD_TYP_ECH_TRAIT DOUBLE / NUMBER</span>
+<span class="sd">        Identification du type d&#39;activité d&#39;échantillonnage réalisé à la station tel que décrit dans la table TYPE_ECHANT_TRAIT</span>
+
+<span class="sd">        Oracle Optimisation: this datatype should be INTEGER</span>
+<span class="sd">        Oracle Optimisation: seems to be relational, but not setup that way</span>
+<span class="sd">        Oracle Optimisation: column and ref table not in MSACCESS, is deprecated?</span>
+
+<span class="sd">        This function always returns None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hard_coded_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, David Sean-Fortin
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

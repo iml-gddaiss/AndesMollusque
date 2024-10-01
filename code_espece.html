@@ -1,0 +1,323 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Contraintes pour Pétoncle" href="contraintes.html" /><link rel="prev" title="Documentation for Andes -&gt; Projet Mollusque data migration" href="index.html" />
+
+    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
+        <title>Codes espèce: Saisie vs archivage - Andes -&gt; Projet Mollusque 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Andes -> Projet Mollusque 1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Andes -> Projet Mollusque 1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Codes espèce: Saisie vs archivage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contraintes.html">Contraintes pour Pétoncle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet_mollusque.html">Table PROJET_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trait_mollusque.html">Table TRAIT_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engin_mollusque.html">Table ENGIN_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_mollusque.html">Table CAPTURE_MOLLUSQUE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table_peche_sentinelle.html">Abstract Class Peche Sentinelle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oracle_helper.html">Oracle Helper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combiner_bd.html">Combiner deux BD MS Access</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="codes-espece-saisie-vs-archivage">
+<h1>Codes espèce: Saisie vs archivage<a class="headerlink" href="#codes-espece-saisie-vs-archivage" title="Link to this heading">#</a></h1>
+<p>Il faut faire une distinction entre le codes espèces pour les besoins de de saisie et codes espèces pour les besoins d’archivage.
+Bien que historiquement les deux sont les mêmes, ils jouent un rôle différent et ne doivent pas obligatoirement être les memes, ou suivre la même norme.</p>
+<section id="saisie-avec-andes">
+<h2>Saisie avec Andes<a class="headerlink" href="#saisie-avec-andes" title="Link to this heading">#</a></h2>
+<p>Les codes d’espèces jouent un rôle important dans le mécanisme de saisie.
+L’insertion d’une capture est fait obligatoirement par l’entremise d’une code d’espèce.
+Une mission doit en premier lieu définir la norme de codes a être utilisé. Les normes sont généralement soit STRAP ou RVAN, mais rien n’empeche l’utilisation d’autres codes. la définition de codes en vigueur pour la de mission peut-être completement arbitraire.</p>
+<p>Tel était le cas pour la mission IML-2023-011, où une liste de codes spéciale a été créer spécifiquement pour saisie des espèces sans codes STRAP.
+Cette liste était essentiellement identique a la liste de codes STRAP sauf pour l’ajout d’une douzaines d’espèces (ceux ci avait un code arbitraire assigné entre 1000-1050).
+Le but était d’utiliser cette liste seulement pour permettre d’utiliser le mécanisme de saisie Andes, l’intention était de retirer les codes arbitraires en favorisant plutot un  `aphia_id`` lors de l’étape de publication ou archivage.</p>
+<p>Bien que Andes ne permet pas de saisie sans codes, il serait envisageable de modifier le mécanisme de saisie pour permettre la saisie via un nom commun, aphia_id, nom scientifique, … voir billet <a class="reference external" href="https://github.com/dfo-gulf-science/andes/issues/1040">#1040</a>. En attendant, il va falloir créer des liste spéciale avec des codes temporaires de saisie (technique utilisé pour IML-2023-011) ou maintenir la liste STRAP a jour.</p>
+</section>
+<section id="archivage-dans-la-bd-peche-sentinelle-oracle">
+<h2>Archivage dans la BD Peche Sentinelle (Oracle)<a class="headerlink" href="#archivage-dans-la-bd-peche-sentinelle-oracle" title="Link to this heading">#</a></h2>
+<p>Les nature des données derrière une BD peut facilement être mal transmise (voir même obfusquer) par l’outil graphique qui interface avec l’utilisateur.
+De façon générale, les utilisateurs intéragissent avec la BD purement via un outil d’interface graphique. L’outil en question pourrait imposer certain restrictions et donner de fausses impréssions ces restriction proviennent de a la BD sous-jacente.</p>
+<section id="mythe-des-codes-strap">
+<h3>Mythe des codes STRAP<a class="headerlink" href="#mythe-des-codes-strap" title="Link to this heading">#</a></h3>
+<p>Mythe: Un entré de capture dans la BD Peche Sentinelle doit avoir un code STRAP.</p>
+<p>Prennons l’example de la saisie de l’espèce <em>Chlamis Islandica</em> par l’entremise de l’outil <code class="docutils literal notranslate"><span class="pre">Saisie</span> <span class="pre">Pétoncle</span></code>. Elle pourrait laisser sous-entendre que le code strap <code class="docutils literal notranslate"><span class="pre">4167</span></code> doit être associé a cet espèce, voir figure:
+<img alt="codes straps dans la saisie petoncle&gt;" src="_images/saisie_petoncle_STRAP.png" />
+L’espece peut être choisi par nom common, nom scientifique, ou code STRAP, les trois sont liées, impossible d’en choisir un sans l’autre.</p>
+<p>Étant donné que c’est l’interface graphique principalement utilisé pour saisie des données Pétoncles vers la BD <code class="docutils literal notranslate"><span class="pre">Peche</span> <span class="pre">Sentinelle</span></code>,
+cette impréssion pourrait facilement être généralisé vers la fausse croyance qu’un espèce doit avoir un code STRAP pour etre permise dans la BD <code class="docutils literal notranslate"><span class="pre">Peche</span> <span class="pre">Sentinelle</span></code>.</p>
+<p>En réalité, l’entrée a une clé primaire <code class="docutils literal notranslate"><span class="pre">COD_ESP_GEN=48</span></code> a une relation vers le code <code class="docutils literal notranslate"><span class="pre">4167</span></code> (de la table <code class="docutils literal notranslate"><span class="pre">espèce_NORME</span></code>) via le choix de la norme <code class="docutils literal notranslate"><span class="pre">STRAP_IML</span></code> (table <code class="docutils literal notranslate"><span class="pre">NORME</span></code>)
+<img alt="codes straps dans la saisie petoncle" src="_images/saisie_petoncle_STRAP.png" />.
+En principe, un choix de la norme <code class="docutils literal notranslate"><span class="pre">aphiaId</span></code> (ou un autre) pourrait être fait. La table <code class="docutils literal notranslate"><span class="pre">espèce_NORME</span></code> permet une relation avec plusieures normes.
+Cela offre le potentiel d’ajouter l’occurence d’espèces sans qu’ils soient présent dans la liste de codes <code class="docutils literal notranslate"><span class="pre">STRAP_IML</span></code>.
+Meme que la liste spéciale avec des code temporaires utilisé dans Andes pourrait potentiellement etre importer dans la BD Peche Sentinelle (pas recommandé).</p>
+</section>
+<section id="mythe-des-codes-dupliquees">
+<h3>Mythe des codes dupliquées<a class="headerlink" href="#mythe-des-codes-dupliquees" title="Link to this heading">#</a></h3>
+<p>Mythe: Impossible de saisie plusieurs captures qui partage le meme code.</p>
+<p>Bien que cette example s’applique pour la table <code class="docutils literal notranslate"><span class="pre">CAPTURE</span></code> (et non la table <code class="docutils literal notranslate"><span class="pre">CAPTURE_MOLLUSQUE</span></code>), elle illustre bien la confusion que peuvent causer un manque de distinction entre un outil de saisie et sa BD associée. L’outil <code class="docutils literal notranslate"><span class="pre">Relevé</span> <span class="pre">de</span> <span class="pre">Recherche</span></code> offre un interface graphique à la BD Peche Sentinelle sur Oracle. Les captures sont saisie en premier lieu par l’interface, et ensuite insérées dans la table <code class="docutils literal notranslate"><span class="pre">CAPTURES</span></code> de la BD apres avoir passé certaines critères de validation. L’une de ces critères empèche l’insertion de deux entrées ayant le meme code d’espèce. La figure ci bas montre le méssage d’érreur suite a une tentative d’insérer une deuxieme capture de raie épineuse.
+<img alt="Duplicat interdit" src="_images/espece_dup.png" /></p>
+<p>Une inspection des contraintes de cette table dévoile une clé primaire composé de <code class="docutils literal notranslate"><span class="pre">SEQ_CAPTURE</span></code> et <code class="docutils literal notranslate"><span class="pre">COD_ESP_GEN</span></code>. Étant donné que la collonne <code class="docutils literal notranslate"><span class="pre">SEQ_CAPTURE</span></code> submit une incrémentation automatique pour chaque entrée, la clé primaire sera toujours unique, et ce, peux importe la valeur de <code class="docutils literal notranslate"><span class="pre">COD_ESP_GEN</span></code>. Du point de vue de la BD, il a aucune raison valable d’interdire un duplicat de codes dans la meme capture. Cette contrainte, purement artificiel, est appliqué par l’interface graphique et non la BD elle-meme.</p>
+<p>Il est éffectivement possible d’insérer les captures ayant le même code en intéragissant directement avec la BD via un interface de programmation. Il éxiste de bonne raisons de vouloir dupliquer des codes d’espèce dans la meme capture. Malheureusement, la table <code class="docutils literal notranslate"><span class="pre">CAPTURE_MOLLUSQUE</span></code> ne permet pas de duplicat de codes car sa clé primaire n’est pas composé avec un valeur unque comme <code class="docutils literal notranslate"><span class="pre">SEQ_CAPTURE</span></code>. Il serait bien d’également pouvoir profiter du même mécanisme.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="contraintes.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Contraintes pour Pétoncle</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, David Sean-Fortin
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Codes espèce: Saisie vs archivage</a><ul>
+<li><a class="reference internal" href="#saisie-avec-andes">Saisie avec Andes</a></li>
+<li><a class="reference internal" href="#archivage-dans-la-bd-peche-sentinelle-oracle">Archivage dans la BD Peche Sentinelle (Oracle)</a><ul>
+<li><a class="reference internal" href="#mythe-des-codes-strap">Mythe des codes STRAP</a></li>
+<li><a class="reference internal" href="#mythe-des-codes-dupliquees">Mythe des codes dupliquées</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
