@@ -42,6 +42,12 @@ SEQ_peche = 151
 aphia_id_filter = [buccinum_undatum]
 size_class_filter = [vivant_intact_size_class, vivant_brisé_size_class]
 
+ANDES_HOST = 'iml-science-1.ent.dfo-mpo.ca'
+ANDES_PORT = 24988
+ANDES_DB_NAME = 'andesdb'
+ANDES_DB_USERNAME = 'lecture_seulement'
+ANDES_DB_USERPASS = 'NOPE NO PASSWORD HERE'
+
 
 output_fname = f'./{no_notification}.mdb'
 shutil.copyfile('andes_migrate/ref_data/access_template.mdb', output_fname)

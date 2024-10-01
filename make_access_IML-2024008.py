@@ -66,7 +66,7 @@ for p in proj:
             engin = EnginMollusque(trait, output_cur)
             for e in engin:
                 # print(f"Engin: ", e)
-                capture = CaptureMollusque(engin, output_cur)
+                capture = CaptureMollusque(engin, output_cur, aphia_id_filter=aphia_id_filter, size_class_filter=size_class_filter)
                 for c in capture:
                     print(f"Capture: ", c)
 
