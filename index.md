@@ -19,6 +19,7 @@ des données équipe IML de la région du Québec fait avec ANDES.
 ## Installation du package
 
 ``` r
+
 devtools::install_github("MPO-Quebec-Science/AndesMollusque")
 library(ANDESMollusque)
 ```
@@ -35,6 +36,7 @@ libraries sous `C:\Oracle\12.2.0_Instant_x64`.
 ## Connexion BD ANDES
 
 ``` r
+
 # Infos connexion BD, voir section Authentification Connexion BD
 url_bd <- "iml-science-4.ent.dfo-mpo.ca"
 port_bd <- 25993
@@ -65,6 +67,7 @@ Les tables Access suivent une hiearchy `proj` -\> `trait` -\> `engin`
 -\> `capture` -\> `FreqLongMollusque`
 
 ``` r
+
 ################################################
 # EXTERNAL INPUT
 # This needs to be manually defined
@@ -121,6 +124,7 @@ Utilisé ensuite la fonction
 [`get_biometrie_petoncle()`](reference/get_biometrie_petoncle.md)
 
 ``` r
+
 # BIOMETRIE PETONCLE
 # select collection_name as one of the following
 # "Conserver pour biométrie 16E"
@@ -135,6 +139,7 @@ bio <- get_biometrie_petoncle(andes_db_connection, collection_name = "Conserver 
 Les tables en dataframes peuvent être sauvegardé en format BD Access.
 
 ``` r
+
 # Faire une BD acces vide
 file_path <- create_new_access_db()
 # etablir la connexion a cette BD
@@ -168,6 +173,7 @@ placé au dossier home de l’usager `C:\Users\TON_NOM` (sur windows) ou
 checkout the repo and use
 
 ``` r
+
 devtools::load_all()
 devtools::document()
 ```
@@ -177,6 +183,7 @@ to load the library in memory without installing it.
 To test the github package, detach an re-install
 
 ``` r
+
 detach("package:ANDESMollusque", unload=TRUE)
 devtools::install_github("MPO-Quebec-Science/ANDESMollusque")
 library(ANDESMollusque)

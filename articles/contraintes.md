@@ -1,6 +1,7 @@
 # Contraints de missions Andes
 
 ``` r
+
 library(ANDESMollusque)
 ```
 
@@ -22,10 +23,11 @@ de mission “Numéro de mission alternatif”, voir figure.
 targeted_vessel_speed
 
 Dans l’ancien outil de saisie, il faut saisir des métadonnées de mission
-tel que i) la vitesse visée ($v$), ii) la durée visée ($t$) et ii) la
-distance visée ($d$) comme trois variables indépendantes. Étant donnée
-la relation $v = dt$, il ne peut q’avoir deux variables indépendents (il
-est donc possible sur l’ancien outil de saisir des valeurs invalides).
+tel que i) la vitesse visée ($`v`$), ii) la durée visée ($`t`$) et ii)
+la distance visée ($`d`$) comme trois variables indépendantes. Étant
+donnée la relation $`v=d t`$, il ne peut q’avoir deux variables
+indépendents (il est donc possible sur l’ancien outil de saisir des
+valeurs invalides).
 
 La vitesse, ayant un impacte sur la performance de drague, mérite d’etre
 traité comme variable indépendente. Il reste donc a faire le choix
@@ -184,18 +186,18 @@ MSACCESS:`Évaluation de stocks IML - Pétoncle I de M`
 
 PSE:
 
-| COD_SOURCE_INFO | COD_CLASSE_PROJET | DESC_SOURCE_INFO_F                                       | DESC_SOURCE_INFO_A                                 |
-|-----------------|-------------------|----------------------------------------------------------|----------------------------------------------------|
-| 18              | 7                 | Évaluation de stocks IML - Pétoncle Minganie             | MLI Stocks’ assessment - Scallop Minganie          |
-| 19              | 7                 | Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine | MLI Stocks’ assessment - Scallop Magdellan Islands |
-| 22              | 7                 | Évaluation de stocks IML - Buccin Haute-Côte-Nord        | MLI Stocks’ assessment - Whelk High North Shore    |
-| 23              | 9                 | Évaluation de stocks IML - Homard                        | MLI Stocks’ assessment - Lobster                   |
-| 25              | 7                 | Évaluation de stocks IML - Buccin Îles-de-la-Madeleine   | MLI Stocks’ assessment - Whelk Magdellan Islands   |
-| 26              | 7                 | Évaluation de stocks IML - Mactre de Stimpson            | MLI Stocks’ assessment - Stimpson’s Surf Clam      |
-| 28              | 7                 | Évaluation de stocks IML - Concombre de mer Gaspésie     | MLI Stocks’ assessment - Sea Cucomber Gaspésie     |
-| 29              | 7                 | Évaluation de stocks IML - Concombre de mer Minganie     | MLI Stocks’ assessment - Sea Cucomber Minganie     |
-| 30              | 1                 | Recherche écosystémique - Communautés benthiques         | Ecosystemic research - Benthic communites          |
-| 32              | 7                 | Projets de recherche - Mollusques                        | Research projects - Mollusks                       |
+| COD_SOURCE_INFO | COD_CLASSE_PROJET | DESC_SOURCE_INFO_F | DESC_SOURCE_INFO_A |
+|----|----|----|----|
+| 18 | 7 | Évaluation de stocks IML - Pétoncle Minganie | MLI Stocks’ assessment - Scallop Minganie |
+| 19 | 7 | Évaluation de stocks IML - Pétoncle Îles-de-la-Madeleine | MLI Stocks’ assessment - Scallop Magdellan Islands |
+| 22 | 7 | Évaluation de stocks IML - Buccin Haute-Côte-Nord | MLI Stocks’ assessment - Whelk High North Shore |
+| 23 | 9 | Évaluation de stocks IML - Homard | MLI Stocks’ assessment - Lobster |
+| 25 | 7 | Évaluation de stocks IML - Buccin Îles-de-la-Madeleine | MLI Stocks’ assessment - Whelk Magdellan Islands |
+| 26 | 7 | Évaluation de stocks IML - Mactre de Stimpson | MLI Stocks’ assessment - Stimpson’s Surf Clam |
+| 28 | 7 | Évaluation de stocks IML - Concombre de mer Gaspésie | MLI Stocks’ assessment - Sea Cucomber Gaspésie |
+| 29 | 7 | Évaluation de stocks IML - Concombre de mer Minganie | MLI Stocks’ assessment - Sea Cucomber Minganie |
+| 30 | 1 | Recherche écosystémique - Communautés benthiques | Ecosystemic research - Benthic communites |
+| 32 | 7 | Projets de recherche - Mollusques | Research projects - Mollusks |
 
 Il pourait etre envisageable de faire comme avec `DESC_SERIE_HIST_F`
 
@@ -253,9 +255,9 @@ présente sur Access.
 
 Évaluation de stocks IML - Pétoncle I de M
 
-| Andes                                              | PSentinelle                           | exemple                                      | notes                                    |
-|----------------------------------------------------|---------------------------------------|----------------------------------------------|------------------------------------------|
-| `shared_models_cruise.description`                 | `PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F` | `Évaluation de stocks IML - Pétoncle I de M` | texte verbatim                           |
-| `shared_models_cruise.area_of_operation`           | `TRAIT_MOLLUSQUE.SECTEUR`             | `Côte-Nord`                                  | Permiere lettre seulement (devient `C`)  |
-| `shared_models_station.name`                       | `TRAIT_MOLLUSQUE.NO_STATION`          | `N531`                                       | Parti numérique extrait (devient `531`)  |
-| `shared_models_stratificationtype.description_fra` | `TYPE_TRAIT.DESC_TYP_TRAIT_F`         | `Échantillonnage aléatoire`                  | map manuel, (devient `Aléatoire simple`) |
+| Andes | PSentinelle | exemple | notes |
+|----|----|----|----|
+| `shared_models_cruise.description` | `PROJET_MOLLUSQUE.DESC_SOURCE_INFO_F` | `Évaluation de stocks IML - Pétoncle I de M` | texte verbatim |
+| `shared_models_cruise.area_of_operation` | `TRAIT_MOLLUSQUE.SECTEUR` | `Côte-Nord` | Permiere lettre seulement (devient `C`) |
+| `shared_models_station.name` | `TRAIT_MOLLUSQUE.NO_STATION` | `N531` | Parti numérique extrait (devient `531`) |
+| `shared_models_stratificationtype.description_fra` | `TYPE_TRAIT.DESC_TYP_TRAIT_F` | `Échantillonnage aléatoire` | map manuel, (devient `Aléatoire simple`) |
