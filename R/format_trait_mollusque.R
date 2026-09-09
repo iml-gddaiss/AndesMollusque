@@ -62,7 +62,7 @@ format_cod_strate <- function(trait, desc_serie_hist_f) {
 
   # use merge to apply the map
   strate <- data.frame(value = unlist(strate))
-  res <- left_join(strate, code_map, by = "value")
+  res <- left_join_preserve_order(strate, code_map, by = "value")
 
   trait$COD_STRATE <- res$code
   return(trait)
@@ -206,7 +206,7 @@ format_zone <- function(trait, desc_serie_hist_f) {
   # use merge to apply the map
   zone <- data.frame(value = unlist(zone))
   # res <- merge(zone, code_map, by = "value", all.x = TRUE, sort = FALSE)
-  res <- left_join(zone, code_map, by = "value")
+  res <- left_join_preserve_order(zone, code_map, by = "value")
   trait$COD_ZONE_GEST_MOLL <- res$code
 
   return(trait)
@@ -258,7 +258,7 @@ format_cod_typ_trait <- function(trait, desc_stratification) {
   # use merge to apply the map
   desc_typ_trait <- data.frame(desc = unlist(desc_typ_trait))
   # res <- merge(desc_typ_trait, code_map, by = "desc", all.x = TRUE, sort = FALSE)
-  res <- left_join(desc_typ_trait, code_map, by = "desc")
+  res <- left_join_preserve_order(desc_typ_trait, code_map, by = "desc")
 
   trait$COD_TYP_TRAIT <- res$code
   return(trait)
@@ -357,7 +357,7 @@ format_cod_typ_heure <- function(trait) {
 
   # use merge to apply the map
   is_dst <- data.frame(desc = unlist(is_dst))
-  res <- left_join(is_dst, code_map, by = "desc")
+  res <- left_join_preserve_order(is_dst, code_map, by = "desc")
   trait$COD_TYP_HEURE <- res$code
   return(trait)
 }

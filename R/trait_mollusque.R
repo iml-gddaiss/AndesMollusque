@@ -52,7 +52,11 @@ get_trait_mollusque <- function(andes_db_connection, proj = NULL) {
     "NO_CHARGEMENT"
   )
   data_from_parent <- proj[, names(proj) %in% cols_from_parent]
-  trait <- left_join(trait, data_from_parent, on = "andes_mission_id")
+  trait <- left_join_preserve_order(
+    trait,
+    data_from_parent,
+    on = "andes_mission_id"
+  )
 
   # temporarily get desc_serie_hist_f from proj to trait, it will provide the context to correctly get the zone/strate
   desc_serie_hist_f <- get_ref_key(
