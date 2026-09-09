@@ -114,8 +114,8 @@
   desc_serie_hist_f to get a list of choices.
 - [`is_andes_time_str_dst()`](is_andes_time_str_dst.md) : Verify is the
   ANDES dattime string is in daylight savings time
-- [`left_join()`](left_join.md) : a merge that preserves row and column
-  order
+- [`left_join_preserve_order()`](left_join_preserve_order.md) : a merge
+  that preserves row and column order
 - [`lookup_cod_serie_hist()`](lookup_cod_serie_hist.md) : Lookup entry
   in Oracle
 - [`lookup_cod_source_info()`](lookup_cod_source_info.md) : Lookup

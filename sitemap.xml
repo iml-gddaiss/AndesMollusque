@@ -65,7 +65,7 @@
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/init_cod_serie_hist.html</loc></url>
 <url><loc>/reference/is_andes_time_str_dst.html</loc></url>
-<url><loc>/reference/left_join.html</loc></url>
+<url><loc>/reference/left_join_preserve_order.html</loc></url>
 <url><loc>/reference/lookup_cod_serie_hist.html</loc></url>
 <url><loc>/reference/lookup_cod_source_info.html</loc></url>
 <url><loc>/reference/parse_andes_datetime.html</loc></url>
