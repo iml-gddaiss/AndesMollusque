@@ -67,7 +67,7 @@ format_cod_typ_etat <- function(freq) {
     COD_TYP_ETAT = c(code_vivant, code_claquette)
   )
 
-  freq <- left_join(freq, type_etat_map, on = "description_fra")
+  freq <- left_join_preserve_order(freq, type_etat_map, on = "description_fra")
 
   return(freq)
 }

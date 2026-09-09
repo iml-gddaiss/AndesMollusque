@@ -79,7 +79,7 @@ get_freq_long_mollusque <- function(andes_db_connection, capt = NULL) {
 
   data_from_capt <- capt[, names(capt) %in% cols_from_capt]
 
-  freq <- left_join(freq, data_from_capt, on = "IDENT_NO_TRAIT")
+  freq <- left_join_preserve_order(freq, data_from_capt, on = "IDENT_NO_TRAIT")
 
   freq <- add_hard_coded_value(
     freq,

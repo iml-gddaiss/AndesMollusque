@@ -92,13 +92,13 @@ strap_map <- data.frame(list(
 ))
 
 # add zone and s_zone using zone map
-bio <- left_join(bio, zone_map, by = c("collection"))
+bio <- left_join_preserve_order(bio, zone_map, by = c("collection"))
 
 # add sexe_val sex map
-bio <- left_join(bio, sex_map, by = c("sexe"))
+bio <- left_join_preserve_order(bio, sex_map, by = c("sexe"))
 
 # add espece using strap map
-bio <- left_join(bio, strap_map, by = c("strap"))
+bio <- left_join_preserve_order(bio, strap_map, by = c("strap"))
 
 # add NA values to needed columns
 bio$panier <- NA

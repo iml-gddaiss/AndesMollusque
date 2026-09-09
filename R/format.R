@@ -5,15 +5,17 @@
 #' @param y the "right" dataframe
 #' @param ... Additional arguments passed on to methgods
 #' @export
-left_join <- function(x, y, ...) {
+left_join_preserve_order <- function(x, y, ...) {
   x$join_id_ <- seq_len(nrow(x))
   joined <- merge(x = x, y = y, all.x = TRUE, sort = FALSE, ...)
 
   cols <- unique(c(colnames(x), colnames(y)))
-  return(joined[
+  joined <- joined[
     order(joined$join_id),
     cols[cols %in% colnames(joined) & cols != "join_id_"]
-  ])
+  ]
+  rownames(joined) <- NULL
+  return(joined)
 }
 
 #' Cleanup text form ANDES to play nice in Oracle

@@ -140,7 +140,7 @@ get_capture_mollusque <- function(
     "NO_ENGIN"
   )
   data_from_engin <- engin[, names(engin) %in% cols_from_engin]
-  capt <- left_join(capt, data_from_engin, on = "IDENT_NO_TRAIT")
+  capt <- left_join_preserve_order(capt, data_from_engin, on = "IDENT_NO_TRAIT")
 
   # FRACTION_ECH : nombre de paniers de drague ayant bien peché: ex 4 ou 3 (de ANDES)
   # FRACTION_PECH : nombre de paniers de drague ayant été echantionné: ex 4 ou 3 (d'habitude meme que NBR_CAPT)

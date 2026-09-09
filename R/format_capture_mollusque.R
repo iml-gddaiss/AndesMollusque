@@ -78,7 +78,7 @@ format_epibiont <- function(capt, andes_db_connection, code_filter) {
   names(epibiont_data)[names(epibiont_data) == "code"] <- "strap_code"
 
   # merge
-  capt <- left_join(
+  capt <- left_join_preserve_order(
     capt,
     epibiont_data,
     by = c("IDENT_NO_TRAIT", "strap_code")
@@ -137,7 +137,11 @@ get_epibiont <- function(andes_db_connection, code_filter) {
     coverage = c((0 + 1) / 6., (1 + 2) / 6., (2 + 3) / 6.)
   )
   # res <- merge(desc_typ_trait, code_map, by = "desc", all.x = TRUE, sort = FALSE)
-  coverage <- left_join(df, code_map, by = "observation_value")$coverage
+  coverage <- left_join_preserve_order(
+    df,
+    code_map,
+    by = "observation_value"
+  )$coverage
 
   # category <- c ("1", "2", "3")
   # value <- c ((0+1)/6. ,(1+2)/6. ,(2+3)/6. )
@@ -185,7 +189,7 @@ format_cod_esp_gen <- function(capt) {
   names(cod_esp_gen_map)[
     names(cod_esp_gen_map) == "COD_ESPECE"
   ] <- "strap_code"
-  capt <- left_join(capt, cod_esp_gen_map, by = "strap_code")
+  capt <- left_join_preserve_order(capt, cod_esp_gen_map, by = "strap_code")
 
   # we can probably drop the strap_code column now...
   # capt$strap_code <- NULL
